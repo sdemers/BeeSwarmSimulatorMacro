@@ -7,7 +7,7 @@ delay := 100
 
 move := 100
 
-hivePosition := 1
+hivePosition := 3
 speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -23,10 +23,17 @@ Sleep 200
 Click 1000, 1000, down
 Sleep 200
 
-ToolTip "Press F2 to stop script", 100, 300
+ToolTip "Press F2 to stop script", 50, 300
 
 Debug(text) {
-    ToolTip %text%, 100, 500
+    ToolTip %text%, 50, 800
+}
+
+
+PlaceSprinkler() {
+    Send {1 down}
+    Sleep 10
+    Send {1 up}
 }
 
 MoveUp(time) {
@@ -89,7 +96,7 @@ ConvertHoney() {
     Send {e down}
     Sleep 50
     Send {e up}
-    Sleep, 15000
+    Sleep, 25000
 }
 
 ResetKeys() {
@@ -114,15 +121,15 @@ Respawn() {
     }
 }
 
-Jump() {
+Jump(wait := 100) {
     Send {Space down}
-    Sleep 100
+    Sleep wait
     Send {Space up}
 }
 
 DeployChute() {
-    Jump()
-    Jump()
+    Jump(100)
+    Jump(100)
 }
 
 MoveToPineTree() {
@@ -147,43 +154,83 @@ MoveToPineTree() {
     MoveRight(50)
     Sleep 3000
     RotateRight()
+
+    MoveUp(3000)
+    MoveRight(2000)
+    MoveDown(1500)
+    MoveLeft(1000)
+
+    PlaceSprinkler()
 }
 
-PineTreePattern() {
+WalkPineTreePattern(nbLoops) {
     StartFetching()
 
     global move
     global patternWidth
     global patternLength
-    time := move * patternWidth * 0.5
-    time2 := move * patternWidth * 1.5
+    lateralMoveTime := move * patternWidth * 1.5
 
-    loop, 1 {
+    loop, %nbLoops% {
         loop, %patternLength% {
-            MoveUp(time)
-            MoveLeft(time2)
-            MoveUp(time)
-            MoveRight(time2)
-            MoveUp(time)
-            MoveLeft(time2)
-            MoveUp(time)
-            MoveRight(time2)
 
-            MoveDown(time)
-            MoveLeft(time2)
-            MoveDown(time)
-            MoveRight(time2)
-            MoveDown(time)
-            MoveLeft(time2)
-            MoveDown(time)
-            MoveRight(time2)
+            Random, rand, -10, 10
+            moveUpTime := (move + rand) * patternWidth * 0.5
+
+            MoveUp(moveUpTime)
+            MoveLeft(lateralMoveTime)
+            MoveUp(moveUpTime)
+            MoveRight(lateralMoveTime)
+            MoveUp(moveUpTime)
+            MoveLeft(lateralMoveTime)
+            MoveUp(moveUpTime)
+            MoveRight(lateralMoveTime)
+
+            MoveDown(moveUpTime)
+            MoveLeft(lateralMoveTime)
+            MoveDown(moveUpTime)
+            MoveRight(lateralMoveTime)
+            MoveDown(moveUpTime)
+            MoveLeft(lateralMoveTime)
+            MoveDown(moveUpTime)
+            MoveRight(lateralMoveTime)
         }
 
-        MoveUp(time * 8)
-        MoveRight(time * 8)
-        MoveDown(time * 4)
-        MoveLeft(time * 4)
+        MoveUp(moveUpTime * 8)
+        MoveRight(moveUpTime * 8)
+        MoveDown(moveUpTime * 4)
+        MoveLeft(moveUpTime * 2)
     }
+}
+
+MoveToHiveSlot(slot)  {
+    global speed
+
+    ; Move to the hive wall in front
+    MoveUp(2000)
+    MoveDown(200)
+
+    ; Facing hive, move to right end
+    MoveRight(4000)
+    MoveUp(1000)
+    MoveDown(500)
+
+    if (slot == 1) {
+        MoveLeft(300)
+    }
+    else {
+        MoveLeft(300 + (25000 / speed) * slot)
+    }
+
+    Sleep 300
+}
+
+JumpFromPolarBearToHive() {
+    Jump()
+    DeployChute()
+    Sleep 3700
+    MoveLeft(15)
+    Sleep 2000
 }
 
 ToHiveFromPineTree() {
@@ -203,34 +250,22 @@ ToHiveFromPineTree() {
     MoveDown(300)
     MoveLeft(4000)
     RotateLeft()
-    MoveRight(1500)
+    MoveRight(2500)
     MoveDown(800)
     MoveUp(1000)
 
-    ; Jump to hive
-    Jump()
-    DeployChute()
-    Sleep 5700
-    MoveUp(800)
-    MoveRight(3000)
-    MoveUp(1000)
-    MoveDown(500)
+    JumpFromPolarBearToHive()
 
-    if (hivePosition == 1) {
-        MoveLeft(300)
-    }
-    else {
-        MoveLeft(300 + (35000 / speed) * hivePosition)
-    }
-
-    Sleep 300
+    MoveToHiveSlot(hivePosition)
 }
 
 Respawn()
-MoveToPineTree()
-PineTreePattern()
-ToHiveFromPineTree()
-ConvertHoney()
+loop, 1000 {
+    MoveToPineTree()
+    WalkPineTreePattern(20)
+    ToHiveFromPineTree()
+    ConvertHoney()
+}
 
 StopScript:
     ResetKeys()
