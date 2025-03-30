@@ -6,7 +6,7 @@ global hivePosition := 3
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 1
+global patternRepeat := 5
 global patternLength := 5
 global patternWidth := 6
 
@@ -104,7 +104,13 @@ StopFetching() {
 
 ConvertHoney() {
     KeyPress("e", 50)
-    Sleep, 25000
+    Loop {
+        Sleep 500
+        if (IsContainerEmpty()) {
+            Sleep 2000
+            Break
+        }
+    }
 }
 
 ResetKeys() {
@@ -163,6 +169,18 @@ MoveToPineTree() {
     PlaceSprinkler()
 }
 
+IsContainerFull() {
+    CoordMode, Pixel, Screen
+    PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
+    return ErrorLevel = 0
+}
+
+IsContainerEmpty() {
+    CoordMode, Pixel, Screen
+    PixelSearch, FoundX, FoundY, 2028, 90, 2030, 92, 0x646E71, 5, True
+    return ErrorLevel = 0
+}
+
 WalkPineTreePattern(nbLoops) {
     StartFetching()
 
@@ -171,6 +189,10 @@ WalkPineTreePattern(nbLoops) {
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %patternRepeat% {
+
+            if (IsContainerFull()) {
+                Break
+            }
 
             moveUpTime := move * patternLength * 0.5
 
@@ -193,10 +215,16 @@ WalkPineTreePattern(nbLoops) {
             MoveRight(lateralMoveTime)
         }
 
+        containerFull := IsContainerFull()
+
         MoveUp(moveUpTime * 8)
         MoveRight(moveUpTime * 8)
         MoveDown(moveUpTime * 4)
         MoveLeft(moveUpTime * 2)
+
+        if (containerFull) {
+            Break
+        }
     }
 }
 
@@ -206,7 +234,7 @@ MoveToHiveSlot(slot)  {
     distance := 1150
 
     MoveLeft(100)
-    MoveDown(430)
+    MoveDown(630)
 
     if (slot == 1) {
         MoveRight(distance * 2)
@@ -216,6 +244,8 @@ MoveToHiveSlot(slot)  {
     else if (slot > 3) {
         MoveLeft(distance * slot - 3)
     }
+
+    Sleep 500
 }
 
 JumpFromPolarBearToHive() {
@@ -224,8 +254,8 @@ JumpFromPolarBearToHive() {
     Sleep 3000
     SendSpace()
     Sleep 1000
-    MoveRight(650)
-    MoveUp(10000)
+    MoveRight(650 * movespeedFactor)
+    MoveUp(10000 * movespeedFactor)
 }
 
 ToHiveFromPineTree() {
@@ -245,13 +275,14 @@ ToHiveFromPineTree() {
 }
 
 Respawn()
+
 loop {
     if (Mod(A_Index, 5) == 0) {
         Respawn()
     }
 
     MoveToPineTree()
-    WalkPineTreePattern(20)
+    WalkPineTreePattern(10)
     ToHiveFromPineTree()
     ConvertHoney()
 }
