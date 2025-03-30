@@ -7,8 +7,8 @@ global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 5
-global patternLength := 5
-global patternWidth := 6
+global patternLength := 10
+global patternWidth := 10
 
 global move := 100
 
@@ -107,7 +107,7 @@ ConvertHoney() {
     Loop {
         Sleep 500
         if (IsContainerEmpty()) {
-            Sleep 2000
+            Sleep 10000
             Break
         }
     }
@@ -184,47 +184,62 @@ IsContainerEmpty() {
 WalkPineTreePattern(nbLoops) {
     StartFetching()
 
-    lateralMoveTime := move * patternWidth * 1.5
+    lateralMoveTime := move * patternWidth
+    moveUpTime := move * patternLength / 4
+    containerFull := False
 
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %patternRepeat% {
 
+            Loop, 2 {
+                MoveUp(moveUpTime)
+                MoveLeft(lateralMoveTime)
+                MoveUp(moveUpTime)
+                MoveRight(lateralMoveTime)
+            }
+
+            Loop, 2 {
+                MoveDown(moveUpTime)
+                MoveLeft(lateralMoveTime)
+                MoveDown(moveUpTime)
+                MoveRight(lateralMoveTime)
+            }
+
             if (IsContainerFull()) {
+                containerFull := True
                 Break
             }
 
-            moveUpTime := move * patternLength * 0.5
+            Loop, 2 {
+                MoveUp(lateralMoveTime)
+                MoveLeft(moveUpTime)
+                MoveDown(lateralMoveTime)
+                MoveLeft(moveUpTime)
+            }
 
-            MoveUp(moveUpTime)
-            MoveLeft(lateralMoveTime)
-            MoveUp(moveUpTime)
-            MoveRight(lateralMoveTime)
-            MoveUp(moveUpTime)
-            MoveLeft(lateralMoveTime)
-            MoveUp(moveUpTime)
-            MoveRight(lateralMoveTime)
+            Loop, 2 {
+                MoveUp(lateralMoveTime)
+                MoveRight(moveUpTime)
+                MoveDown(lateralMoveTime)
+                MoveRight(moveUpTime)
+            }
 
-            MoveDown(moveUpTime)
-            MoveLeft(lateralMoveTime)
-            MoveDown(moveUpTime)
-            MoveRight(lateralMoveTime)
-            MoveDown(moveUpTime)
-            MoveLeft(lateralMoveTime)
-            MoveDown(moveUpTime)
-            MoveRight(lateralMoveTime)
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
         }
 
-        containerFull := IsContainerFull()
-
-        MoveUp(moveUpTime * 8)
-        MoveRight(moveUpTime * 8)
-        MoveDown(moveUpTime * 4)
-        MoveLeft(moveUpTime * 2)
+        MoveUp(5000 * movespeedFactor)
+        MoveRight(5000 * movespeedFactor)
 
         if (containerFull) {
             Break
         }
+
+        MoveDown(1000 * movespeedFactor)
+        MoveLeft(500 * movespeedFactor)
     }
 }
 
@@ -233,7 +248,6 @@ MoveToHiveSlot(slot)  {
 
     distance := 1150
 
-    MoveLeft(100)
     MoveDown(630)
 
     if (slot == 1) {
@@ -249,13 +263,14 @@ MoveToHiveSlot(slot)  {
 }
 
 JumpFromPolarBearToHive() {
-    SendSpace(150)
-    DeployChute()
-    Sleep 3000
-    SendSpace()
-    Sleep 1000
-    MoveRight(650 * movespeedFactor)
+    SendSpace(10)
+    MoveUp(500 * movespeedFactor)
+    Sleep 2000
+    MoveRight(500 * movespeedFactor)
     MoveUp(10000 * movespeedFactor)
+    MoveRight(600 * movespeedFactor)
+    MoveUp(8000 * movespeedFactor)
+
 }
 
 ToHiveFromPineTree() {
@@ -264,10 +279,10 @@ ToHiveFromPineTree() {
     StopFetching()
 
     ; Move next to polar bear
-    MoveRight(5750)
-    MoveDown(10300)
+    MoveRight(7000 * movespeedFactor)
+    MoveDown(13000 * movespeedFactor)
     RotateLeft()
-    MoveUp(6 * 1150)
+    MoveUp(10000 * movespeedFactor)
 
     JumpFromPolarBearToHive()
 
