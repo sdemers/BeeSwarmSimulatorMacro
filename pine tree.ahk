@@ -2,12 +2,13 @@
 
 stopKey := "F2"
 
-global hivePosition := 1
+global hivePosition := 3
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternLength := 1
-global patternWidth := 5
+global patternRepeat := 1
+global patternLength := 5
+global patternWidth := 6
 
 global move := 100
 
@@ -21,10 +22,10 @@ WinActivate Roblox
 
 Sleep 200
 
-ToolTip "Press F2 to stop script", 50, 300
+ToolTip Press F2 to stop script, 50, 400, 1
 
 Debug(text) {
-    ToolTip %text%, 50, 800
+    ToolTip %text%, 50, 700, 2
 }
 
 KeyPress(key, duration := 0)
@@ -168,7 +169,8 @@ WalkPineTreePattern(nbLoops) {
     lateralMoveTime := move * patternWidth * 1.5
 
     loop, %nbLoops% {
-        loop, %patternLength% {
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %patternRepeat% {
 
             moveUpTime := move * patternLength * 0.5
 
@@ -199,39 +201,35 @@ WalkPineTreePattern(nbLoops) {
 }
 
 MoveToHiveSlot(slot)  {
-    global speed
+    ; We should be facing the wall at slot #3
 
-    ; Move to the hive wall in front
-    MoveUp(2300)
-    MoveDown(230)
+    distance := 1150
 
-    ; Facing hive, move to right end
-    ; if (slot != 3) {
-    ;     MoveRight(4600)
-    ;     MoveUp(1150)
-    ;     MoveDown(575)
-    ; }
+    MoveLeft(100)
+    MoveDown(430)
 
-    if (slot == 3) {
-        MoveDown(200)
+    if (slot == 1) {
+        MoveRight(distance * 2)
+    } else if (slot == 2) {
+        MoveRight(distance)
     }
-    else {
-        MoveRight(4600)
-        MoveUp(1150)
-        MoveDown(430)
-        MoveLeft(300 + 1200 * slot)
+    else if (slot > 3) {
+        MoveLeft(distance * slot - 3)
     }
 }
 
 JumpFromPolarBearToHive() {
-    SendSpace()
+    SendSpace(150)
     DeployChute()
-    Sleep 5700
+    Sleep 3000
+    SendSpace()
+    Sleep 1000
+    MoveRight(650)
+    MoveUp(10000)
 }
 
 ToHiveFromPineTree() {
     global hivePosition
-    global speed
 
     StopFetching()
 
@@ -247,11 +245,15 @@ ToHiveFromPineTree() {
 }
 
 Respawn()
-loop, 1 {
+loop {
+    if (Mod(A_Index, 5) == 0) {
+        Respawn()
+    }
+
     MoveToPineTree()
-    WalkPineTreePattern(1)
+    WalkPineTreePattern(20)
     ToHiveFromPineTree()
-    ;ConvertHoney()
+    ConvertHoney()
 }
 
 StopScript:
