@@ -125,15 +125,15 @@ Respawn() {
     ZoomOut(5)
 }
 
-Jump(wait := 100) {
+SendSpace(wait := 100) {
     Send {Space down}
     Sleep wait
     Send {Space up}
 }
 
 DeployChute() {
-    Jump()
-    Jump()
+    SendSpace()
+    SendSpace()
 }
 
 MoveToPineTree() {
@@ -145,16 +145,13 @@ MoveToPineTree() {
     MoveRight(1150)
 
     KeyPress("e", 10)
-    Sleep 200
+    Sleep 320
     MoveRight(150)
-    Sleep 300
+    Sleep 200
     DeployChute()
-    MoveDown(150)
+    Sleep 4700
+    SendSpace()
     Sleep 500
-    MoveRight(50)
-    Sleep 2000
-    MoveRight(50)
-    Sleep 3000
     RotateRight()
 
     MoveUp(3450)
@@ -227,7 +224,7 @@ MoveToHiveSlot(slot)  {
 }
 
 JumpFromPolarBearToHive() {
-    Jump()
+    SendSpace()
     DeployChute()
     Sleep 5700
 }
