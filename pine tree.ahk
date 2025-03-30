@@ -7,6 +7,9 @@ delay := 100
 
 move := 100
 
+hivePosition := 1
+speed := 32.2
+
 ; Set the snake pattern parameters (adjust to your liking)
 patternLength := 5
 patternWidth := 5
@@ -26,14 +29,13 @@ Debug(text) {
     ToolTip %text%, 100, 500
 }
 
-Forward(time) {
-    Debug(time)
+MoveUp(time) {
     Send {w down}
     Sleep time
     Send {w up}
 }
 
-Backward(time) {
+MoveDown(time) {
     Send {s down}
     Sleep %time%
     Send {s up}
@@ -58,6 +60,13 @@ RotateRight() {
     Send {Right up}
 }
 
+RotateLeft() {
+    global rotateTime
+    Send {Left down}
+    Sleep rotateTime
+    Send {Left up}
+}
+
 JumpRight() {
     Send {Space down}
     Sleep 25
@@ -74,6 +83,13 @@ StartFetching() {
 
 StopFetching() {
     Click 1000, 1000, Up
+}
+
+ConvertHoney() {
+    Send {e down}
+    Sleep 50
+    Send {e up}
+    Sleep, 15000
 }
 
 ResetKeys() {
@@ -98,17 +114,19 @@ Respawn() {
     }
 }
 
-DeployChute() {
-    Send {Space down}
-    Sleep 100
-    Send {Space up}
+Jump() {
     Send {Space down}
     Sleep 100
     Send {Space up}
 }
 
+DeployChute() {
+    Jump()
+    Jump()
+}
+
 MoveToPineTree() {
-    Forward(2500)
+    MoveUp(2500)
     MoveRight(5000)
     MoveLeft(150)
     MoveRight(50)
@@ -122,14 +140,13 @@ MoveToPineTree() {
     MoveRight(150)
     Sleep 300
     DeployChute()
-    Backward(150)
+    MoveDown(150)
     Sleep 500
     MoveRight(50)
-    Sleep 5000
+    Sleep 2000
+    MoveRight(50)
+    Sleep 3000
     RotateRight()
-    ;Forward(100)
-    ;Backward(100)
-    ;RotateRight()
 }
 
 PineTreePattern() {
@@ -143,35 +160,77 @@ PineTreePattern() {
 
     loop, 1 {
         loop, %patternLength% {
-            Forward(time)
+            MoveUp(time)
             MoveLeft(time2)
-            Forward(time)
+            MoveUp(time)
             MoveRight(time2)
-            Forward(time)
+            MoveUp(time)
             MoveLeft(time2)
-            Forward(time)
+            MoveUp(time)
             MoveRight(time2)
 
-            Backward(time)
+            MoveDown(time)
             MoveLeft(time2)
-            Backward(time)
+            MoveDown(time)
             MoveRight(time2)
-            Backward(time)
+            MoveDown(time)
             MoveLeft(time2)
-            Backward(time)
+            MoveDown(time)
             MoveRight(time2)
         }
 
-        Forward(time * 8)
+        MoveUp(time * 8)
         MoveRight(time * 8)
-        Backward(time * 4)
+        MoveDown(time * 4)
         MoveLeft(time * 4)
     }
+}
+
+ToHiveFromPineTree() {
+    global hivePosition
+    global speed
+
+    StopFetching()
+
+    ; Move next to polar bear
+    MoveRight(5000)
+    MoveDown(9000)
+    MoveLeft(1000)
+    MoveDown(300)
+    MoveLeft(1000)
+    MoveDown(300)
+    MoveLeft(1000)
+    MoveDown(300)
+    MoveLeft(4000)
+    RotateLeft()
+    MoveRight(1500)
+    MoveDown(800)
+    MoveUp(1000)
+
+    ; Jump to hive
+    Jump()
+    DeployChute()
+    Sleep 5700
+    MoveUp(800)
+    MoveRight(3000)
+    MoveUp(1000)
+    MoveDown(500)
+
+    if (hivePosition == 1) {
+        MoveLeft(300)
+    }
+    else {
+        MoveLeft(300 + (35000 / speed) * hivePosition)
+    }
+
+    Sleep 300
 }
 
 Respawn()
 MoveToPineTree()
 PineTreePattern()
+ToHiveFromPineTree()
+ConvertHoney()
 
 StopScript:
     ResetKeys()
