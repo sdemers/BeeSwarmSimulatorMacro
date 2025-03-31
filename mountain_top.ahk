@@ -6,9 +6,8 @@ global hivePosition := 3
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 5
-global patternLength := 10
-global patternWidth := 10
+global patternRepeat := 10
+global patternLength := 20
 
 global move := 100
 
@@ -31,7 +30,7 @@ Debug(text) {
 KeyPress(key, duration := 0)
 {
     Send, {%key% down}
-    Sleep, (duration * movespeedFactor)
+    Sleep, duration
     Send, {%key% up}
 }
 
@@ -141,7 +140,7 @@ DeployChute() {
     SendSpace()
 }
 
-MoveToMountainTop() {
+MoveToCannonAndFire() {
     MoveUp(2875)
     MoveRight(3300)
     MoveLeft(172)
@@ -149,21 +148,19 @@ MoveToMountainTop() {
     JumpToRedCannon()
     MoveRight(1150)
     Sleep 200
-
     KeyPress("e", 15)
-    Sleep 320
-    MoveRight(150)
-    Sleep 200
-    DeployChute()
-    Sleep 4700
-    SendSpace()
-    Sleep 500
-    RotateRight()
+}
 
-    MoveUp(3450)
-    MoveRight(2300)
-    MoveDown(1725)
-    MoveLeft(1150)
+MoveToMountainTop() {
+    MoveToCannonAndFire()
+
+    Sleep 3000
+    ;RotateRight()
+
+    ;MoveUp(3450)
+    ;MoveRight(2300)
+    ;MoveDown(1725)
+    ;MoveLeft(1150)
 
     PlaceSprinkler()
 }
@@ -180,48 +177,18 @@ IsContainerEmpty() {
     return ErrorLevel = 0
 }
 
-WalkPineTreePattern(nbLoops) {
+WalkPattern(nbLoops) {
     StartFetching()
 
-    lateralMoveTime := move * patternWidth
-    moveUpTime := move * patternLength / 4
-    containerFull := False
+    moveTime := move * patternLength * movespeedFactor
 
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %patternRepeat% {
 
-            Loop, 2 {
-                MoveUp(moveUpTime)
-                MoveLeft(lateralMoveTime)
-                MoveUp(moveUpTime)
-                MoveRight(lateralMoveTime)
-            }
-
-            Loop, 2 {
-                MoveDown(moveUpTime)
-                MoveLeft(lateralMoveTime)
-                MoveDown(moveUpTime)
-                MoveRight(lateralMoveTime)
-            }
-
-            if (IsContainerFull()) {
-                containerFull := True
-                Break
-            }
-
-            Loop, 2 {
-                MoveUp(lateralMoveTime)
-                MoveLeft(moveUpTime)
-                MoveDown(lateralMoveTime)
-                MoveLeft(moveUpTime)
-            }
-
-            Loop, 2 {
-                MoveUp(lateralMoveTime)
-                MoveRight(moveUpTime)
-                MoveDown(lateralMoveTime)
-                MoveRight(moveUpTime)
+            Loop, 10 {
+                MoveUp(moveTime)
+                MoveDown(moveTime)
             }
 
             if (IsContainerFull()) {
@@ -229,16 +196,10 @@ WalkPineTreePattern(nbLoops) {
                 Break
             }
         }
-
-        MoveUp(5000 * movespeedFactor)
-        MoveRight(5000 * movespeedFactor)
 
         if (containerFull) {
             Break
         }
-
-        MoveDown(1000 * movespeedFactor)
-        MoveLeft(500 * movespeedFactor)
     }
 }
 
@@ -262,26 +223,28 @@ MoveToHiveSlot(slot)  {
 }
 
 JumpFromPolarBearToHive() {
-    SendSpace(10)
+    SendSpace(20)
     MoveUp(500 * movespeedFactor)
     Sleep 2000
-    MoveRight(500 * movespeedFactor)
+    MoveRight(1000 * movespeedFactor)
     MoveUp(10000 * movespeedFactor)
     MoveRight(600 * movespeedFactor)
     MoveUp(8000 * movespeedFactor)
-
 }
 
-ToHiveFromPineTree() {
+ToHiveFromMountainTop() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000 * movespeedFactor)
-    MoveDown(13000 * movespeedFactor)
-    RotateLeft()
-    MoveUp(10000 * movespeedFactor)
+    MoveDown(8000 * movespeedFactor)
+    MoveRight(5000 * movespeedFactor)
+    MoveUp(5000 * movespeedFactor)
+    MoveRight(2000 * movespeedFactor)
+    MoveUp(2000 * movespeedFactor)
+    MoveRight(1500 * movespeedFactor)
+    MoveLeft(1500 * movespeedFactor)
+    MoveUp(5000 * movespeedFactor)
 
     JumpFromPolarBearToHive()
 
@@ -296,8 +259,8 @@ loop {
     }
 
     MoveToMountainTop()
-    WalkPineTreePattern(10)
-    ToHiveFromPineTree()
+    WalkPattern(1)
+    ToHiveFromMountainTop()
     ConvertHoney()
 }
 
