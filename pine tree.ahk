@@ -18,6 +18,8 @@ global movespeedFactor := 28 / speed
 
 Hotkey %stopKey%, StopScript
 
+CoordMode, Pixel, Screen
+
 WinActivate Roblox
 
 Sleep 200
@@ -148,13 +150,21 @@ DeployChute() {
 }
 
 CheckPixel(x, y, color, xytolerance := 5) {
-    CoordMode, Pixel, Screen
     PixelSearch, FoundX, FoundY, x-xytolerance, y-xytolerance, x+xytolerance, y+xytolerance, color, 10, True
     if (ErrorLevel != 0) {
         Debug("Pixel at " . x . "," . y . " not found")
         return False
     }
     return True
+}
+
+ValidatePixel(x, y, color) {
+    PixelGetColor, OutputVar, x, y
+    return OutputVar = color
+}
+
+ValidateMakeHoney() {
+    return ValidatePixel(2171, 245, 0xf9fff7) && ValidatePixel(2192, 192, 0xf9fff7)
 }
 
 ValidateStart() {
@@ -169,6 +179,42 @@ ValidatePineTreeLocation() {
 
     night := CheckPixel(3750, 2000, 0x000000) && CheckPixel(1900, 650, 0x5d2b0c)
     return night
+}
+
+MoveToHiveLeft() {
+    if (ValidateMakeHoney()) {
+        return True
+    }
+
+    step := 0
+    maxSteps := 30
+    while (step < 30) {
+        MoveLeft(333)
+        if (ValidateMakeHoney()) {
+            return True
+        }
+        step := step + 1
+    }
+
+    return False
+}
+
+MoveToHiveRight() {
+    if (ValidateMakeHoney()) {
+        return True
+    }
+
+    step := 0
+    maxSteps := 30
+    while (step < 30) {
+        MoveRight(500)
+        if (ValidateMakeHoney()) {
+            return True
+        }
+        step := step + 1
+    }
+
+    return False
 }
 
 MoveToMountainTop() {
@@ -204,13 +250,11 @@ MoveToMountainTop() {
 }
 
 IsContainerFull() {
-    CoordMode, Pixel, Screen
     PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
     return ErrorLevel = 0
 }
 
 IsContainerEmpty() {
-    CoordMode, Pixel, Screen
     PixelSearch, FoundX, FoundY, 2028, 90, 2030, 92, 0x646E71, 5, True
     return ErrorLevel = 0
 }
@@ -280,20 +324,15 @@ WalkPineTreePattern(nbLoops) {
 MoveToHiveSlot(slot)  {
     ; We should be facing the wall at slot #3
 
-    distance := 1150
+    MoveDown(500)
+    Sleep 200
 
-    MoveDown(630)
-
-    if (slot == 1) {
-        MoveRight(distance * 2)
-    } else if (slot == 2) {
-        MoveRight(distance)
+    if (slot <= 3) {
+        return MoveToHiveRight()
     }
-    else if (slot > 3) {
-        MoveLeft(distance * slot - 3)
+    else {
+        return MoveToHiveLeft()
     }
-
-    Sleep 500
 }
 
 JumpFromPolarBearToHive() {
@@ -304,7 +343,6 @@ JumpFromPolarBearToHive() {
     MoveUp(10000 * movespeedFactor)
     MoveRight(600 * movespeedFactor)
     MoveUp(8000 * movespeedFactor)
-
 }
 
 ToHiveFromPineTree() {
@@ -320,21 +358,33 @@ ToHiveFromPineTree() {
 
     JumpFromPolarBearToHive()
 
-    MoveToHiveSlot(hivePosition)
+    if (MoveToHiveSlot(hivePosition) = False) {
+        Debug("Hive not found...")
+        return False
+    }
+
+    return True
 }
 
-Respawn()
+ExecuteScript() {
+    Respawn()
 
-loop {
-    if (MoveToMountainTop()) {
-        WalkPineTreePattern(10)
-        ToHiveFromPineTree()
-        ConvertHoney()
-    }
-    else {
-        Respawn()
+    loop {
+        if (MoveToMountainTop()) {
+            WalkPineTreePattern(10)
+            if (ToHiveFromPineTree()) {
+                ConvertHoney()
+            } else {
+                Respawn()
+            }
+        }
+        else {
+            Respawn()
+        }
     }
 }
+
+ExecuteScript()
 
 StopScript:
     ResetKeys()
