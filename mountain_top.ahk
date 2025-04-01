@@ -181,6 +181,7 @@ WalkPattern(nbLoops) {
     StartFetching()
 
     moveTime := move * patternLength * movespeedFactor
+    stop := False
 
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
@@ -191,13 +192,13 @@ WalkPattern(nbLoops) {
                 MoveDown(moveTime)
             }
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (IsContainerFull() || A_Min == 59) {
+                stop := True
                 Break
             }
         }
 
-        if (containerFull) {
+        if (stop) {
             Break
         }
     }
@@ -258,10 +259,23 @@ loop {
         Respawn()
     }
 
-    MoveToMountainTop()
-    WalkPattern(1)
-    ToHiveFromMountainTop()
-    ConvertHoney()
+    if (A_Min > 15) {
+        MoveToMountainTop()
+        WalkPattern(1)
+        ToHiveFromMountainTop()
+        ConvertHoney()
+    }
+    else {
+        Debug("Waiting for Combo chick to leave")
+        Loop {
+            Sleep 1000
+            if (A_Min > 15) {
+                Break
+            }
+        }
+        Debug("")
+    }
+
 }
 
 StopScript:

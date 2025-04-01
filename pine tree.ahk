@@ -127,7 +127,13 @@ Respawn() {
     Sleep 300
     Send {Enter}
     Sleep 7000
-    ZoomOut(5)
+
+    if (ValidateStart()) {
+        ZoomOut(5)
+    }
+    else {
+        Respawn()
+    }
 }
 
 SendSpace(wait := 100) {
@@ -141,9 +147,33 @@ DeployChute() {
     SendSpace()
 }
 
+CheckPixel(x, y, color, xytolerance := 5) {
+    CoordMode, Pixel, Screen
+    PixelSearch, FoundX, FoundY, x-xytolerance, y-xytolerance, x+xytolerance, y+xytolerance, color, 10, True
+    if (ErrorLevel != 0) {
+        Debug("Pixel at " . x . "," . y . " not found")
+        return False
+    }
+    return True
+}
+
+ValidateStart() {
+    return CheckPixel(1915, 2080, 0xffffff) || CheckPixel(1915, 2080, 0xb1b1b1)
+}
+
+ValidatePineTreeLocation() {
+    day := CheckPixel(3750, 2000, 0x7f7156) && CheckPixel(1900, 650, 0xd06a42)
+    if (day) {
+        return True
+    }
+
+    night := CheckPixel(3750, 2000, 0x000000) && CheckPixel(1900, 650, 0x5d2b0c)
+    return night
+}
+
 MoveToMountainTop() {
     MoveUp(2875)
-    MoveRight(3300)
+    MoveRight(5000)
     MoveLeft(172)
     MoveRight(57)
     JumpToRedCannon()
@@ -160,12 +190,17 @@ MoveToMountainTop() {
     Sleep 500
     RotateRight()
 
-    MoveUp(3450)
-    MoveRight(2300)
-    MoveDown(1725)
-    MoveLeft(1150)
+    MoveRight(5000)
+    MoveUp(5000)
 
-    PlaceSprinkler()
+    if (ValidatePineTreeLocation()) {
+        MoveDown(1725)
+        MoveLeft(1150)
+        PlaceSprinkler()
+        return True
+    }
+
+    return False
 }
 
 IsContainerFull() {
@@ -291,14 +326,14 @@ ToHiveFromPineTree() {
 Respawn()
 
 loop {
-    if (Mod(A_Index, 5) == 0) {
+    if (MoveToMountainTop()) {
+        WalkPineTreePattern(10)
+        ToHiveFromPineTree()
+        ConvertHoney()
+    }
+    else {
         Respawn()
     }
-
-    MoveToMountainTop()
-    WalkPineTreePattern(10)
-    ToHiveFromPineTree()
-    ConvertHoney()
 }
 
 StopScript:
