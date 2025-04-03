@@ -1,0 +1,824 @@
+Pixel at 1915,2080 is 0x057FBB . "\n"Pixel at 1915,2080 is 0x057FBB . "\n"Pixel at 1915,2080 is 0xFFFFFF . "\n"Moving to mountain top . "\n"Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x847459 
+Pixel at 1900,650 is 0xCE6339 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0x23819B 
+Pixel at 2170,240 is 0x272C37 
+Pixel at 2170,240 is 0x272C36 
+Pixel at 2170,240 is 0x1F89A4 
+Pixel at 2170,240 is 0x29B0D4 
+Pixel at 2170,240 is 0x2DC1E7 
+Pixel at 2170,240 is 0x2EC3EA 
+Pixel at 2170,240 is 0x2CBDE2 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF9FFF7 
+Convert honey 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x847458 
+Pixel at 1900,650 is 0xCE6339 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0x1D819D 
+Pixel at 2170,240 is 0x0D1B30 
+Pixel at 2170,240 is 0x0D1A30 
+Pixel at 2170,240 is 0x0A404C 
+Pixel at 2170,240 is 0x26A3C5 
+Pixel at 2170,240 is 0x2CB9DE 
+Pixel at 2170,240 is 0x53EAFE 
+Pixel at 2170,240 is 0x2DBFE5 
+Pixel at 2170,240 is 0xF9FEF6 
+Pixel at 2197,185 is 0xC98A55 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF9FFF7 
+Convert honey 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817257 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x13250B 
+Pixel at 3750,2000 is 0x203C11 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0xC7704F 
+Pixel at 2170,240 is 0xC76E4C 
+Pixel at 2170,240 is 0xC36931 
+Pixel at 2170,240 is 0xC8844E 
+Pixel at 2170,240 is 0x28ACCF 
+Pixel at 2170,240 is 0x2DC1E7 
+Pixel at 2170,240 is 0x58F0FF 
+Pixel at 2170,240 is 0x2CB9DF 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF9FFF7 
+Convert honey 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Moving to hive 
+Pixel at 2170,240 is 0x1C7E98 
+Pixel at 2170,240 is 0xC36932 
+Pixel at 2170,240 is 0xC36931 
+Pixel at 2170,240 is 0xE38749 
+Pixel at 2170,240 is 0xA3A398 
+Pixel at 2170,240 is 0x1D1D9E 
+Pixel at 2170,240 is 0x1F1FA3 
+Pixel at 2170,240 is 0x1F1FA3 
+Pixel at 2170,240 is 0x1D1D99 
+Pixel at 2170,240 is 0xC66948 
+Pixel at 2170,240 is 0xD1722E 
+Pixel at 2170,240 is 0xC36931 
+Pixel at 2170,240 is 0xC26830 
+Pixel at 2170,240 is 0x171781 
+Pixel at 2170,240 is 0x1C1C94 
+Pixel at 2170,240 is 0x1E1E9E 
+Pixel at 2170,240 is 0x201FA6 
+Pixel at 2170,240 is 0x1E1E9F 
+Pixel at 2170,240 is 0xC76A4A 
+Pixel at 2170,240 is 0xC56845 
+Pixel at 2170,240 is 0xE98B4A 
+Pixel at 2170,240 is 0xE98B4A 
+Pixel at 2170,240 is 0x242930 
+Pixel at 2170,240 is 0x242930 
+Pixel at 2170,240 is 0x72715A 
+Pixel at 2170,240 is 0xA2A085 
+Pixel at 2170,240 is 0x9B9D99 
+Pixel at 2170,240 is 0xADAFAB 
+Pixel at 2170,240 is 0xADAFAB 
+Pixel at 2170,240 is 0xADAFAB 
+Pixel at 2170,240 is 0xADAFAB 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Moving to hive 
+Pixel at 2170,240 is 0xD0844C 
+Pixel at 2170,240 is 0xD17337 
+Pixel at 2170,240 is 0xD17336 
+Pixel at 2170,240 is 0xD0783C 
+Pixel at 2170,240 is 0xA0A4A1 
+Pixel at 2170,240 is 0x3D3B9C 
+Pixel at 2170,240 is 0x319BDC 
+Pixel at 2170,240 is 0x3E3CA7 
+Pixel at 2170,240 is 0xCF714D 
+Pixel at 2170,240 is 0xDF884E 
+Pixel at 2170,240 is 0xCE7045 
+Pixel at 2170,240 is 0xD07336 
+Pixel at 2170,240 is 0xD0783B 
+Pixel at 2170,240 is 0x3B3989 
+Pixel at 2170,240 is 0x3D3A98 
+Pixel at 2170,240 is 0x318FCB 
+Pixel at 2170,240 is 0x3E3CA7 
+Pixel at 2170,240 is 0x3D3A99 
+Pixel at 2170,240 is 0xCF7148 
+Pixel at 2170,240 is 0xEB8D4B 
+Pixel at 2170,240 is 0xEC8D4C 
+Pixel at 2170,240 is 0xB1AC9A 
+Pixel at 2170,240 is 0x8ACADF 
+Pixel at 2170,240 is 0xB1AD9B 
+Pixel at 2170,240 is 0xAFAC8E 
+Pixel at 2170,240 is 0xACA98C 
+Pixel at 2170,240 is 0xA7A79F 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB6B6AE 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817357 
+Pixel at 1900,650 is 0xD0683F 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Moving to hive 
+Pixel at 2170,240 is 0xD0844C 
+Pixel at 2170,240 is 0xD17337 
+Pixel at 2170,240 is 0xD17336 
+Pixel at 2170,240 is 0xE18041 
+Pixel at 2170,240 is 0x68613F 
+Pixel at 2170,240 is 0x3E3C9E 
+Pixel at 2170,240 is 0x3F3DA5 
+Pixel at 2170,240 is 0x3F3DA5 
+Pixel at 2170,240 is 0xCF714D 
+Pixel at 2170,240 is 0xD17348 
+Pixel at 2170,240 is 0xCF7144 
+Pixel at 2170,240 is 0xD17336 
+Pixel at 2170,240 is 0xD17336 
+Pixel at 2170,240 is 0xCF7147 
+Pixel at 2170,240 is 0x3E3C99 
+Pixel at 2170,240 is 0x3F3DA4 
+Pixel at 2170,240 is 0x3F3DA5 
+Pixel at 2170,240 is 0xCF7149 
+Pixel at 2170,240 is 0xCF7146 
+Pixel at 2170,240 is 0xEC8D4C 
+Pixel at 2170,240 is 0xEC8D4C 
+Pixel at 2170,240 is 0xB1AD9A 
+Pixel at 2170,240 is 0xAFAC8E 
+Pixel at 2170,240 is 0xADAA8D 
+Pixel at 2170,240 is 0xA5A59E 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Pixel at 2170,240 is 0xB5B6AE 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x292929 
+Pixel at 3750,2000 is 0x252925 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xD0683F 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B1B1 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AEAE 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB9B9 
+Pixel at 3750,2000 is 0xBEBABA 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB1ADAD 
+Pixel at 3750,2000 is 0xB6B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB8B4B4 
+Pixel at 3750,2000 is 0xBEB9B9 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AFAF 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB9B5B5 
+Pixel at 3750,2000 is 0xB5B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x1B2D1F 
+Pixel at 3750,2000 is 0x1B2E1F 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xAEAAAA 
+Pixel at 3750,2000 is 0xB3AFAF 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB6B6 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B1B1 
+Pixel at 3750,2000 is 0xBAB6B6 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBCB7B7 
+Pixel at 3750,2000 is 0xB4AFAF 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB6B2B2 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB6B2B2 
+Pixel at 3750,2000 is 0xBCB8B8 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xC0BCBC 
+Pixel at 3750,2000 is 0xB2AEAE 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB6B6 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB2AEAE 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x88785B 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pattern #5/5 
+Moving to hive 
+Pixel at 2170,240 is 0xC88651 
+Pixel at 2170,240 is 0xC36A32 
+Pixel at 2170,240 is 0xC36931 
+Pixel at 2170,240 is 0xC8844F 
+Pixel at 2170,240 is 0x5EDDED 
+Pixel at 2170,240 is 0x1D291F 
+Pixel at 2170,240 is 0x2DBEE3 
+Pixel at 2170,240 is 0x42D5F1 
+Pixel at 2170,240 is 0xCA8C58 
+Pixel at 2170,240 is 0xCF935C 
+Pixel at 2170,240 is 0xC36932 
+Pixel at 2170,240 is 0xC36931 
+Pixel at 2170,240 is 0xC7814A 
+Pixel at 2170,240 is 0x1E86A2 
+Pixel at 2170,240 is 0x2399B8 
+Pixel at 2170,240 is 0x25A1C2 
+Pixel at 2170,240 is 0x249AB9 
+Pixel at 2170,240 is 0x2190AD 
+Pixel at 2170,240 is 0x1E86A2 
+Pixel at 2170,240 is 0xA4A193 
+Pixel at 2170,240 is 0xA6A394 
+Pixel at 2170,240 is 0xA6A394 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Pixel at 2170,240 is 0x222D3B 
+Hive not found... 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B1B1 
+Pixel at 3750,2000 is 0xB0ACAC 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB2AEAE 
+Pixel at 3750,2000 is 0xB3AFAF 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/5 
+Pattern #2/5 
+Pattern #3/5 
+Pattern #4/5 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB7B7 
+Pixel at 3750,2000 is 0xB5B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xC3C4C4 
+Pixel at 1915,2080 is 0xC3C4C4 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB7B3B3 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBCB8B8 
+Pixel at 3750,2000 is 0xB8B4B4 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBAB6B6 
+Pixel at 3750,2000 is 0xB8B4B4 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AFAF 
+Pixel at 3750,2000 is 0xB4B0B0 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBFBBBB 
+Pixel at 3750,2000 is 0xB7B4B4 
+Respawning 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB9B9 
+Pixel at 3750,2000 is 0xB6B2B2 
+Respawning 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB9B9 
+Pixel at 3750,2000 is 0xB5B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xAEABAB 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xD0683F 
+Walk pine tree pattern 
+Pattern #1/10 
+Pattern #2/10 
+Pattern #3/10 
+Pattern #4/10 
+Pattern #5/10 
+Moving to hive 
+Pixel at 2170,240 is 0x2499B9 
+Pixel at 2170,240 is 0xCA8E5A 
+Pixel at 2170,240 is 0xCB915D 
+Pixel at 2170,240 is 0xCB915E 
+Pixel at 2170,240 is 0x2AB3D7 
+Pixel at 2170,240 is 0x249CBC 
+Pixel at 2170,240 is 0x1E85A0 
+Pixel at 2170,240 is 0x0C182D 
+Pixel at 2170,240 is 0x0C192E 
+Pixel at 2170,240 is 0x1C7D97 
+Pixel at 2170,240 is 0x1F89A4 
+Pixel at 2170,240 is 0x2294B2 
+Pixel at 2170,240 is 0x2398B8 
+Pixel at 2170,240 is 0x249BBC 
+Pixel at 2170,240 is 0x2190AE 
+Pixel at 2170,240 is 0x1C7E98 
+Pixel at 2170,240 is 0x0A1629 
+Pixel at 2170,240 is 0xF9FEF5 
+Pixel at 2197,185 is 0xC36931 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF9FFF7 
+Convert honey 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x827357 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/10 
+Pattern #2/10 
+Pattern #3/10 
+Pattern #4/10 
+Pattern #5/10 
+Moving to hive 
+Pixel at 2170,240 is 0xC88852 
+Pixel at 2170,240 is 0xCA8C58 
+Pixel at 2170,240 is 0xCB905C 
+Pixel at 2170,240 is 0xCB925E 
+Pixel at 2170,240 is 0x2CBDE2 
+Pixel at 2170,240 is 0x0086C4 
+Pixel at 2170,240 is 0x2296B5 
+Pixel at 2170,240 is 0x115B6C 
+Pixel at 2170,240 is 0x0C192E 
+Pixel at 2170,240 is 0x0B182C 
+Pixel at 2170,240 is 0x1D829D 
+Pixel at 2170,240 is 0x218EAC 
+Pixel at 2170,240 is 0x2398B8 
+Pixel at 2170,240 is 0x249BBB 
+Pixel at 2170,240 is 0x2294B2 
+Pixel at 2170,240 is 0x1E85A0 
+Pixel at 2170,240 is 0x0C4A58 
+Pixel at 2170,240 is 0x0B172C 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xC36931 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF9FFF7 
+Convert honey 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xAEAAAA 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB7B7 
+Pixel at 3750,2000 is 0xBBB7B7 
+Respawning 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBFBBBB 
+Pixel at 3750,2000 is 0xB2ADAD 
+Respawning 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B1B1 
+Pixel at 3750,2000 is 0xB6B2B2 
+Respawning 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB6B2B2 
+Pixel at 3750,2000 is 0xADAAAA 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBCB8B8 
+Pixel at 3750,2000 is 0xB8B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB7B3B3 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB7B3B3 
+Pixel at 3750,2000 is 0xB2AEAE 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB4B0B0 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB7B7 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB9B5B5 
+Pixel at 3750,2000 is 0xBEB9B9 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xC3BFBF 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AFAF 
+Pixel at 3750,2000 is 0xBBB6B6 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x86775A 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/10 
+Pattern #2/10 
+Pattern #3/10 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AEAE 
+Pixel at 3750,2000 is 0xB4AFAF 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB2AEAE 
+Pixel at 3750,2000 is 0xB5B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB2ADAD 
+Pixel at 3750,2000 is 0xBBB7B7 
+Respawning 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB8B8 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB6B2B2 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB7B3B3 
+Pixel at 3750,2000 is 0xB9B5B5 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBEB9B9 
+Pixel at 3750,2000 is 0xB6B2B2 
+Respawning 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B2B2 
+Pixel at 3750,2000 is 0xB3AFAF 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBCB7B7 
+Pixel at 3750,2000 is 0xB4B1B1 
+Respawning 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0xB6B7B7 
+Pixel at 1915,2080 is 0xB6B7B7 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB6B2B2 
+Pixel at 3750,2000 is 0xADA9A9 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB9B9 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B2B2 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBBB6B6 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B2B2 
+Pixel at 3750,2000 is 0xB3AEAE 
+Respawning 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0x0186C6 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBCB7B7 
+Pixel at 3750,2000 is 0xB4B0B0 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x757373 
+Pixel at 3750,2000 is 0x757373 
+Respawning 
+Pixel at 1915,2080 is 0xAAABAB 
+Pixel at 1915,2080 is 0xAAABAB 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x757373 
+Pixel at 3750,2000 is 0x757373 
+Respawning 
+Pixel at 1915,2080 is 0xAAABAB 
+Pixel at 1915,2080 is 0xAAABAB 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x757373 
+Pixel at 3750,2000 is 0x757373 
+Respawning 
+Pixel at 1915,2080 is 0xAAABAB 
+Pixel at 1915,2080 is 0xAAABAB 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x817E7E 
+Pixel at 3750,2000 is 0x817E7E 
+Respawning 
+Pixel at 1915,2080 is 0xADAEAD 
+Pixel at 1915,2080 is 0xADAEAD 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x1F1F1F 
+Pixel at 3750,2000 is 0x1F1F1F 
+Respawning 
+Pixel at 1915,2080 is 0xECEDED 
+Pixel at 1915,2080 is 0xECEDED 
+Pixel at 1915,2080 is 0x991000 
+Pixel at 1915,2080 is 0x991000 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB5B1B1 
+Pixel at 3750,2000 is 0xB4B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB3AFAF 
+Pixel at 3750,2000 is 0xB5B1B1 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xB4AFAF 
+Pixel at 3750,2000 is 0xB7B3B3 
+Respawning 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0x2D2C2E 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0xBDB8B8 
+Pixel at 3750,2000 is 0xB5B2B2 
+Respawning 
+Pixel at 1915,2080 is 0xFFFFFF 
+Moving to mountain top 
+Pixel at 3750,2000 is 0x88785B 
+Pixel at 1900,650 is 0xCE6237 
+Walk pine tree pattern 
+Pattern #1/10 
+Pattern #2/10 
+Pattern #3/10 
+Pattern #4/10 
+Pattern #5/10 
+Moving to hive 
+Pixel at 2170,240 is 0xF9FFF7 
+Pixel at 2197,185 is 0xF89448 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xF99648 
+Pixel at 2170,240 is 0xF99648 
+Pixel at 2170,240 is 0xF99648 
+Pixel at 2170,240 is 0xFFEBC2 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
+Pixel at 2170,240 is 0xE7CE8B 
