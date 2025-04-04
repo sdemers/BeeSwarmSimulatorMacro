@@ -3,12 +3,12 @@
 
 stopKey := "F2"
 
-global hivePosition := 5
+global hivePosition := 2
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
+global patternRepeat := 2
+global subpatternRepeat := 2
 global patternLength := 10
 global patternWidth := 10
 
@@ -29,13 +29,11 @@ Debug(text, index := 2) {
     ToolTip %text%, 50, 700, index
 }
 
-KeyPress(key, duration := 0)
-{
+KeyPress(key, duration := 0) {
     Send, {%key% down}
     Sleep, (duration * movespeedFactor)
     Send, {%key% up}
 }
-
 
 PlaceSprinkler() {
     KeyPress("1", 15)
@@ -57,23 +55,19 @@ MoveRight(time) {
     KeyPress("d", time)
 }
 
-RotateCamera(times :=1 )
-{
+RotateCamera(times := 1) {
     If times == 0
         Return True
 
     camera_rotation_loops := Mod(Abs(times), 8)
-    Loop, %camera_rotation_loops%
-    {
+    Loop, %camera_rotation_loops% {
         KeyPress(times > 0 ? "," : ".", 15)
     }
 }
 
-ZoomOut(times:=1)
-{
-    Loop, %times%
-    {
-        KeyPress("o", 15)
+ZoomOut(times := 1) {
+    Loop, %times% {
+        KeyPress("o", 25)
     }
 }
 
@@ -104,26 +98,6 @@ StopFetching() {
 ConvertHoney() {
     KeyPress("e", 50)
     Sleep, 60000
-
-    ; ; Wait to convert honey to start
-    ; Debug("Waiting to start converting honey")
-    ; While IsConvertingHoney() = False {
-    ;     Sleep, 250
-    ; }
-
-    ; ; Wait to convert honey to end
-    ; Debug("Waiting to end converting honey")
-    ; While, IsConvertingHoney() {
-    ;     Sleep, 250
-    ; }
-
-    ; Debug("")
-    ; ; Loop {
-    ; ;     Sleep 500
-    ; ;     if (IsConvertingHoney() = False) {
-    ; ;         Break
-    ; ;     }
-    ; ; }
 }
 
 ResetKeys() {
@@ -143,10 +117,10 @@ Respawn() {
     Send {Enter}
     Sleep 7000
 
-    if (ValidateStart()) {
+    If (ValidateStart()) {
         ZoomOut(5)
     }
-    else {
+    Else {
         Respawn()
     }
 }
@@ -163,92 +137,92 @@ DeployChute() {
 }
 
 CheckPixel(x, y, color, xytolerance := 5) {
-    PixelSearch, FoundX, FoundY, x-xytolerance, y-xytolerance, x+xytolerance, y+xytolerance, color, 10, True
-    if (ErrorLevel != 0) {
+    PixelSearch, FoundX, FoundY, x - xytolerance, y - xytolerance, x + xytolerance, y + xytolerance, color, 10, True
+    If (ErrorLevel != 0) {
         Debug("Pixel at " . x . "," . y . " not found", 3)
-        return False
+        Return False
     }
-    return True
+    Return True
 }
 
 CompareColorAt(x, y, targetColor, tolerance := 20) {
     PixelGetColor, color, x, y
     Debug("Pixel at " . x . "," . y . " is " . color)
 
-    tr := format("{:d}","0x" . substr(targetColor, 3, 2))
-    tg := format("{:d}","0x" . substr(targetColor, 5, 2))
-    tb := format("{:d}","0x" . substr(targetColor, 7, 2))
+    tr := format("{:d}", "0x" . substr(targetColor, 3, 2))
+    tg := format("{:d}", "0x" . substr(targetColor, 5, 2))
+    tb := format("{:d}", "0x" . substr(targetColor, 7, 2))
 
     ;split pixel into rgb
-    pr := format("{:d}","0x" . substr(color, 3, 2))
-    pg := format("{:d}","0x" . substr(color, 5, 2))
-    pb := format("{:d}","0x" . substr(color, 7, 2))
+    pr := format("{:d}", "0x" . substr(color, 3, 2))
+    pg := format("{:d}", "0x" . substr(color, 5, 2))
+    pb := format("{:d}", "0x" . substr(color, 7, 2))
 
     ;check distance
-    distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+    distance := sqrt((tr - pr) ** 2 + (tg - pg) ** 2 + (pb - tb) ** 2)
     ;Debug(distance)
-    return distance <= tolerance
+    Return distance <= tolerance
 }
 
 ValidatePixel(x, y, color) {
-    return CompareColorAt(x, y, color)
+    Return CompareColorAt(x, y, color)
 }
 
 ValidateMakeHoney() {
-    return CompareColorAt(2170, 240, 0xf9fff7) && CompareColorAt(2197, 185, 0xf9fff7)
+    Return CompareColorAt(2170, 240, 0xf9fff7) && CompareColorAt(2197, 185, 0xf9fff7)
 }
 
 ValidateStart() {
-    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1)
+    Return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1)
 }
 
 ValidateLocation() {
-    day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
-    if (day) {
-        return True
+    day := CompareColorAt(170, 1900, 0x006493) && CompareColorAt(2730, 270, 0x958465)
+    If (day) {
+        Return True
     }
 
-    night := CompareColorAt(3750, 2000, 0x000000) && CompareColorAt(1900, 650, 0x5d2b0c)
-    return night
+    night := CompareColorAt(170, 1900, 0x006491) && CompareColorAt(2730, 270, 0x000000)
+    Return night
 }
 
 MoveToHiveLeft() {
-    if (ValidateMakeHoney()) {
-        return True
+    If (ValidateMakeHoney()) {
+        Return True
     }
 
     step := 0
     maxSteps := 30
-    while (step < 30) {
+    While (step < 30) {
         MoveLeft(125)
-        if (ValidateMakeHoney()) {
-            return True
+        If (ValidateMakeHoney()) {
+            Return True
         }
         step := step + 1
     }
 
-    return False
+    Return False
 }
 
 MoveToHiveRight() {
-    if (ValidateMakeHoney()) {
-        return True
+    If (ValidateMakeHoney()) {
+        Return True
     }
 
     step := 0
     maxSteps := 30
-    while (step < 30) {
+    While (step < 30) {
         MoveRight(125)
-        if (ValidateMakeHoney()) {
-            return True
+        If (ValidateMakeHoney()) {
+            Return True
         }
         step := step + 1
     }
 
-    return False
+    Return False
 }
 
-MoveToMountainTop() {
+MoveToPineapple() {
     MoveUp(2875)
     MoveRight(5000)
     MoveLeft(172)
@@ -256,50 +230,43 @@ MoveToMountainTop() {
     JumpToRedCannon()
     MoveRight(1150)
     Sleep 200
-
     KeyPress("e", 15)
-    Sleep 320
-    MoveRight(170)
-    Sleep 200
-    DeployChute()
-    Sleep 4700
-    SendSpace()
-    Sleep 500
-    RotateRight()
 
-    MoveRight(5000)
-    MoveUp(5000)
+    Sleep 2300
+    MoveLeft(5500)
+    RotateCamera(4)
 
-    if (ValidateLocation()) {
-        return True
+    MoveUp(3000)
+    MoveLeft(3000)
+
+    If (ValidateLocation()) {
+        Return True
     }
 
-    return False
+    Return False
 }
 
 IsContainerFull() {
     PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
-    return ErrorLevel = 0
+    Return ErrorLevel = 0
 }
 
 IsConvertingHoney() {
-    ;PixelSearch, FoundX, FoundY, 2028, 90, 2030, 92, 0x646E71, 5, True
-    ;return ErrorLevel = 0
-    return CompareColorAt(1858, 110, 0x75cde7)
+    Return CompareColorAt(1858, 110, 0x75cde7)
 }
 
-WalkPineTreePattern(nbLoops, subrepeat) {
+WalkPineapplePattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 100 * movespeedFactor
+    move := 100
     patternMoveTime := move * patternWidth
     containerFull := False
 
-    MoveDown(15 * move)
-    MoveLeft(10 * move)
+    MoveDown(20 * move)
+    MoveRight(20 * move)
 
     loop, %nbLoops% {
-        if (A_Index = 1) {
+        If (A_Index = 1) {
             PlaceSprinkler()
         }
 
@@ -308,26 +275,30 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             turnAroundTime := move * patternLength / 4
 
-            MoveLeft(200)
-
-            Loop, 2 {
+            loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime)
-                PlaceSprinkler()
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
             }
 
-            Loop, 2 {
+
+            loop, 2 {
                 MoveUp(patternMoveTime)
+                PlaceSprinkler()
                 MoveRight(turnAroundTime)
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
+            }
+
+            If (IsContainerFull()) {
+                containerFull := True
+                break
             }
 
             MoveUp(patternMoveTime)
 
-            Loop, 2 {
+            loop, 2 {
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveRight(patternMoveTime)
@@ -338,84 +309,81 @@ WalkPineTreePattern(nbLoops, subrepeat) {
             MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
-            Loop, 2 {
+            loop, 2 {
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
 
-            MoveRight(patternMoveTime)
+            MoveRight(500)
 
-            if (IsContainerFull()) {
+            If (IsContainerFull()) {
                 containerFull := True
-                Break
+                break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
-            MoveRight(5000 * movespeedFactor)
-            MoveUp(5000 * movespeedFactor)
-            Break
+        If (containerFull || A_Index = nbLoops) {
+            MoveUp(5000)
+            MoveRight(5000)
+            break
         }
     }
 }
 
-MoveToHiveSlot(slot)  {
+MoveToHiveSlot(slot) {
     ; We should be facing the wall at slot #3
 
     MoveDown(500)
 
-    if (slot <= 3) {
-        return MoveToHiveRight()
+    If (slot <= 3) {
+        Return MoveToHiveRight()
     }
     else {
-        return MoveToHiveLeft()
+        Return MoveToHiveLeft()
     }
 }
 
-JumpFromPolarBearToHive() {
-    MoveDown(50)
-    SendSpace(10)
-    MoveUp(500)
-    Sleep 2000
-    MoveRight(500 * movespeedFactor)
-    MoveUp(10000 * movespeedFactor)
-    MoveRight(600 * movespeedFactor)
-    MoveUp(8000 * movespeedFactor)
-}
-
-ToHiveFromPineTree() {
+ToHiveFromPineapple() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000 * movespeedFactor)
-    MoveDown(13000 * movespeedFactor)
-    RotateLeft()
-    MoveUp(10000 * movespeedFactor)
+    RotateCamera(4)
 
-    JumpFromPolarBearToHive()
+    ; Walk to switch next to blue cannon
+    ; Give enough time to disable haste
+    MoveUp(15000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    MoveDown(600)
+    MoveRight(2000)
+    MoveLeft(50)
+    SendSpace(10)
+    MoveRight(700)
+    Sleep 300
+    KeyPress("e", 20)
+    Sleep 2500
+    MoveUp(5000)
+
+    If (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
-        return False
+        Return False
     }
 
-    return True
+    Return True
 }
 
 ExecuteScript() {
     Respawn()
 
-    loop {
-        Debug("Moving to mountain top")
-        if (MoveToMountainTop()) {
-            Debug("Walk pine tree pattern")
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+    Loop {
+        Debug("Moving to pineapple")
+        If (MoveToPineapple()) {
+            Debug("Walk pineapple pattern")
+            WalkPineapplePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
+            If (ToHiveFromPineapple()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
