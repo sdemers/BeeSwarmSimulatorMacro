@@ -5,14 +5,15 @@
 
 stopKey := "F2"
 
-global hivePosition := 1
+; Dynamic settings
+global hivePosition := 2
 global speed := 32.2
-
-; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 10
-global subpatternRepeat := 10
-global patternLength := 10
-global patternWidth := 10
+global subpatternRepeat := 5
+
+; Field settings
+global patternLength := 7
+global patternWidth := 7
 
 global movespeedFactor := 28 / speed
 
@@ -27,36 +28,31 @@ Sleep 200
 ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
-    day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
+    day := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0xfdfdfd)
     If (day) {
         return True
     }
 
-    night := CompareColorAt(3750, 2000, 0x000000) && CompareColorAt(1900, 650, 0x5d2b0c)
+    dayCloseup := CompareColorAt(2800, 1940, 0x00003b) && CompareColorAt(500, 110, 0x050a5c)
+    If (dayCloseup) {
+        return True
+    }
+
+    night := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0x6e6e6e)
     return night
 }
 
-MoveToMountainTop() {
-    MoveUp(2875)
-    MoveRight(5000)
-    MoveLeft(172)
-    MoveRight(57)
-    JumpToRedCannon()
-    MoveRight(1150)
-    Sleep 200
+MoveToField() {
+    FromHiveToCannon(hivePosition)
 
-    KeyPress("e", 15)
-    Sleep 320
-    MoveRight(170)
-    Sleep 200
+    MoveRight(300)
     DeployChute()
-    Sleep 4700
+    Sleep 2300
     SendSpace()
     Sleep 500
-    RotateRight()
-
-    MoveRight(5000)
-    MoveUp(5000)
+    MoveRight(1000)
+    MoveUp(2500)
+    MoveRight(3500)
 
     if (ValidateField()) {
         return True
@@ -65,18 +61,18 @@ MoveToMountainTop() {
     return False
 }
 
-WalkPineTreePattern(nbLoops, subrepeat) {
+WalkPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 100 * movespeedFactor
+    move := 100
     patternMoveTime := move * patternWidth
     containerFull := False
 
-    MoveDown(15 * move)
-    MoveLeft(10 * move)
+    MoveDown(1000)
+    MoveLeft(1000)
 
     loop, %nbLoops% {
-        if (A_Index = 1) {
+        If (A_Index = 1) {
             PlaceSprinkler()
         }
 
@@ -85,26 +81,29 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             turnAroundTime := move * patternLength / 4
 
-            MoveLeft(200)
-
-            Loop, 2 {
+            loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime)
-                PlaceSprinkler()
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
             }
 
-            Loop, 2 {
+            loop, 2 {
                 MoveUp(patternMoveTime)
+                PlaceSprinkler()
                 MoveRight(turnAroundTime)
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
+            }
+
+            If (IsContainerFull()) {
+                containerFull := True
+                break
             }
 
             MoveUp(patternMoveTime)
 
-            Loop, 2 {
+            loop, 2 {
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveRight(patternMoveTime)
@@ -115,51 +114,63 @@ WalkPineTreePattern(nbLoops, subrepeat) {
             MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
-            Loop, 2 {
+            loop, 2 {
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
 
-            MoveRight(patternMoveTime)
+            MoveRight(500)
 
-            if (IsContainerFull()) {
+            If (IsContainerFull()) {
                 containerFull := True
-                Break
+                break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
-            MoveRight(5000 * movespeedFactor)
-            MoveUp(5000 * movespeedFactor)
-            Break
+        If (containerFull || A_Index = nbLoops) {
+            MoveUp(5000)
+            MoveRight(5000)
+            break
         }
     }
 }
 
-MoveToHiveSlot(slot)  {
+MoveToHiveSlot(slot) {
     ; We should be facing the wall at slot #3
 
     MoveDown(500)
 
-    if (slot <= 3) {
-        return MoveToHiveRight()
+    If (slot < 3) {
+        Return MoveToHiveRight()
     }
     else {
-        return MoveToHiveLeft()
+        Return MoveToHiveLeft()
     }
 }
 
-ToHiveFromPineTree() {
+ToHiveFromField() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
-    RotateLeft()
+    ; Walk to switch next to blue cannon
+    ; Give enough time to disable haste
+    MoveUp(5000)
+    MoveRight(5000)
+
+    MoveDown(5000)
+    RotateCamera(4)
+
+    Loop, 5 {
+        MoveRight(800)
+        MoveUp(800)
+    }
+
+    MoveUp(12000)
+    MoveRight(13000)
+    RotateCamera(4)
     MoveUp(10000)
 
     JumpFromPolarBearToHive()
@@ -175,13 +186,13 @@ ToHiveFromPineTree() {
 ExecuteScript() {
     Respawn()
 
-    loop {
-        Debug("Moving to mountain top")
-        if (MoveToMountainTop()) {
-            Debug("Walk pine tree pattern")
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+    Loop {
+        Debug("Moving to rose field")
+        If (MoveToField()) {
+            Debug("Walk rose pattern")
+            WalkPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
+            If (ToHiveFromField()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
