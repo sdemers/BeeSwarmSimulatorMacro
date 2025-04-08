@@ -5,15 +5,14 @@
 
 stopKey := "F2"
 
-; Dynamic settings
-global hivePosition := 2
+global hivePosition := 4
 global speed := 32.2
-global patternRepeat := 10
-global subpatternRepeat := 5
 
-; Field settings
-global patternLength := 7
-global patternWidth := 7
+; Set the snake pattern parameters (adjust to your liking)
+global patternRepeat := 10
+global subpatternRepeat := 10
+global patternLength := 10
+global patternWidth := 10
 
 global movespeedFactor := 28 / speed
 
@@ -28,31 +27,39 @@ Sleep 200
 ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
-    day := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0xfdfdfd)
+    return True
+
+    day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
     If (day) {
         return True
     }
 
-    dayCloseup := CompareColorAt(2800, 1940, 0x00003b) && CompareColorAt(500, 110, 0x050a5c)
-    If (dayCloseup) {
-        return True
-    }
-
-    night := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0x6e6e6e)
+    night := CompareColorAt(3750, 2000, 0x000000) && CompareColorAt(1900, 650, 0x5d2b0c)
     return night
 }
 
-MoveToField() {
-    FromHiveToCannon(hivePosition)
+MoveToCoconut() {
+    FromHiveToCannon(hivePosition, False)
 
-    MoveRight(300)
-    DeployChute()
-    Sleep 2300
-    SendSpace()
-    Sleep 500
-    MoveRight(1000)
-    MoveUp(2500)
-    MoveRight(3500)
+    MoveRight(4000)
+
+    KeyDown("d")
+    Jump()
+    Sleep, 2000
+    KeyUp("d")
+
+    KeyDown("w")
+    Sleep, 200
+    Jump()
+    Sleep, 3000
+    Jump()
+    Sleep, 200
+    Jump()
+    Sleep, 2000
+    KeyUp("w")
+
+    MoveLeft(1000)
+    MoveUp(3000)
 
     if (ValidateField()) {
         return True
@@ -61,18 +68,18 @@ MoveToField() {
     return False
 }
 
-WalkPattern(nbLoops, subrepeat) {
+WalkCoconutPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 100
+    move := 100 * movespeedFactor
     patternMoveTime := move * patternWidth
     containerFull := False
 
-    MoveDown(1000)
-    MoveLeft(1000)
+    MoveDown(15 * move)
+    MoveLeft(10 * move)
 
     loop, %nbLoops% {
-        If (A_Index = 1) {
+        if (A_Index = 1) {
             PlaceSprinkler()
         }
 
@@ -81,29 +88,26 @@ WalkPattern(nbLoops, subrepeat) {
 
             turnAroundTime := move * patternLength / 4
 
-            loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
+            MoveLeft(200)
 
-            loop, 2 {
+            Loop, 2 {
                 MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime)
                 PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
                 MoveRight(turnAroundTime)
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
             }
 
-            If (IsContainerFull()) {
-                containerFull := True
-                break
-            }
+            MoveUp(patternMoveTime)
 
-            MoveUp(patternMoveTime * 3)
-
-            loop, 2 {
+            Loop, 2 {
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveRight(patternMoveTime)
@@ -114,63 +118,51 @@ WalkPattern(nbLoops, subrepeat) {
             MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
-            loop, 2 {
+            Loop, 2 {
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
 
-            MoveRight(500)
+            MoveRight(patternMoveTime)
 
-            If (IsContainerFull()) {
+            if (IsContainerFull()) {
                 containerFull := True
-                break
+                Break
             }
         }
 
-        If (containerFull || A_Index = nbLoops) {
-            MoveUp(5000)
-            MoveRight(5000)
-            break
+        if (containerFull || A_Index = nbLoops) {
+            MoveRight(5000 * movespeedFactor)
+            MoveUp(5000 * movespeedFactor)
+            Break
         }
     }
 }
 
-MoveToHiveSlot(slot) {
+MoveToHiveSlot(slot)  {
     ; We should be facing the wall at slot #3
 
     MoveDown(500)
 
-    If (slot < 3) {
-        Return MoveToHiveRight()
+    if (slot <= 3) {
+        return MoveToHiveRight()
     }
     else {
-        Return MoveToHiveLeft()
+        return MoveToHiveLeft()
     }
 }
 
-ToHiveFromField() {
+ToHiveFromCoconut() {
     global hivePosition
 
     StopFetching()
 
-    ; Walk to switch next to blue cannon
-    ; Give enough time to disable haste
-    MoveUp(5000)
-    MoveRight(5000)
-
-    MoveDown(5000)
-    RotateCamera(4)
-
-    Loop, 5 {
-        MoveRight(800)
-        MoveUp(800)
-    }
-
-    MoveUp(12000)
-    MoveRight(13000)
-    RotateCamera(4)
+    ; Move next to polar bear
+    MoveRight(7000)
+    MoveDown(13000)
+    RotateLeft()
     MoveUp(10000)
 
     JumpFromPolarBearToHive()
@@ -186,13 +178,13 @@ ToHiveFromField() {
 ExecuteScript() {
     Respawn()
 
-    Loop {
-        Debug("Moving to rose field")
-        If (MoveToField()) {
-            Debug("Walk rose pattern")
-            WalkPattern(patternRepeat, subpatternRepeat)
+    loop {
+        Debug("Moving to coconut")
+        if (MoveToCoconut()) {
+            Debug("Walk coconut pattern")
+            WalkCoconutPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            If (ToHiveFromField()) {
+            if (ToHiveFromCoconut()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {

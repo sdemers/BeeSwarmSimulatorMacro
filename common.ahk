@@ -1,8 +1,19 @@
 #Requires AutoHotkey v1.1.33+
 
 Debug(text, index := 2) {
-    FileAppend, %text% `n, log.txt
+    FormatTime, CurrentTime, A_Now, yyyy-MM-dd HH:mm:ss
+    FileAppend, [%CurrentTime%] %text% `n, log.txt
     ToolTip %text%, 50, 700, index
+}
+
+KeyDown(key)
+{
+    Send, {%key% down}
+}
+
+KeyUp(key)
+{
+    Send, {%key% up}
 }
 
 KeyPress(key, duration := 0)
@@ -60,12 +71,20 @@ RotateLeft() {
     RotateCamera(2)
 }
 
+Jump() {
+    Send {Space down}
+    Sleep 25
+    Send {Space up}
+}
+
 JumpToRedCannon() {
+    KeyDown("d")
+    Sleep, 50
     Send {Space down}
     Sleep 25
     Send {Space up}
     Sleep 25
-    KeyPress("d", 400)
+    KeyUp("d")
 }
 
 StartFetching() {
@@ -78,7 +97,7 @@ StopFetching() {
 
 ConvertHoney() {
     KeyPress("e", 50)
-    Sleep, 60000
+    Sleep, 90000
 
     ; ; Wait to convert honey to start
     ; Debug("Waiting to start converting honey")
@@ -174,7 +193,7 @@ ValidateMakeHoney() {
 }
 
 ValidateStart() {
-    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D)
+    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F)
 }
 
 FireCannon() {
@@ -182,14 +201,15 @@ FireCannon() {
     KeyPress("e", 15)
 }
 
-FromHiveToCannon(hive) {
+FromHiveToCannon(hive, fire := True) {
     MoveUp(2875)
     MoveRight(hive * 1200)
-    MoveLeft(172)
-    MoveRight(57)
     JumpToRedCannon()
-    MoveRight(1150)
-    FireCannon()
+
+    if (fire) {
+        MoveRight(1300)
+        FireCannon()
+    }
 }
 
 MoveToHiveLeft() {
@@ -248,4 +268,52 @@ JumpFromPolarBearToHive() {
     MoveUp(10000 * movespeedFactor)
     MoveRight(600 * movespeedFactor)
     MoveUp(8000 * movespeedFactor)
+}
+
+WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
+    StartFetching()
+
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    StartFetching()
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+
+            turnAroundTime := move * patternLength / 4
+
+            loop, 4 {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            PlaceSprinkler()
+
+            KeyDown("a")
+            KeyDown("w")
+            Sleep, 3000 * movespeedFactor
+            KeyUp("a")
+            KeyUp("w")
+
+            moveUp(1000)
+            MoveRight(3000)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            break
+        }
+    }
 }

@@ -5,7 +5,7 @@
 
 stopKey := "F2"
 
-global hivePosition := 1
+global hivePosition := 4
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -36,16 +36,9 @@ ValidateField() {
     return night
 }
 
-MoveToMountainTop() {
-    MoveUp(2875)
-    MoveRight(5000)
-    MoveLeft(172)
-    MoveRight(57)
-    JumpToRedCannon()
-    MoveRight(1150)
-    Sleep 200
+MoveToPineTree() {
+    FromHiveToCannon(hivePosition)
 
-    KeyPress("e", 15)
     Sleep 320
     MoveRight(170)
     Sleep 200
@@ -176,8 +169,8 @@ ExecuteScript() {
     Respawn()
 
     loop {
-        Debug("Moving to mountain top")
-        if (MoveToMountainTop()) {
+        Debug("Moving to pine tree")
+        if (MoveToPineTree()) {
             Debug("Walk pine tree pattern")
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
@@ -195,6 +188,8 @@ ExecuteScript() {
         }
     }
 }
+
+;WalkPineTreePattern(100, 10)
 
 ExecuteScript()
 
