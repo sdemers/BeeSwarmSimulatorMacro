@@ -5,12 +5,12 @@
 
 stopKey := "F2"
 
-global hivePosition := 4
+global hivePosition := 2
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 1
-global subpatternRepeat := 1
+global patternRepeat := 10
+global subpatternRepeat := 20
 global patternLength := 10
 global patternWidth := 10
 
@@ -42,7 +42,7 @@ MoveToStrawberry() {
     return True
 }
 
-ToHiveFromStrawbery() {
+ToHiveFromStrawberry() {
     global hivePosition
 
     StopFetching()
@@ -52,9 +52,10 @@ ToHiveFromStrawbery() {
     MoveDown(5000)
 
     ; Move towards the hives, turn left then move to the hives
+    ; Give time for the haste to expire
     RotateLeft()
-    MoveUp(10000)
-    MoveLeft(1000)
+    MoveUp(20000)
+    MoveLeft(700)
     MoveUp(6000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
@@ -74,7 +75,7 @@ ExecuteStrawberryScript() {
             Debug("Walk pine tree pattern")
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromStrawbery()) {
+            if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {

@@ -26,54 +26,34 @@ Sleep 200
 
 ToolTip Press F2 to stop script, 50, 400, 1
 
-ValidateField() {
-
-    day := CompareColorAt(3780, 80, 0x7f6e45)
-    If (day) {
-        return True
-    }
-
-    if CompareColorAt(3780, 80, 0x857559) {
-        return True
-    }
-
-    return CompareColorAt(3780, 80, 0x000000)
-}
-
-MoveToPineTree() {
+MoveToSpider() {
     FromHiveToCannon(hivePosition)
 
-    Sleep 320
-    MoveRight(170)
-    Sleep 250
+    Sleep, 800
     DeployChute()
-    Sleep 4700
+    MoveDown(1500)
     SendSpace()
-    Sleep 500
-    RotateRight()
+    Sleep, 2000
+    RotateCamera(4)
 
-    MoveRight(5000)
-    MoveUp(5000)
-
-    if (ValidateField()) {
-        return True
-    }
-
-    return False
+    MoveLeft(3000)
+    return True
 }
 
-ToHiveFromPineTree() {
+ToHiveFromSpider() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
-    RotateLeft()
-    MoveUp(10000)
+    ; Move next to the straberry field
+    MoveUp(5000)
+    MoveLeft(5000)
 
-    JumpFromPolarBearToHive()
+    ; Move towards the hives, turn left then move to the hives
+    RotateCamera(4)
+    MoveUp(9000)
+    MoveRight(500)
+    MoveUp(6000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
@@ -83,18 +63,16 @@ ToHiveFromPineTree() {
     return True
 }
 
-ExecuteScript() {
+ExecuteSpiderScript() {
     Respawn()
 
     loop {
-        Debug("Moving to pine tree")
-        if (MoveToPineTree()) {
-            Debug("Walk pine tree pattern")
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
-            MoveRight(5000)
-            MoveUp(5000)
+        Debug("Moving to spider")
+        if (MoveToSpider()) {
+            Debug("Walk spider pattern")
+            WalkSpiderPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
+            if (ToHiveFromSpider()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
@@ -109,7 +87,7 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+ExecuteSpiderScript()
 
 StopScript:
     ResetKeys()

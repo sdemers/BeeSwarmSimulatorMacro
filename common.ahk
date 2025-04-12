@@ -88,11 +88,11 @@ JumpToRedCannon() {
 }
 
 StartFetching() {
-    Click Down
+    Click, 600, 400, Down
 }
 
 StopFetching() {
-    Click Up
+    Click, Up
 }
 
 ConvertHoney() {
@@ -341,7 +341,6 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
 }
 
 WalkPineTreePattern(nbLoops, subrepeat) {
-    StartFetching()
 
     move := 85
     patternMoveTime := move * patternWidth
@@ -358,6 +357,8 @@ WalkPineTreePattern(nbLoops, subrepeat) {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
+            StartFetching()
+
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * patternLength / 4
 
@@ -365,26 +366,26 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
+                MoveLeft(turnAroundTime * 0.5)
                 PlaceSprinkler()
-                MoveDown(patternMoveTime)
+                MoveDown(patternMoveTime * 0.75)
                 MoveLeft(turnAroundTime)
             }
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime)
+                MoveRight(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
+                MoveRight(turnAroundTime * 0.75)
             }
 
             MoveUp(patternMoveTime)
 
             Loop, 2 {
                 MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.5)
                 MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.75)
             }
 
             MoveLeft(patternMoveTime / 3)
@@ -393,12 +394,87 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime * 0.75)
+            }
+
+            MoveRight(patternMoveTime)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkSpiderPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 80
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    MoveDown(15 * move)
+    MoveRight(10 * move)
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+            StartFetching()
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+            turnAroundTime := move * patternLength / 4
+
+            MoveRight(200)
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime)
+                PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveRight(turnAroundTime)
+            }
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime)
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            MoveUp(patternMoveTime * 1.5)
+
+            Loop, 2 {
+                MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
 
-            MoveRight(patternMoveTime)
+            MoveRight(patternMoveTime / 3)
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            Loop, 2 {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveLeft(patternMoveTime)
 
             if (IsContainerFull()) {
                 containerFull := True
