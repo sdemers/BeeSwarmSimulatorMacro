@@ -35,7 +35,6 @@ KeyPress(key, duration := 0)
     Send, {%key% up}
 }
 
-
 PlaceSprinkler() {
     KeyPress("1", 15)
 }
@@ -181,22 +180,34 @@ IsContainerEmpty() {
 WalkPattern(nbLoops) {
     StartFetching()
 
-    moveTime := move * patternLength * movespeedFactor
+    moveTime := move * patternLength
     stop := False
+
+    RotateCamera(4)
 
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
-        loop, %patternRepeat% {
 
-            Loop, 10 {
-                MoveUp(moveTime)
-                MoveDown(moveTime)
-            }
+        MoveUp(4000)
+        MoveRight(2000)
 
-            if (IsContainerFull() || A_Min == 59) {
-                stop := True
-                Break
-            }
+        MoveDown(500)
+
+        loop, 6 {
+            MoveLeft(700)
+            MoveDown(200)
+            MoveRight(500)
+            MoveDown(200)
+        }
+
+        MoveLeft(2000)
+        MoveRight(1000)
+
+        loop, 4 {
+            MoveRight(800)
+            MoveUp(200)
+            MoveLeft(500)
+            MoveUp(200)
         }
 
         if (stop) {
@@ -239,46 +250,48 @@ ToHiveFromMountainTop() {
 
     StopFetching()
 
-    MoveDown(8000 * movespeedFactor)
-    MoveRight(5000 * movespeedFactor)
-    MoveUp(5000 * movespeedFactor)
-    MoveRight(2000 * movespeedFactor)
-    MoveUp(2000 * movespeedFactor)
-    MoveRight(1500 * movespeedFactor)
-    MoveLeft(1500 * movespeedFactor)
-    MoveUp(5000 * movespeedFactor)
+    MoveDown(8000)
+    MoveRight(5000)
+    MoveUp(5000)
+    MoveRight(2000)
+    MoveUp(2000)
+    MoveRight(1500)
+    MoveLeft(1500)
+    MoveUp(5000)
 
     JumpFromPolarBearToHive()
 
     MoveToHiveSlot(hivePosition)
 }
 
-Respawn()
+; Respawn()
 
-loop {
-    if (Mod(A_Index, 5) == 0) {
-        Respawn()
-    }
+; loop {
+;     if (Mod(A_Index, 5) == 0) {
+;         Respawn()
+;     }
 
-    if (A_Min > 15) {
-        MoveToMountainTop()
-        WalkPattern(1)
-        ToHiveFromMountainTop()
-        ConvertHoney()
-    }
-    else {
-        Debug("Waiting for Combo chick to leave")
-        Loop {
-            Sleep 1000
-            if (A_Min > 15) {
-                Break
-            }
-        }
-        Debug("")
-    }
+;     if (A_Min > 15) {
+;         MoveToMountainTop()
+;         WalkPattern(1)
+;         ToHiveFromMountainTop()
+;         ConvertHoney()
+;     }
+;     else {
+;         Debug("Waiting for Combo chick to leave")
+;         Loop {
+;             Sleep 1000
+;             if (A_Min > 15) {
+;                 Break
+;             }
+;         }
+;         Debug("")
+;     }
 
-}
+; }
+
+WalkPattern(5)
 
 StopScript:
     ResetKeys()
-    ExitApp
+ExitApp

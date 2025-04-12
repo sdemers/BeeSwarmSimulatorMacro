@@ -9,8 +9,8 @@ global hivePosition := 4
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
+global patternRepeat := 1
+global subpatternRepeat := 1
 global patternLength := 10
 global patternWidth := 10
 
@@ -26,55 +26,36 @@ Sleep 200
 
 ToolTip Press F2 to stop script, 50, 400, 1
 
-ValidateField() {
-
-    day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
-    If (day) {
-        return True
-    }
-
-    if CompareColorAt(3750, 2000, 0x857559) && CompareColorAt(1900, 650, 0x2C4421) {
-        return True
-    }
-
-    night := CompareColorAt(3750, 2000, 0x000000) && CompareColorAt(1900, 650, 0x5d2b0c)
-    return night
-}
-
-MoveToPineTree() {
+MoveToStrawberry() {
     FromHiveToCannon(hivePosition)
 
-    Sleep 320
     MoveRight(170)
-    Sleep 250
+    Sleep, 400
     DeployChute()
-    Sleep 4700
+    Sleep 1000
     SendSpace()
-    Sleep 500
+    Sleep 1500
     RotateRight()
 
     MoveRight(5000)
     MoveUp(5000)
-
-    if (ValidateField()) {
-        return True
-    }
-
-    return False
+    return True
 }
 
-ToHiveFromPineTree() {
+ToHiveFromStrawbery() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
+    ; Move right and down next to the spider field
+    MoveRight(5000)
+    MoveDown(5000)
+
+    ; Move towards the hives, turn left then move to the hives
     RotateLeft()
     MoveUp(10000)
-
-    JumpFromPolarBearToHive()
+    MoveLeft(1000)
+    MoveUp(6000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
@@ -84,18 +65,16 @@ ToHiveFromPineTree() {
     return True
 }
 
-ExecuteScript() {
+ExecuteStrawberryScript() {
     Respawn()
 
     loop {
-        Debug("Moving to pine tree")
-        if (MoveToPineTree()) {
+        Debug("Moving to strawberry")
+        if (MoveToStrawberry()) {
             Debug("Walk pine tree pattern")
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
-            MoveRight(5000)
-            MoveUp(5000)
             Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
+            if (ToHiveFromStrawbery()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
@@ -110,7 +89,7 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+ExecuteStrawberryScript()
 
 StopScript:
     ResetKeys()

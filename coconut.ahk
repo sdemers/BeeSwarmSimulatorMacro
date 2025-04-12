@@ -5,7 +5,7 @@
 
 stopKey := "F2"
 
-global hivePosition := 4
+global hivePosition := 1
 global speed := 32.2
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -71,11 +71,11 @@ MoveToCoconut() {
 WalkCoconutPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 100 * movespeedFactor
+    move := 90
     patternMoveTime := move * patternWidth
     containerFull := False
 
-    MoveDown(15 * move)
+    MoveDown(10 * move)
     MoveLeft(10 * move)
 
     loop, %nbLoops% {
@@ -86,11 +86,11 @@ WalkCoconutPattern(nbLoops, subrepeat) {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * patternLength / 5
 
             MoveLeft(200)
 
-            Loop, 2 {
+            Loop, 4 {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime)
                 PlaceSprinkler()
@@ -98,7 +98,9 @@ WalkCoconutPattern(nbLoops, subrepeat) {
                 MoveLeft(turnAroundTime)
             }
 
-            Loop, 2 {
+            PlaceSprinkler()
+
+            Loop, 4 {
                 MoveUp(patternMoveTime)
                 MoveRight(turnAroundTime)
                 MoveDown(patternMoveTime)
@@ -141,33 +143,23 @@ WalkCoconutPattern(nbLoops, subrepeat) {
     }
 }
 
-MoveToHiveSlot(slot)  {
-    ; We should be facing the wall at slot #3
-
+MoveToHiveSlot()  {
     MoveDown(500)
-
-    if (slot <= 3) {
-        return MoveToHiveRight()
-    }
-    else {
-        return MoveToHiveLeft()
-    }
+    return MoveToHiveLeft()
 }
 
 ToHiveFromCoconut() {
-    global hivePosition
-
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
-    RotateLeft()
-    MoveUp(10000)
+    MoveUp(5000)
+    MoveRight(5000)
+    MoveDown(5000)
+    MoveLeft(8000)
+    Sleep, 10000
+    MoveDown(5000)
+    MoveUp(2000)
 
-    JumpFromPolarBearToHive()
-
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot() = False) {
         Debug("Hive not found...")
         return False
     }
@@ -198,7 +190,8 @@ ExecuteScript() {
         }
     }
 }
-
+;WalkCoconutPattern(patternRepeat, subpatternRepeat)
+;ToHiveFromCoconut()
 ExecuteScript()
 
 StopScript:

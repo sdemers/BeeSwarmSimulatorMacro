@@ -9,8 +9,8 @@ global hivePosition := 4
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
+global patternRepeat := 100
+global subpatternRepeat := 100
 global patternLength := 10
 global patternWidth := 10
 
@@ -29,7 +29,7 @@ ToolTip Press F2 to stop script, 50, 400, 1
 ValidateField() {
 
     day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
-    If (day) {
+    if (day) {
         return True
     }
 
@@ -41,40 +41,45 @@ ValidateField() {
     return night
 }
 
-MoveToPineTree() {
+MoveToBamboo() {
     FromHiveToCannon(hivePosition)
 
-    Sleep 320
-    MoveRight(170)
-    Sleep 250
+    Sleep 500
+    MoveLeft(300)
+    Sleep 150
     DeployChute()
-    Sleep 4700
+    Sleep 3000
     SendSpace()
     Sleep 500
-    RotateRight()
+    RotateCamera(4)
 
-    MoveRight(5000)
-    MoveUp(5000)
+    MoveUp(3000)
+    MoveRight(3000)
 
-    if (ValidateField()) {
-        return True
-    }
-
-    return False
+    return True
 }
 
-ToHiveFromPineTree() {
+ToHiveFromBamboo() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
-    RotateLeft()
-    MoveUp(10000)
+    ; Move to the wall on the right side
+    MoveUp(3000)
+    MoveRight(5000)
 
-    JumpFromPolarBearToHive()
+    ; Move next to spider
+    MoveLeft(7000)
+    MoveDown(600)
+    MoveLeft(10000)
+
+    RotateCamera(4)
+    MoveDown(1000)
+
+    ; Move to hive
+    MoveUp(10000)
+    MoveRight(600)
+    MoveUp(8000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
@@ -88,14 +93,12 @@ ExecuteScript() {
     Respawn()
 
     loop {
-        Debug("Moving to pine tree")
-        if (MoveToPineTree()) {
+        Debug("Moving to bamboo")
+        if (MoveToBamboo()) {
             Debug("Walk pine tree pattern")
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
-            MoveRight(5000)
-            MoveUp(5000)
             Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
+            if (ToHiveFromBamboo()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {

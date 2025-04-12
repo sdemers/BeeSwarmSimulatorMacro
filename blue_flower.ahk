@@ -129,7 +129,8 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
+;ExecuteScript()
 
 StopScript:
     ResetKeys()

@@ -5,8 +5,8 @@
 
 stopKey := "F2"
 
-global hivePosition := 2
-global speed := 32.2
+global hivePosition := 1
+global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 10
@@ -78,7 +78,7 @@ WalkPineapplePattern(nbLoops, subrepeat) {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * patternLength / 6
 
             loop, 2 {
                 MoveUp(patternMoveTime)
@@ -160,13 +160,14 @@ ToHiveFromPineapple() {
     ; Give enough time to disable haste
     MoveUp(15000)
 
-    MoveDown(600)
+    MoveDown(800)
     MoveRight(2000)
-    MoveLeft(50)
-    SendSpace(10)
-    MoveRight(700)
-    Sleep 300
-    KeyPress("e", 20)
+    KeyDown("d")
+    Jump()
+    Sleep, 300
+    KeyUp("d")
+    Sleep, 500
+    FireCannon()
     Sleep 2500
     MoveUp(5000)
 
@@ -202,6 +203,7 @@ ExecuteScript() {
     }
 }
 
+;ToHiveFromPineapple()
 ExecuteScript()
 
 StopScript:
