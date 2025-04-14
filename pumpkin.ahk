@@ -3,20 +3,16 @@
 
 #Include, common.ahk
 
-stopKey := "F2"
-
-global hivePosition := 4
-global speed := 32.2
+global hivePosition := 1
+global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 100
+global patternRepeat := 10
 global subpatternRepeat := 10
 global patternLength := 10
 global patternWidth := 10
 
 global movespeedFactor := 28 / speed
-
-Hotkey %stopKey%, StopScript
 
 CoordMode, Pixel, Screen
 
@@ -24,80 +20,46 @@ WinActivate Roblox
 
 Sleep 200
 
-ToolTip Press F2 to stop script, 50, 400, 1
-
-ValidateField() {
-    day := CompareColorAt(170, 1900, 0x006493) && CompareColorAt(2730, 270, 0x958465)
-    if (day) {
-        return True
-    }
-
-    night := CompareColorAt(170, 1900, 0x006491) && CompareColorAt(2730, 270, 0x000000)
-    return night
-}
-
-MoveToField() {
+MoveToPumpkin(hive) {
     MoveUp(2875)
-    MoveRight(5000)
-    MoveLeft(50)
-    ;MoveRight(57)
-    JumpToRedCannon()
-    MoveRight(1150)
-    Sleep 200
-    KeyPress("e", 15)
+    MoveRight(hive * 1200)
+    MoveDown(4000)
 
-    MoveLeft(250)
-    Sleep, 300
-    DeployChute()
-    Sleep, 3000
-    SendSpace()
-    Sleep, 2300
+    RotateCamera(4)
+    MoveLeft(2000)
+    MoveUp(1000)
 
-    MoveUp(3000)
-    MoveRight(500)
-
-    ; if (ValidateField()) {
-    ;     return True
-    ; }
+    RotateLeft()
+    MoveUp(1000)
+    MoveLeft(1000)
 
     return True
 }
 
-MoveToHiveSlot(slot) {
-    ; We should be facing the wall at slot #3
+MoveToHiveSlotFrom1(slot) {
+    ; We should be facing the wall at slot #1
 
     MoveDown(500)
 
-    if (slot < 3) {
-        return MoveToHiveRight()
-    }
-    else {
-        return MoveToHiveLeft()
-    }
+    return MoveToHiveLeft()
 }
 
-ToHiveFromPineapple() {
+ToHiveFromPumpkin() {
     global hivePosition
 
     StopFetching()
 
-    RotateCamera(4)
-
-    ; Walk to switch next to blue cannon
-    ; Give enough time to disable haste
-    MoveUp(15000)
-
-    MoveDown(600)
-    MoveRight(2000)
-    MoveLeft(50)
-    SendSpace(10)
-    MoveRight(700)
-    Sleep 300
-    KeyPress("e", 20)
-    Sleep 2500
     MoveUp(5000)
+    MoveLeft(5000)
+    MoveDown(1000)
+    MoveLeft(3000)
+    Sleep, 15000
+    MoveDown(1300)
+    RotateLeft()
+    MoveUp(1000)
+    MoveRight(1000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlotFrom1(hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -109,12 +71,13 @@ ExecuteScript() {
     Respawn()
 
     loop {
-        Debug("Moving to blue flower")
-        if (MoveToField()) {
-            Debug("Walk blue flower pattern")
-            WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
+        Debug("Moving to pumpkin")
+        if (MoveToPumpkin(hivePosition)) {
+            Debug("Walk pumpkin pattern")
+            ZoomOut(5)
+            WalkPumpkinPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPineapple()) {
+            if (ToHiveFromPumpkin()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
@@ -129,8 +92,4 @@ ExecuteScript() {
     }
 }
 
-WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat, 120)
-
-StopScript:
-    ResetKeys()
-ExitApp
+ExecuteScript()

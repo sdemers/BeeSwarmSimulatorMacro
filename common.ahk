@@ -1,5 +1,22 @@
 #Requires AutoHotkey v1.1.33+
 
+global GoToHiveRequested := False
+
+ToolTip Press F2 to stop script / F3 to go to hive, 50, 400, 1
+
+Hotkey, F2, StopScript
+Hotkey, F3, SetGoToHive
+
+SetGoToHive()
+{
+    GoToHiveRequested := True
+}
+
+StopScript() {
+    ResetKeys()
+    ExitApp
+}
+
 Debug(text, index := 2) {
     FormatTime, CurrentTime, A_Now, yyyy-MM-dd HH:mm:ss
     FileAppend, [%CurrentTime%] %text% `n, log.txt
@@ -97,7 +114,9 @@ StopFetching() {
 
 ConvertHoney() {
     KeyPress("e", 50)
-    Sleep, 90000
+    Loop, 90 {
+        Sleep, 1000
+    }
 
     ; ; Wait to convert honey to start
     ; Debug("Waiting to start converting honey")
@@ -260,6 +279,11 @@ MoveToHiveRight() {
 }
 
 IsContainerFull() {
+    if GoToHiveRequested {
+        GoToHiveRequested := False
+        return True
+    }
+
     PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
     return ErrorLevel = 0
 }
@@ -340,7 +364,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
     }
 }
 
-WalkPineTreePattern(nbLoops, subrepeat) {
+WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2) {
 
     move := 85
     patternMoveTime := move * patternWidth
@@ -364,15 +388,15 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             MoveLeft(200)
 
-            Loop, 2 {
+            Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.5)
                 PlaceSprinkler()
-                MoveDown(patternMoveTime * 0.75)
-                MoveLeft(turnAroundTime)
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.75)
             }
 
-            Loop, 2 {
+            Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
                 MoveRight(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
@@ -381,7 +405,12 @@ WalkPineTreePattern(nbLoops, subrepeat) {
 
             MoveUp(patternMoveTime)
 
-            Loop, 2 {
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+
+            Loop, %nbzigzag% {
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime * 0.5)
                 MoveRight(patternMoveTime)
@@ -392,7 +421,7 @@ WalkPineTreePattern(nbLoops, subrepeat) {
             MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
-            Loop, 2 {
+            Loop, %nbzigzag% {
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime * 0.5)
                 MoveLeft(patternMoveTime)
@@ -441,7 +470,7 @@ WalkSpiderPattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime)
+                MoveRight(turnAroundTime * 0.5)
                 PlaceSprinkler()
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
@@ -449,7 +478,7 @@ WalkSpiderPattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
+                MoveLeft(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
             }
@@ -458,7 +487,7 @@ WalkSpiderPattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.5)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
@@ -469,12 +498,88 @@ WalkSpiderPattern(nbLoops, subrepeat) {
 
             Loop, 2 {
                 MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.5)
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
 
             MoveLeft(patternMoveTime)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkPumpkinPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 80
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+            StartFetching()
+
+            MoveDown(200)
+            MoveRight(15 * move)
+            MoveDown(15 * move)
+            ZoomOut(5)
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+            turnAroundTime := move * patternLength / 4
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime * 0.5)
+                PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveRight(turnAroundTime)
+            }
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.5)
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            Loop, 2 {
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveRight(patternMoveTime / 3)
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            Loop, 2 {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveUp(3000)
+            MoveLeft(3000)
 
             if (IsContainerFull()) {
                 containerFull := True

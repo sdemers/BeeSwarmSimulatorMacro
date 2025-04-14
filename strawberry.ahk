@@ -3,20 +3,16 @@
 
 #Include, common.ahk
 
-stopKey := "F2"
-
-global hivePosition := 2
+global hivePosition := 1
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
+global patternRepeat := 20
 global subpatternRepeat := 20
 global patternLength := 10
 global patternWidth := 10
 
 global movespeedFactor := 28 / speed
-
-Hotkey %stopKey%, StopScript
 
 CoordMode, Pixel, Screen
 
@@ -24,21 +20,21 @@ WinActivate Roblox
 
 Sleep 200
 
-ToolTip Press F2 to stop script, 50, 400, 1
-
 MoveToStrawberry() {
     FromHiveToCannon(hivePosition)
 
     MoveRight(170)
     Sleep, 400
     DeployChute()
-    Sleep 1000
+    Sleep, 600
+    MoveRight(100)
+    Sleep, 1000
     SendSpace()
     Sleep 1500
-    RotateRight()
+    RotateCamera(4)
 
-    MoveRight(5000)
     MoveUp(5000)
+    MoveRight(5000)
     return True
 }
 
@@ -47,14 +43,15 @@ ToHiveFromStrawberry() {
 
     StopFetching()
 
-    ; Move right and down next to the spider field
+    ; Move next to the spider field
+    MoveUp(5000)
     MoveRight(5000)
-    MoveDown(5000)
 
     ; Move towards the hives, turn left then move to the hives
     ; Give time for the haste to expire
-    RotateLeft()
-    MoveUp(20000)
+    MoveDown(5000)
+    RotateCamera(4)
+    MoveUp(15000)
     MoveLeft(700)
     MoveUp(6000)
 
@@ -91,7 +88,3 @@ ExecuteStrawberryScript() {
 }
 
 ExecuteStrawberryScript()
-
-StopScript:
-    ResetKeys()
-ExitApp

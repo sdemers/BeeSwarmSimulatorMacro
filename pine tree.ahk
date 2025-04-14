@@ -3,9 +3,7 @@
 
 #Include, common.ahk
 
-stopKey := "F2"
-
-global hivePosition := 2
+global hivePosition := 5
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -16,15 +14,11 @@ global patternWidth := 10
 
 global movespeedFactor := 28 / speed
 
-Hotkey %stopKey%, StopScript
-
 CoordMode, Pixel, Screen
 
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
 
@@ -110,7 +104,3 @@ ExecuteScript() {
 }
 
 ExecuteScript()
-
-StopScript:
-    ResetKeys()
-ExitApp

@@ -3,8 +3,6 @@
 
 #Include, common.ahk
 
-stopKey := "F2"
-
 global hivePosition := 2
 global speed := 33.35
 
@@ -16,15 +14,11 @@ global patternWidth := 10
 
 global movespeedFactor := 28 / speed
 
-Hotkey %stopKey%, StopScript
-
 CoordMode, Pixel, Screen
 
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
 
 MoveToSpider() {
     FromHiveToCannon(hivePosition)
@@ -88,7 +82,3 @@ ExecuteSpiderScript() {
 }
 
 ExecuteSpiderScript()
-
-StopScript:
-    ResetKeys()
-ExitApp

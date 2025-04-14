@@ -6,8 +6,8 @@
 stopKey := "F2"
 
 ; Dynamic settings
-global hivePosition := 4
-global speed := 32.2
+global hivePosition := 3
+global speed := 33.3
 global patternRepeat := 10
 global subpatternRepeat := 5
 
@@ -54,11 +54,7 @@ MoveToField() {
     MoveUp(2500)
     MoveRight(3500)
 
-    if (ValidateField()) {
-        return True
-    }
-
-    return False
+    return True
 }
 
 WalkPattern(nbLoops, subrepeat) {
@@ -134,19 +130,6 @@ WalkPattern(nbLoops, subrepeat) {
             MoveRight(5000)
             break
         }
-    }
-}
-
-MoveToHiveSlot(slot) {
-    ; We should be facing the wall at slot #3
-
-    MoveDown(500)
-
-    If (slot < 3) {
-        Return MoveToHiveRight()
-    }
-    else {
-        Return MoveToHiveLeft()
     }
 }
 
