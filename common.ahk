@@ -175,12 +175,22 @@ DeployChute() {
     SendSpace()
 }
 
-MoveToHiveSlot(slot) {
+; Fouille moé pourquoi faut faire ça...
+ReleaseChute() {
+    SendSpace(15)
+    SendSpace(15)
+    SendSpace(15)
+    SendSpace(15)
+    SendSpace(15)
+    SendSpace(15)
+}
+
+MoveToHiveSlot(slot, fromSlot := 3) {
     ; We should be facing the wall at slot #3
 
     MoveDown(500)
 
-    if (slot <= 3) {
+    if (slot <= fromSlot) {
         return MoveToHiveRight()
     }
     else {
@@ -519,7 +529,7 @@ WalkSpiderPattern(nbLoops, subrepeat) {
     }
 }
 
-WalkPumpkinPattern(nbLoops, subrepeat) {
+WalkSunflowerPattern(nbLoops, subrepeat) {
     StartFetching()
 
     move := 80

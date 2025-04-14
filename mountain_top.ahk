@@ -135,11 +135,6 @@ SendSpace(wait := 100) {
     Send {Space up}
 }
 
-DeployChute() {
-    SendSpace()
-    SendSpace()
-}
-
 MoveToCannonAndFire() {
     MoveUp(2875)
     MoveRight(3300)
