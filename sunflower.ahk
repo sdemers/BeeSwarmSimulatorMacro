@@ -7,8 +7,8 @@ global hivePosition := 1
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 1
-global subpatternRepeat := 1
+global patternRepeat := 10
+global subpatternRepeat := 10
 global patternLength := 10
 global patternWidth := 10
 
@@ -20,22 +20,18 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToPumpkin(hivePosition) {
-    FromHiveToCannon(hivePosition)
+MoveToSunflower(hive) {
+    MoveUp(2875)
+    MoveRight(hive * 1200)
+    MoveDown(4000)
 
     RotateCamera(4)
+    MoveLeft(2000)
+    MoveUp(1000)
 
-    Sleep, 500
-    MoveLeft(200)
-    DeployChute()
-    Sleep 2000
-    MoveUp(1500)
-    SendSpace()
-    Sleep 1500
-
-    MoveUp(5000)
-    MoveRight(5000)
-    RotateRight()
+    RotateLeft()
+    MoveUp(1000)
+    MoveLeft(1000)
 
     return True
 }
@@ -48,22 +44,22 @@ MoveToHiveSlotFrom1(slot) {
     return MoveToHiveLeft()
 }
 
-ToHiveFromPumpkin() {
+ToHiveFromSunflower() {
     global hivePosition
 
     StopFetching()
 
-    RotateLeft()
+    MoveUp(5000)
     MoveLeft(5000)
-    MoveUp(3000)
-    MoveRight(12000)
+    MoveDown(1000)
+    MoveLeft(3000)
+    Sleep, 15000
+    MoveDown(1300)
+    RotateLeft()
+    MoveUp(1000)
+    MoveRight(1000)
 
-    RotateCamera(4)
-    MoveUp(10000)
-
-    JumpFromPolarBearToHive()
-
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlotFrom1(hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -71,17 +67,17 @@ ToHiveFromPumpkin() {
     return True
 }
 
-ExecutePumpkinScript() {
+ExecuteScript() {
     Respawn()
 
     loop {
-        Debug("Moving to Pumpkin")
-        if (MoveToPumpkin(hivePosition)) {
-            Debug("Walk Pumpkin pattern")
+        Debug("Moving to Sunflower")
+        if (MoveToSunflower(hivePosition)) {
+            Debug("Walk Sunflower pattern")
             ZoomOut(5)
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkSunflowerPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPumpkin()) {
+            if (ToHiveFromSunflower()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
@@ -96,4 +92,4 @@ ExecutePumpkinScript() {
     }
 }
 
-ExecutePumpkinScript()
+ExecuteScript()
