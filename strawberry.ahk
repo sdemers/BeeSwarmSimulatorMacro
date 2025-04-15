@@ -3,7 +3,7 @@
 
 #Include, common.ahk
 
-global hivePosition := 1
+global hivePosition := 2
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)

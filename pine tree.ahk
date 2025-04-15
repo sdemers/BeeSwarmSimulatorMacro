@@ -3,12 +3,12 @@
 
 #Include, common.ahk
 
-global hivePosition := 5
+global hivePosition := 2
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
+global patternRepeat := 100
+global subpatternRepeat := 100
 global patternLength := 10
 global patternWidth := 10
 
@@ -59,6 +59,9 @@ MoveToPineTree() {
 ToHiveFromPineTree() {
     global hivePosition
 
+    MoveRight(5000)
+    MoveUp(5000)
+
     StopFetching()
 
     ; Move next to polar bear
@@ -77,7 +80,7 @@ ToHiveFromPineTree() {
     return True
 }
 
-ExecuteScript() {
+ExecutePineTreeScript() {
     Respawn()
 
     loop {
@@ -85,8 +88,6 @@ ExecuteScript() {
         if (MoveToPineTree()) {
             Debug("Walk pine tree pattern")
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
-            MoveRight(5000)
-            MoveUp(5000)
             Debug("Moving to hive")
             if (ToHiveFromPineTree()) {
                 Debug("Convert honey")
@@ -103,4 +104,4 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+ExecutePineTreeScript()

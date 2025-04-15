@@ -6,10 +6,10 @@
 stopKey := "F2"
 
 ; Dynamic settings
-global hivePosition := 3
+global hivePosition := 1
 global speed := 33.3
 global patternRepeat := 10
-global subpatternRepeat := 5
+global subpatternRepeat := 10
 
 ; Field settings
 global patternLength := 7
