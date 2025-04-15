@@ -1,31 +1,23 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-#Include, common.ahk
-
-stopKey := "F2"
-
 ; Dynamic settings
 global hivePosition := 1
 global speed := 33.3
 global patternRepeat := 10
 global subpatternRepeat := 10
 
+#Include, common.ahk
+
 ; Field settings
 global patternLength := 7
 global patternWidth := 7
-
-global movespeedFactor := 28 / speed
-
-Hotkey %stopKey%, StopScript
 
 CoordMode, Pixel, Screen
 
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
     day := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0xfdfdfd)
@@ -42,7 +34,7 @@ ValidateField() {
     return night
 }
 
-MoveToField() {
+MoveToRoseField() {
     FromHiveToCannon(hivePosition)
 
     MoveRight(300)
@@ -57,7 +49,7 @@ MoveToField() {
     return True
 }
 
-WalkPattern(nbLoops, subrepeat) {
+WalkRosePattern(nbLoops, subrepeat) {
     StartFetching()
 
     move := 100
@@ -79,16 +71,16 @@ WalkPattern(nbLoops, subrepeat) {
 
             loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
+                MoveLeft(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
             }
 
             loop, 2 {
                 MoveUp(patternMoveTime)
-                PlaceSprinkler()
-                MoveRight(turnAroundTime)
+                MoveRight(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
+                PlaceSprinkler()
                 MoveRight(turnAroundTime)
             }
 
@@ -98,10 +90,11 @@ WalkPattern(nbLoops, subrepeat) {
             }
 
             MoveUp(patternMoveTime * 3)
+            MoveDown(200)
 
             loop, 2 {
                 MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.5)
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
@@ -112,7 +105,7 @@ WalkPattern(nbLoops, subrepeat) {
 
             loop, 2 {
                 MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
+                MoveDown(turnAroundTime * 0.5)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
@@ -166,14 +159,14 @@ ToHiveFromField() {
     return True
 }
 
-ExecuteScript() {
+ExecuteRoseScript() {
     Respawn()
 
     Loop {
         Debug("Moving to rose field")
-        If (MoveToField()) {
+        If (MoveToRoseField()) {
             Debug("Walk rose pattern")
-            WalkPattern(patternRepeat, subpatternRepeat)
+            WalkRosePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             If (ToHiveFromField()) {
                 Debug("Convert honey")
@@ -190,7 +183,7 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+ExecuteRoseScript()
 
 StopScript:
     ResetKeys()

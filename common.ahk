@@ -2,6 +2,8 @@
 
 global GoToHiveRequested := False
 
+global movespeedFactor := 28 / speed
+
 ToolTip Press F2 to stop script / F3 to go to hive, 50, 400, 1
 
 Hotkey, F2, StopScript
