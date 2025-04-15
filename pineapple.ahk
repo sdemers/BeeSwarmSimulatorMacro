@@ -5,12 +5,12 @@
 
 stopKey := "F2"
 
-global hivePosition := 1
+global hivePosition := 2
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 5
+global patternRepeat := 20
+global subpatternRepeat := 20
 global patternLength := 10
 global patternWidth := 10
 
@@ -23,8 +23,6 @@ CoordMode, Pixel, Screen
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
     day := CompareColorAt(170, 1900, 0x006493) && CompareColorAt(2730, 270, 0x958465)
@@ -136,19 +134,6 @@ WalkPineapplePattern(nbLoops, subrepeat) {
     }
 }
 
-MoveToHiveSlot(slot) {
-    ; We should be facing the wall at slot #3
-
-    MoveDown(500)
-
-    If (slot < 3) {
-        Return MoveToHiveRight()
-    }
-    else {
-        Return MoveToHiveLeft()
-    }
-}
-
 ToHiveFromPineapple() {
     global hivePosition
 
@@ -179,7 +164,7 @@ ToHiveFromPineapple() {
     Return True
 }
 
-ExecuteScript() {
+ExecutePineappleScript() {
     Respawn()
 
     Loop {
@@ -203,9 +188,4 @@ ExecuteScript() {
     }
 }
 
-;ToHiveFromPineapple()
-ExecuteScript()
-
-StopScript:
-    ResetKeys()
-ExitApp
+ExecutePineappleScript()

@@ -3,12 +3,9 @@
 
 #Include, common.ahk
 
-stopKey := "F2"
-
-global hivePosition := 4
+global hivePosition := 2
 global speed := 33.35
 
-; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 100
 global subpatternRepeat := 100
 global patternLength := 10
@@ -16,30 +13,11 @@ global patternWidth := 10
 
 global movespeedFactor := 28 / speed
 
-Hotkey %stopKey%, StopScript
-
 CoordMode, Pixel, Screen
 
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
-
-ValidateField() {
-
-    day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
-    if (day) {
-        return True
-    }
-
-    if CompareColorAt(3750, 2000, 0x857559) && CompareColorAt(1900, 650, 0x2C4421) {
-        return True
-    }
-
-    night := CompareColorAt(3750, 2000, 0x000000) && CompareColorAt(1900, 650, 0x5d2b0c)
-    return night
-}
 
 MoveToBamboo() {
     FromHiveToCannon(hivePosition)
@@ -89,7 +67,7 @@ ToHiveFromBamboo() {
     return True
 }
 
-ExecuteScript() {
+ExecuteBambooScript() {
     Respawn()
 
     loop {
@@ -113,8 +91,4 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
-
-StopScript:
-    ResetKeys()
-ExitApp
+ExecuteBambooScript()

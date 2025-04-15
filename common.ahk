@@ -186,7 +186,7 @@ ReleaseChute() {
 }
 
 MoveToHiveSlot(slot, fromSlot := 3) {
-    ; We should be facing the wall at slot #3
+    ; We should be facing the wall at slot #fromSlot
 
     MoveDown(500)
 
