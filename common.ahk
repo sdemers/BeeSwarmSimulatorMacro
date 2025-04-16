@@ -82,6 +82,14 @@ ZoomOut(times:=1)
     }
 }
 
+ZoomIn(times:=1)
+{
+    Loop, %times%
+    {
+        KeyPress("i", 15)
+    }
+}
+
 RotateRight() {
     RotateCamera(-2)
 }
@@ -158,10 +166,7 @@ Respawn() {
     Send {Enter}
     Sleep 7000
 
-    If (ValidateStart()) {
-        ZoomOut(5)
-    }
-    else {
+    If (!ValidateStart()) {
         Respawn()
     }
 }
@@ -256,6 +261,14 @@ FromHiveToCannon(hive, fire := True) {
     }
 }
 
+JumpToCannonAndFire() {
+    JumpToRedCannon()
+    MoveUp(50)
+    MoveRight(1300)
+    MoveDown(100)
+    FireCannon()
+}
+
 MoveToHiveLeft() {
     If (ValidateMakeHoney()) {
         return True
@@ -288,6 +301,22 @@ MoveToHiveRight() {
     }
 
     return False
+}
+
+MoveFromHiveToCannon() {
+    ZoomIn(6)
+    MoveUp(2900)
+    good := false
+    Loop, 50 {
+        MoveRight(1000)
+        if (CompareColorAt(3260, 50, 0x28d0f9)) {
+            ZoomOut(5)
+            good := True
+            Break
+        }
+    }
+
+    return good
 }
 
 IsContainerFull() {
@@ -554,40 +583,42 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * patternLength / 4
 
-            Loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
-                PlaceSprinkler()
-                MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
-            }
+            Loop, 3 {
+                Loop, 2 {
+                    MoveUp(patternMoveTime)
+                    MoveRight(turnAroundTime * 0.5)
+                    PlaceSprinkler()
+                    MoveDown(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                }
 
-            Loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
+                Loop, 2 {
+                    MoveUp(patternMoveTime)
+                    MoveLeft(turnAroundTime * 0.5)
+                    MoveDown(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                }
 
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
+                MoveUp(patternMoveTime * 1.5)
+                MoveDown(200)
 
-            Loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
+                Loop, 2 {
+                    MoveRight(patternMoveTime)
+                    MoveDown(turnAroundTime * 0.5)
+                    MoveLeft(patternMoveTime)
+                    MoveDown(turnAroundTime)
+                }
 
-            MoveRight(patternMoveTime / 3)
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
+                MoveRight(patternMoveTime / 3)
+                MoveUp(patternMoveTime * 1.5)
+                MoveDown(200)
 
-            Loop, 2 {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
+                Loop, 2 {
+                    MoveLeft(patternMoveTime)
+                    MoveDown(turnAroundTime * 0.5)
+                    MoveRight(patternMoveTime)
+                    MoveDown(turnAroundTime)
+                }
             }
 
             MoveUp(3000)
@@ -603,6 +634,82 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
             Debug("", 2)
             Debug("", 3)
             Break
+        }
+    }
+}
+
+WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 1000) {
+    StartFetching()
+
+    move := 100
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    MoveDown(initialMoveDown)
+    MoveLeft(initialMoveLeft)
+
+    loop, %nbLoops% {
+        If (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+
+            turnAroundTime := move * patternLength / 4
+            loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.5)
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime * 0.5)
+                MoveDown(patternMoveTime)
+                PlaceSprinkler()
+                MoveRight(turnAroundTime)
+            }
+
+            If (IsContainerFull()) {
+                containerFull := True
+                break
+            }
+
+            MoveUp(patternMoveTime * 3)
+            MoveDown(200)
+
+            loop, 2 {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveLeft(patternMoveTime / 3)
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            loop, 2 {
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveRight(500)
+
+            If (IsContainerFull()) {
+                containerFull := True
+                break
+            }
+        }
+
+        If (containerFull || A_Index = nbLoops) {
+            MoveUp(5000)
+            MoveRight(5000)
+            break
         }
     }
 }

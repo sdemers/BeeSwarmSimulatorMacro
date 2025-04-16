@@ -1,14 +1,9 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-#Include, common.ahk
-
-stopKey := "F2"
-
-global hivePosition := 2
+global hivePosition := 3
 global speed := 33.35
 
-; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 20
 global subpatternRepeat := 20
 global patternLength := 10
@@ -16,7 +11,7 @@ global patternWidth := 10
 
 global movespeedFactor := 28 / speed
 
-Hotkey %stopKey%, StopScript
+#Include, common.ahk
 
 CoordMode, Pixel, Screen
 
@@ -35,24 +30,18 @@ ValidateField() {
 }
 
 MoveToPineapple() {
-    MoveUp(2875)
-    MoveRight(5000)
-    MoveLeft(172)
-    MoveRight(57)
-    JumpToRedCannon()
-    MoveRight(1150)
-    Sleep 200
-    KeyPress("e", 15)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
+        Sleep 2300
+        MoveLeft(5500)
+        RotateCamera(4)
 
-    Sleep 2300
-    MoveLeft(5500)
-    RotateCamera(4)
+        MoveUp(3000)
+        MoveLeft(3000)
 
-    MoveUp(3000)
-    MoveLeft(3000)
-
-    If (ValidateField()) {
-        Return True
+        If (ValidateField()) {
+            Return True
+        }
     }
 
     Return False

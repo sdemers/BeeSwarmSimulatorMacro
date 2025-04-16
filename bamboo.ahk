@@ -3,7 +3,7 @@
 
 #Include, common.ahk
 
-global hivePosition := 2
+global hivePosition := 3
 global speed := 33.35
 
 global patternRepeat := 100

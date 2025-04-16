@@ -3,7 +3,7 @@
 
 #Include, common.ahk
 
-global hivePosition := 1
+global hivePosition := 4
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -21,19 +21,22 @@ WinActivate Roblox
 Sleep 200
 
 MoveToSunflower(hive) {
-    MoveUp(2875)
-    MoveRight(hive * 1200)
-    MoveDown(4000)
+    if (MoveFromHiveToCannon()) {
+        MoveDown(4000)
 
-    RotateCamera(4)
-    MoveLeft(2000)
-    MoveUp(1000)
+        RotateCamera(4)
+        MoveLeft(2000)
+        MoveUp(1000)
 
-    RotateLeft()
-    MoveUp(1000)
-    MoveLeft(1000)
+        RotateLeft()
+        MoveUp(1000)
+        MoveLeft(1000)
 
-    return True
+        return True
+    }
+
+    return False
+
 }
 
 MoveToHiveSlotFrom1(slot) {

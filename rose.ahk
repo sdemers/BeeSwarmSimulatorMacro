@@ -2,7 +2,7 @@
 #Persistent
 
 ; Dynamic settings
-global hivePosition := 1
+global hivePosition := 5
 global speed := 33.3
 global patternRepeat := 10
 global subpatternRepeat := 10
@@ -47,83 +47,6 @@ MoveToRoseField() {
     MoveRight(3500)
 
     return True
-}
-
-WalkRosePattern(nbLoops, subrepeat) {
-    StartFetching()
-
-    move := 100
-    patternMoveTime := move * patternWidth
-    containerFull := False
-
-    MoveDown(1000)
-    MoveLeft(1000)
-
-    loop, %nbLoops% {
-        If (A_Index = 1) {
-            PlaceSprinkler()
-        }
-
-        Debug("Pattern #" . A_Index . "/" . nbLoops)
-        loop, %subrepeat% {
-
-            turnAroundTime := move * patternLength / 4
-
-            loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
-
-            loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
-                MoveDown(patternMoveTime)
-                PlaceSprinkler()
-                MoveRight(turnAroundTime)
-            }
-
-            If (IsContainerFull()) {
-                containerFull := True
-                break
-            }
-
-            MoveUp(patternMoveTime * 3)
-            MoveDown(200)
-
-            loop, 2 {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveLeft(patternMoveTime / 3)
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
-
-            loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveRight(500)
-
-            If (IsContainerFull()) {
-                containerFull := True
-                break
-            }
-        }
-
-        If (containerFull || A_Index = nbLoops) {
-            MoveUp(5000)
-            MoveRight(5000)
-            break
-        }
-    }
 }
 
 ToHiveFromField() {

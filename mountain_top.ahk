@@ -1,18 +1,13 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-#Include, common.ahk
-
-global hivePosition := 2
+global hivePosition := 5
 global speed := 33.3
-
-; Set the snake pattern parameters (adjust to your liking)
 global patternRepeat := 10
-global patternLength := 20
+global patternWidth := 8
+global patternLength := 10
 
-global move := 100
-
-global movespeedFactor := 28 / speed
+#Include, common.ahk
 
 WinActivate Roblox
 
@@ -28,44 +23,44 @@ MoveToMountainTop() {
     return True
 }
 
-WalkMountainTopPattern(nbLoops) {
-    StartFetching()
-
-    moveTime := move * patternLength
-    stop := False
-
+WalkMountainTopPattern(patternRepeat) {
     RotateCamera(4)
 
-    loop, %nbLoops% {
-        Debug("Pattern #" . A_Index . "/" . nbLoops)
-
-        MoveUp(4000)
-        MoveRight(2000)
-
-        MoveDown(500)
-
-        loop, 6 {
-            MoveLeft(700)
-            MoveDown(200)
-            MoveRight(500)
-            MoveDown(200)
-        }
-
-        MoveLeft(2000)
-        MoveRight(1000)
-
-        loop, 4 {
-            MoveRight(800)
-            MoveUp(200)
-            MoveLeft(500)
-            MoveUp(200)
-        }
-
-        if (stop) {
-            Break
-        }
-    }
+    MoveUp(5000)
+    MoveRight(3000)
+    WalkRosePattern(patternRepeat, 10, 3000, 500)
 }
+
+;     loop, %nbLoops% {
+;         Debug("Pattern #" . A_Index . "/" . nbLoops)
+
+;         MoveUp(4000)
+;         MoveRight(2000)
+
+;         MoveDown(500)
+
+;         loop, 6 {
+;             MoveLeft(700)
+;             MoveDown(200)
+;             MoveRight(500)
+;             MoveDown(200)
+;         }
+
+;         MoveLeft(2000)
+;         MoveRight(1000)
+
+;         loop, 4 {
+;             MoveRight(800)
+;             MoveUp(200)
+;             MoveLeft(500)
+;             MoveUp(200)
+;         }
+
+;         if (stop) {
+;             Break
+;         }
+;     }
+; }
 
 ToHiveFromMountainTop() {
     global hivePosition
