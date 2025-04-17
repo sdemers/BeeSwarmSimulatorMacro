@@ -20,16 +20,20 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToSpider() {
+MoveToClover() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        Sleep, 800
+        MoveLeft(1000)
         DeployChute()
-        MoveDown(1500)
+        MoveUp(1000)
+        MoveLeft(200)
+        Sleep, 3000
         SendSpace()
         Sleep, 2000
-        RotateCamera(4)
+        ;Sleep, 2000
+        ;RotateCamera(4)
 
+        MoveUp(3000)
         MoveLeft(3000)
         return True
 
@@ -38,22 +42,33 @@ MoveToSpider() {
     return False
 }
 
-ToHiveFromSpider() {
+ToHiveFromClover() {
     global hivePosition
 
     StopFetching()
 
-    ; Move next to the straberry field
+    ; Move to the blue portal
     MoveUp(5000)
     MoveLeft(5000)
-
-    ; Move towards the hives, turn left then move to the hives
-    RotateCamera(4)
-    MoveUp(9000)
+    MoveDown(400)
+    MoveLeft(2000)
+    MoveDown(6000)
+    MoveRight(300)
+    MoveDown(500)
+    MoveLeft(5000)
     MoveRight(500)
-    MoveUp(6000)
+    MoveUp(200)
+    KeyPress("e", 15)
+    Sleep, 2000
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    ; Move to the first hive slot
+    MoveDown(5000)
+    MoveLeft(3200)
+    MoveUp(4000)
+    MoveRight(500)
+    MoveDown(500)
+
+    if (MoveToHiveLeft() = False) {
         Debug("Hive not found...")
         return False
     }
@@ -61,16 +76,16 @@ ToHiveFromSpider() {
     return True
 }
 
-ExecuteSpiderScript() {
+ExecuteCloverScript() {
     Respawn()
 
     loop {
-        Debug("Moving to spider")
-        if (MoveToSpider()) {
-            Debug("Walk spider pattern")
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+        Debug("Moving to clover")
+        if (MoveToClover()) {
+            Debug("Walk clover pattern")
+            WalkCloverPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromSpider()) {
+            if (ToHiveFromClover()) {
                 Debug("Convert honey")
                 ConvertHoney()
             } else {
@@ -85,4 +100,4 @@ ExecuteSpiderScript() {
     }
 }
 
-ExecuteSpiderScript()
+ExecuteCloverScript()

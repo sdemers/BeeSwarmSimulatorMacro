@@ -105,4 +105,6 @@ ExecuteMountainTopScript() {
     }
 }
 
-ExecuteMountainTopScript()
+;ExecuteMountainTopScript()
+
+WalkPineTreePattern(10, 10, 2, 400)

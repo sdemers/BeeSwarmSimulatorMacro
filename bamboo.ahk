@@ -20,21 +20,23 @@ WinActivate Roblox
 Sleep 200
 
 MoveToBamboo() {
-    FromHiveToCannon(hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
+        Sleep 500
+        MoveLeft(300)
+        Sleep 150
+        DeployChute()
+        Sleep 3000
+        SendSpace()
+        Sleep 500
+        RotateCamera(4)
 
-    Sleep 500
-    MoveLeft(300)
-    Sleep 150
-    DeployChute()
-    Sleep 3000
-    SendSpace()
-    Sleep 500
-    RotateCamera(4)
+        MoveUp(3000)
+        MoveRight(3000)
+        return True
+    }
 
-    MoveUp(3000)
-    MoveRight(3000)
-
-    return True
+    return False
 }
 
 ToHiveFromBamboo() {

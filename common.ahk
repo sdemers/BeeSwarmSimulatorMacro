@@ -309,7 +309,8 @@ MoveFromHiveToCannon() {
     good := false
     Loop, 50 {
         MoveRight(1000)
-        if (CompareColorAt(3260, 50, 0x28d0f9)) {
+
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break
@@ -405,7 +406,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
     }
 }
 
-WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2) {
+WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
     move := 85
     patternMoveTime := move * patternWidth
@@ -427,7 +428,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2) {
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * patternLength / 4
 
-            MoveLeft(200)
+            MoveLeft(initialMoveLeft)
 
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
@@ -469,7 +470,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2) {
                 MoveDown(turnAroundTime * 0.75)
             }
 
-            MoveRight(patternMoveTime)
+            MoveRight(patternMoveTime + (initialMoveLeft - 200))
 
             if (IsContainerFull()) {
                 containerFull := True
@@ -525,6 +526,7 @@ WalkSpiderPattern(nbLoops, subrepeat) {
             }
 
             MoveUp(patternMoveTime * 1.5)
+            MoveDown(300)
 
             Loop, 2 {
                 MoveRight(patternMoveTime)
@@ -710,6 +712,84 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             MoveUp(5000)
             MoveRight(5000)
             break
+        }
+    }
+}
+
+WalkCloverPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 80
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    MoveDown(15 * move)
+    MoveRight(15 * move)
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+            StartFetching()
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+            turnAroundTime := move * patternLength / 4
+
+            ;MoveRight(200)
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime * 0.5)
+                PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveRight(turnAroundTime)
+            }
+
+            Loop, 2 {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.5)
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            Loop, 2 {
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveRight(500)
+            MoveUp(patternMoveTime * 1.5)
+            MoveLeft(patternMoveTime * 1.5)
+            MoveDown(200)
+            MoveRight(200)
+
+            Loop, 2 {
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveRight(200)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
         }
     }
 }
