@@ -62,6 +62,13 @@ MoveRight(time) {
     KeyPress("d", time)
 }
 
+TopView() {
+    MouseMove, 1000, 100
+    Send, {RButton down}
+    MouseMove, 0, 1000, 0.2, R
+    Send, {RButton up}
+}
+
 RotateCamera(times :=1 )
 {
     If times == 0

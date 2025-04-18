@@ -1,17 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 3
-global speed := 33.35
-
-global patternRepeat := 100
-global subpatternRepeat := 100
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -76,6 +67,7 @@ ExecuteBambooScript() {
         Debug("Moving to bamboo")
         if (MoveToBamboo()) {
             Debug("Walk pine tree pattern")
+            TopView()
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromBamboo()) {

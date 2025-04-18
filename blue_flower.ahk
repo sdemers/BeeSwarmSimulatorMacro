@@ -3,7 +3,7 @@
 
 #Include, common.ahk
 
-global hivePosition := 2
+global hivePosition := 3
 global speed := 33.33
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -75,7 +75,7 @@ ToHiveFromBlueFlower() {
     return True
 }
 
-ExecuteScript() {
+ExecuteBlueFlowerScript() {
     Respawn()
 
     loop {
@@ -100,5 +100,5 @@ ExecuteScript() {
 }
 
 ;WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
-ExecuteScript()
+ExecuteBlueFlowerScript()
 

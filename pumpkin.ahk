@@ -3,12 +3,12 @@
 
 #Include, common.ahk
 
-global hivePosition := 1
+global hivePosition := 3
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 1
-global subpatternRepeat := 1
+global patternRepeat := 10
+global subpatternRepeat := 10
 global patternLength := 10
 global patternWidth := 10
 
@@ -24,6 +24,7 @@ MoveToPumpkin(hivePosition) {
     FromHiveToCannon(hivePosition)
 
     RotateCamera(4)
+    ZoomOut(5)
 
     Sleep, 500
     MoveLeft(200)

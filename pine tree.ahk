@@ -3,7 +3,7 @@
 
 #Include, common.ahk
 
-global hivePosition := 2
+global hivePosition := 6
 global speed := 33.35
 
 ; Set the snake pattern parameters (adjust to your liking)
@@ -45,6 +45,8 @@ MoveToPineTree() {
     SendSpace()
     Sleep 500
     RotateRight()
+
+    ZoomOut(5)
 
     MoveRight(5000)
     MoveUp(5000)
