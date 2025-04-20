@@ -63,6 +63,7 @@ MoveRight(time) {
 }
 
 TopView() {
+    ZoomOut(5)
     MouseMove, 1000, 100
     Send, {RButton down}
     MouseMove, 0, 1000, 0.2, R

@@ -1,17 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-; Dynamic settings
-global hivePosition := 5
-global speed := 33.3
-global patternRepeat := 10
-global subpatternRepeat := 10
-
+#Include, config.ahk
 #Include, common.ahk
-
-; Field settings
-global patternLength := 7
-global patternWidth := 7
 
 CoordMode, Pixel, Screen
 
@@ -35,18 +26,20 @@ ValidateField() {
 }
 
 MoveToRoseField() {
-    FromHiveToCannon(hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
+        MoveRight(300)
+        DeployChute()
+        Sleep 2300
+        SendSpace()
+        Sleep 500
+        MoveRight(1000)
+        MoveUp(2500)
+        MoveRight(3500)
+        return True
+    }
 
-    MoveRight(300)
-    DeployChute()
-    Sleep 2300
-    SendSpace()
-    Sleep 500
-    MoveRight(1000)
-    MoveUp(2500)
-    MoveRight(3500)
-
-    return True
+    return False
 }
 
 ToHiveFromField() {
@@ -107,7 +100,3 @@ ExecuteRoseScript() {
 }
 
 ExecuteRoseScript()
-
-StopScript:
-    ResetKeys()
-ExitApp

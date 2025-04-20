@@ -1,7 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global hivePosition := 5
+global hivePosition := 3
 global speed := 33.35
 
 global patternRepeat := 20
