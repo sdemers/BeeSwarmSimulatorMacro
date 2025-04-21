@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 1
-global speed := 32.5
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -82,8 +72,10 @@ ExecuteBlueFlowerScript() {
         Debug("Moving to blue flower")
         if (MoveToBlueFlowerField()) {
             Debug("Walk blue flower pattern")
-            TopView()
-            WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
+            ZoomOut()
+            WalkBlueFlowerPattern(patternRepeat, subpatternRepeat)
+            ;WalkPineTreePattern(patternRepeat, subpatternRepeat)
+            ;WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromBlueFlower()) {
                 Debug("Convert honey")
@@ -100,6 +92,5 @@ ExecuteBlueFlowerScript() {
     }
 }
 
-;WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
 ExecuteBlueFlowerScript()
 

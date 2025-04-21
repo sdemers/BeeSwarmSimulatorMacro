@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 3
-global speed := 32.5
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 100
-global subpatternRepeat := 100
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -89,7 +79,10 @@ ExecutePineTreeScript() {
         Debug("Moving to pine tree")
         if (MoveToPineTree()) {
             Debug("Walk pine tree pattern")
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+            ZoomOut()
+            MoveDown(800)
+            MoveLeft(400)
+            WalkElolPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPineTree()) {
                 Debug("Convert honey")

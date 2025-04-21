@@ -66,8 +66,8 @@ ExecuteBambooScript() {
     loop {
         Debug("Moving to bamboo")
         if (MoveToBamboo()) {
-            Debug("Walk pine tree pattern")
-            TopView()
+            Debug("Walk bamboo pattern")
+            ZoomOut()
             WalkPineTreePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromBamboo()) {

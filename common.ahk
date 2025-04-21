@@ -82,7 +82,7 @@ RotateCamera(times :=1 )
     }
 }
 
-ZoomOut(times:=1)
+ZoomOut(times := 5)
 {
     Loop, %times%
     {
@@ -265,6 +265,7 @@ FromHiveToCannon(hive, fire := True) {
 
     if (fire) {
         MoveRight(1300)
+        MoveDown(50)
         FireCannon()
     }
 }
@@ -318,7 +319,7 @@ MoveFromHiveToCannon() {
     Loop, 50 {
         MoveRight(1000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break
@@ -334,8 +335,9 @@ IsContainerFull() {
         return True
     }
 
-    PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
-    return ErrorLevel = 0
+    return CompareColorAt(2408, 100, 0x1700F7)
+    ;PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
+    ;return ErrorLevel = 0
 }
 
 IsConvertingHoney() {
@@ -454,6 +456,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
             }
 
             MoveUp(patternMoveTime)
+            MoveDown(200)
 
             if (IsContainerFull()) {
                 containerFull := True
@@ -792,6 +795,129 @@ WalkCloverPattern(nbLoops, subrepeat) {
                 containerFull := True
                 Break
             }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
+
+    move := 85
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    MoveDown(15 * move)
+    MoveLeft(10 * move)
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+
+            StartFetching()
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+            turnAroundTime := move * patternLength / 4
+
+            MoveLeft(initialMoveLeft)
+
+            Loop, %nbzigzag% {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.5)
+                PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime * 0.75)
+            }
+
+            Loop, %nbzigzag% {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime * 0.5)
+                MoveDown(patternMoveTime)
+                MoveRight(turnAroundTime * 0.75)
+            }
+
+            MoveUp(patternMoveTime * 1.25)
+
+            MoveDown(200)
+            Loop, %nbzigzag% {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime * 0.5)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime * 0.75)
+            }
+
+            MoveLeft(patternMoveTime)
+            MoveUp(patternMoveTime * 1.5)
+            MoveRight(patternMoveTime * 1.5)
+            MoveDown(patternMoveTime)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkElolPattern(nbLoops, subrepeat) {
+
+    containerFull := False
+
+    move := 180
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        StartFetching()
+
+        loop, %subrepeat% {
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+
+            Loop, 3 {
+                MoveLeft(move * 0.75)
+                MoveDown(move * 2.5)
+                MoveLeft(move * 1.25)
+                MoveUp(move * 2.5)
+            }
+
+            MoveRight(move * 6)
+            MoveLeft(100)
+
+            Loop, 2 {
+                MoveDown(move * 2.5)
+                MoveLeft(move * 0.75)
+                MoveUp(move * 2.5)
+                MoveLeft(move * 1.25)
+            }
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+
+            MoveDown(move * 2.5)
+            MoveRight(move * 6)
+            MoveLeft(100)
+            MoveUp(move * 3)
+            MoveDown(100)
         }
 
         if (containerFull || A_Index = nbLoops) {

@@ -1,30 +1,14 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-stopKey := "F2"
-
-global hivePosition := 1
-global speed := 32.2
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
-
-Hotkey %stopKey%, StopScript
 
 CoordMode, Pixel, Screen
 
 WinActivate Roblox
 
 Sleep 200
-
-ToolTip Press F2 to stop script, 50, 400, 1
 
 ValidateField() {
     return True
@@ -143,11 +127,6 @@ WalkCoconutPattern(nbLoops, subrepeat) {
     }
 }
 
-MoveToHiveSlot()  {
-    MoveDown(500)
-    return MoveToHiveLeft()
-}
-
 ToHiveFromCoconut() {
     StopFetching()
 
@@ -159,7 +138,7 @@ ToHiveFromCoconut() {
     MoveDown(5000)
     MoveUp(2000)
 
-    if (MoveToHiveSlot() = False) {
+    if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -167,14 +146,17 @@ ToHiveFromCoconut() {
     return True
 }
 
-ExecuteScript() {
+ExecuteCoconutScript() {
     Respawn()
 
     loop {
         Debug("Moving to coconut")
         if (MoveToCoconut()) {
             Debug("Walk coconut pattern")
-            WalkCoconutPattern(patternRepeat, subpatternRepeat)
+            MoveUp(5000)
+            MoveRight(5000)
+            ZoomOut()
+            WalkPineTreePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")
@@ -190,10 +172,4 @@ ExecuteScript() {
         }
     }
 }
-;WalkCoconutPattern(patternRepeat, subpatternRepeat)
-;ToHiveFromCoconut()
-ExecuteScript()
-
-StopScript:
-    ResetKeys()
-ExitApp
+ExecuteCoconutScript()
