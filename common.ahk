@@ -873,11 +873,17 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
     }
 }
 
-WalkElolPattern(nbLoops, subrepeat) {
+MoveLateral(time, left := True) {
+    if (left) {
+        MoveLeft(time)
+    } else {
+        MoveRight(time)
+    }
+}
+
+WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
 
     containerFull := False
-
-    move := 180
 
     loop, %nbLoops% {
         if (A_Index = 1) {
@@ -892,20 +898,21 @@ WalkElolPattern(nbLoops, subrepeat) {
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
 
             Loop, 3 {
-                MoveLeft(move * 0.75)
+                MoveLateral(move * 0.75, left)
+                PlaceSprinkler()
                 MoveDown(move * 2.5)
-                MoveLeft(move * 1.25)
+                MoveLateral(move * 1.25, left)
                 MoveUp(move * 2.5)
             }
 
-            MoveRight(move * 6)
-            MoveLeft(100)
+            MoveLateral(move * 6, !left)
+            MoveLateral(100 ,left)
 
             Loop, 2 {
                 MoveDown(move * 2.5)
-                MoveLeft(move * 0.75)
+                MoveLateral(move * 0.75, left)
                 MoveUp(move * 2.5)
-                MoveLeft(move * 1.25)
+                MoveLateral(move * 1.25, left)
             }
 
             if (IsContainerFull()) {
@@ -914,8 +921,9 @@ WalkElolPattern(nbLoops, subrepeat) {
             }
 
             MoveDown(move * 2.5)
-            MoveRight(move * 6)
-            MoveLeft(100)
+            PlaceSprinkler()
+            MoveLateral(move * 6, !left)
+            MoveLateral(100, left)
             MoveUp(move * 3)
             MoveDown(100)
         }

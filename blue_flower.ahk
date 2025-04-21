@@ -41,23 +41,31 @@ ToHiveFromBlueFlower() {
 
     StopFetching()
 
-    RotateCamera(4)
+    ;RotateCamera(2)
 
     ; Walk to switch next to blue cannon
     ; Give enough time to disable haste
-    MoveUp(15000)
+    MoveUp(3000)
+    MoveLeft(15000)
+    MoveRight(500)
+    MoveDown(1000)
 
-    MoveDown(600)
-    MoveRight(2000)
-    MoveLeft(50)
-    SendSpace(10)
-    MoveRight(700)
-    Sleep 300
-    KeyPress("e", 20)
-    Sleep 2500
-    MoveUp(5000)
+    MoveLeft(6000)
+    MoveRight(200)
+    MoveUp(100)
+    KeyPress("e", 200)
+    KeyPress("e", 200)
+    KeyPress("e", 200)
+    Sleep 3000
+    MoveLeft(6000)
+    MoveDown(1000)
+    MoveRight(300)
+    MoveDown(1000)
+    MoveLeft(1000)
+    MoveUp(500)
+    MoveRight(1000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(hivePosition, 1) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -92,5 +100,6 @@ ExecuteBlueFlowerScript() {
     }
 }
 
-ExecuteBlueFlowerScript()
+;ExecuteBlueFlowerScript()
+ToHiveFromBlueFlower()
 
