@@ -82,6 +82,7 @@ ExecutePineTreeScript() {
             ZoomOut()
             MoveDown(800)
             MoveLeft(400)
+            ResetSprinklers()
             WalkElolPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPineTree()) {
@@ -99,4 +100,5 @@ ExecutePineTreeScript() {
     }
 }
 
+;JumpToRedCannon()
 ExecutePineTreeScript()

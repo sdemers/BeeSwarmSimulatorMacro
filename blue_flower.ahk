@@ -81,9 +81,8 @@ ExecuteBlueFlowerScript() {
         if (MoveToBlueFlowerField()) {
             Debug("Walk blue flower pattern")
             ZoomOut()
+            ResetSprinklers()
             WalkBlueFlowerPattern(patternRepeat, subpatternRepeat)
-            ;WalkPineTreePattern(patternRepeat, subpatternRepeat)
-            ;WalkZigZagCrossUpperRight(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromBlueFlower()) {
                 Debug("Convert honey")
@@ -100,6 +99,6 @@ ExecuteBlueFlowerScript() {
     }
 }
 
-;ExecuteBlueFlowerScript()
-ToHiveFromBlueFlower()
+ExecuteBlueFlowerScript()
+;ToHiveFromBlueFlower()
 

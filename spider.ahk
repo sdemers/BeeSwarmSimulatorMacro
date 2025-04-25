@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 1
-global speed := 33.35
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 100
-global subpatternRepeat := 100
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -25,11 +15,12 @@ MoveToSpider() {
         JumpToCannonAndFire()
         Sleep, 800
         DeployChute()
-        MoveDown(1500)
+        MoveDown(1100)
         SendSpace()
         Sleep, 2000
         RotateCamera(4)
 
+        MoveUp(2000)
         MoveLeft(3000)
         return True
 
@@ -68,6 +59,7 @@ ExecuteSpiderScript() {
         Debug("Moving to spider")
         if (MoveToSpider()) {
             Debug("Walk spider pattern")
+            ResetSprinklers()
             WalkSpiderPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromSpider()) {
@@ -84,5 +76,7 @@ ExecuteSpiderScript() {
         }
     }
 }
+
+;WalkSpiderPattern(patternRepeat, subpatternRepeat)
 
 ExecuteSpiderScript()

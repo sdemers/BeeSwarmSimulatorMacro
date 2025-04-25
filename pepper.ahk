@@ -86,6 +86,7 @@ ExecutePepperScript() {
         Debug("Moving to pepper field")
         If (MoveToPepperField()) {
             Debug("Walk rose pattern")
+            ResetSprinklers()
             WalkRosePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             If (ToHiveFromPepperField()) {

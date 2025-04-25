@@ -42,8 +42,26 @@ KeyPress(key, duration := 0)
     Send, {%key% up}
 }
 
-PlaceSprinkler() {
-    KeyPress("1", 15)
+global nbSprinklers := 0
+global lastSprinkler := 0
+
+ResetSprinklers() {
+    nbSprinklers := 0
+}
+
+PlaceSprinkler(totalSprinklers := 4) {
+
+    if (A_NowUTC - lastSprinkler > 10 && nbSprinklers < totalSprinklers) {
+        nbSprinklers := nbSprinklers + 1
+        lastSprinkler := A_NowUTC
+        Sleep, 300
+        Jump(25)
+        Sleep, 100
+        KeyPress("1", 15)
+        return True
+    }
+
+    return False
 }
 
 MoveUp(time) {
@@ -106,17 +124,16 @@ RotateLeft() {
     RotateCamera(2)
 }
 
-Jump() {
+Jump(time := 25) {
     Send {Space down}
-    Sleep 25
+    Sleep %time%
     Send {Space up}
 }
 
 JumpToRedCannon() {
     KeyDown("d")
     KeyDown("w")
-    Sleep, 50
-    Jump()
+    Jump(25)
     Sleep, 100
     KeyUp("w")
     KeyUp("d")
@@ -508,9 +525,6 @@ WalkSpiderPattern(nbLoops, subrepeat) {
     MoveRight(10 * move)
 
     loop, %nbLoops% {
-        if (A_Index = 1) {
-            PlaceSprinkler()
-        }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
@@ -524,9 +538,9 @@ WalkSpiderPattern(nbLoops, subrepeat) {
             Loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveRight(turnAroundTime * 0.5)
-                PlaceSprinkler()
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
+                PlaceSprinkler(sprinklers)
             }
 
             Loop, 2 {
@@ -534,27 +548,30 @@ WalkSpiderPattern(nbLoops, subrepeat) {
                 MoveLeft(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
+                PlaceSprinkler(sprinklers)
             }
 
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(300)
+            MoveDown(500)
 
             Loop, 2 {
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime * 0.5)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
+                PlaceSprinkler(sprinklers)
             }
 
             MoveRight(patternMoveTime / 3)
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
+            MoveDown(500)
 
             Loop, 2 {
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime * 0.5)
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
+                PlaceSprinkler(sprinklers)
             }
 
             MoveLeft(patternMoveTime)
@@ -891,9 +908,10 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
-        StartFetching()
 
         loop, %subrepeat% {
+
+            StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
 
@@ -931,6 +949,81 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
         if (containerFull || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkCoconutPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 90
+    patternMoveTime := move * patternWidth
+    containerFull := False
+
+    MoveDown(10 * move)
+    MoveLeft(10 * move)
+
+    loop, %nbLoops% {
+        if (A_Index = 1) {
+            PlaceSprinkler()
+        }
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+
+            turnAroundTime := move * patternLength / 5
+
+            MoveLeft(200)
+
+            Loop, 4 {
+                MoveUp(patternMoveTime)
+                MoveLeft(turnAroundTime)
+                PlaceSprinkler()
+                MoveDown(patternMoveTime)
+                MoveLeft(turnAroundTime)
+            }
+
+            PlaceSprinkler()
+
+            Loop, 4 {
+                MoveUp(patternMoveTime)
+                MoveRight(turnAroundTime)
+                MoveDown(patternMoveTime)
+                MoveRight(turnAroundTime)
+            }
+
+            MoveUp(patternMoveTime)
+
+            Loop, 2 {
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveLeft(patternMoveTime / 3)
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(200)
+
+            Loop, 2 {
+                MoveRight(patternMoveTime)
+                MoveDown(turnAroundTime)
+                MoveLeft(patternMoveTime)
+                MoveDown(turnAroundTime)
+            }
+
+            MoveRight(patternMoveTime)
+
+            if (IsContainerFull()) {
+                containerFull := True
+                Break
+            }
+        }
+
+        if (containerFull || A_Index = nbLoops) {
+            MoveRight(5000 * movespeedFactor)
+            MoveUp(5000 * movespeedFactor)
             Break
         }
     }

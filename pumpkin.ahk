@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 3
-global speed := 33.35
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -30,9 +20,9 @@ MoveToPumpkin(hivePosition) {
     MoveLeft(200)
     DeployChute()
     Sleep 2000
-    MoveUp(1500)
+    MoveUp(1000)
     SendSpace()
-    Sleep 1500
+    Sleep 1000
 
     MoveUp(5000)
     MoveRight(5000)
@@ -80,6 +70,7 @@ ExecutePumpkinScript() {
         if (MoveToPumpkin(hivePosition)) {
             Debug("Walk Pumpkin pattern")
             ZoomOut(5)
+            ResetSprinklers()
             WalkSpiderPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPumpkin()) {

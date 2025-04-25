@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 4
-global speed := 33.35
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 20
-global subpatternRepeat := 20
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -70,7 +60,8 @@ ExecuteStrawberryScript() {
         Debug("Moving to strawberry")
         if (MoveToStrawberry()) {
             Debug("Walk pine tree pattern")
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+            ResetSprinklers()
+            WalkCoconutPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")

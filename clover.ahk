@@ -83,6 +83,7 @@ ExecuteCloverScript() {
         Debug("Moving to clover")
         if (MoveToClover()) {
             Debug("Walk clover pattern")
+            ResetSprinklers()
             WalkCloverPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromClover()) {

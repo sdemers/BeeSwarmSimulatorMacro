@@ -55,8 +55,9 @@ ExecuteMushroomScript() {
             Debug("Walk mushroom pattern")
             ZoomOut()
             MoveUp(2000)
-            MoveRight(3000)
-            WalkElolPattern(patternRepeat, subpatternRepeat)
+            MoveLeft(3000)
+            ResetSprinklers()
+            WalkSpiderPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromMushroom()) {
                 Debug("Convert honey")

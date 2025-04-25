@@ -160,6 +160,7 @@ ExecutePineappleScript() {
         Debug("Moving to pineapple")
         If (MoveToPineapple()) {
             Debug("Walk pineapple pattern")
+            ResetSprinklers()
             WalkPineapplePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {

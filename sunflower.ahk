@@ -60,7 +60,7 @@ ToHiveFromSunflower() {
     return True
 }
 
-ExecuteScript() {
+ExecuteSunflowerScript() {
     Respawn()
 
     loop {
@@ -68,6 +68,7 @@ ExecuteScript() {
         if (MoveToSunflower(hivePosition)) {
             Debug("Walk Sunflower pattern")
             ZoomOut(5)
+            ResetSprinklers()
             WalkSunflowerPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
@@ -85,4 +86,4 @@ ExecuteScript() {
     }
 }
 
-ExecuteScript()
+ExecuteSunflowerScript()

@@ -82,6 +82,7 @@ ExecuteRoseScript() {
         Debug("Moving to rose field")
         If (MoveToRoseField()) {
             Debug("Walk rose pattern")
+            ResetSprinklers()
             WalkRosePattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             If (ToHiveFromField()) {

@@ -88,6 +88,7 @@ ExecuteMountainTopScript() {
         Debug("Moving to mountain top")
         if (MoveToMountainTop()) {
             Debug("Walk mountain top pattern")
+            ResetSprinklers()
             WalkMountainTopPattern(patternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromMountainTop()) {
