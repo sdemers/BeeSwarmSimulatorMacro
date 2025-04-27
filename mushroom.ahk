@@ -47,6 +47,9 @@ ToHiveFromMushroom() {
 }
 
 ExecuteMushroomScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     loop {
@@ -62,6 +65,10 @@ ExecuteMushroomScript() {
             if (ToHiveFromMushroom()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

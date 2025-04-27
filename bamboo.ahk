@@ -61,6 +61,11 @@ ToHiveFromBamboo() {
 }
 
 ExecuteBambooScript() {
+
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
+
     Respawn()
 
     loop {
@@ -74,6 +79,10 @@ ExecuteBambooScript() {
             if (ToHiveFromBamboo()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()ddd

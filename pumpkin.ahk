@@ -63,6 +63,9 @@ ToHiveFromPumpkin() {
 }
 
 ExecutePumpkinScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     loop {
@@ -76,6 +79,10 @@ ExecutePumpkinScript() {
             if (ToHiveFromPumpkin()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

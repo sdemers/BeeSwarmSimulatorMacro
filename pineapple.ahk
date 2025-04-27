@@ -52,7 +52,7 @@ WalkPineapplePattern(nbLoops, subrepeat) {
 
     move := 100
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(20 * move)
     MoveRight(20 * move)
@@ -82,8 +82,8 @@ WalkPineapplePattern(nbLoops, subrepeat) {
                 MoveRight(turnAroundTime)
             }
 
-            If (IsContainerFull()) {
-                containerFull := True
+            If (ShouldStopFetching()) {
+                stopFetching := True
                 break
             }
 
@@ -109,13 +109,13 @@ WalkPineapplePattern(nbLoops, subrepeat) {
 
             MoveRight(500)
 
-            If (IsContainerFull()) {
-                containerFull := True
+            If (ShouldStopFetching()) {
+                stopFetching := True
                 break
             }
         }
 
-        If (containerFull || A_Index = nbLoops) {
+        If (stopFetching || A_Index = nbLoops) {
             MoveUp(5000)
             MoveRight(5000)
             break
@@ -154,6 +154,9 @@ ToHiveFromPineapple() {
 }
 
 ExecutePineappleScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     Loop {
@@ -166,6 +169,10 @@ ExecutePineappleScript() {
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

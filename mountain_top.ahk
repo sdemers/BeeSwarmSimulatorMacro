@@ -82,6 +82,10 @@ ToHiveFromMountainTop() {
 }
 
 ExecuteMountainTopScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
+
     Respawn()
 
     loop {
@@ -94,6 +98,10 @@ ExecuteMountainTopScript() {
             if (ToHiveFromMountainTop()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

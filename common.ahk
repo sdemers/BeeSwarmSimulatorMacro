@@ -350,7 +350,7 @@ MoveFromHiveToCannon() {
     return good
 }
 
-IsContainerFull() {
+ShouldStopFetching() {
     if GoToHiveRequested {
         GoToHiveRequested := False
         return True
@@ -360,9 +360,8 @@ IsContainerFull() {
         return True
     }
 
+    ; Check if container is full
     return CompareColorAt(2408, 100, 0x1700F7)
-    ;PixelSearch, FoundX, FoundY, 2408, 100, 2410, 102, 0x1700F7, 5, True
-    ;return ErrorLevel = 0
 }
 
 IsConvertingHoney() {
@@ -388,7 +387,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
     StartFetching()
 
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     StartFetching()
 
@@ -429,13 +428,13 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
             moveUp(1000)
             MoveRight(3000)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             break
         }
     }
@@ -445,7 +444,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
     move := 85
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(15 * move)
     MoveLeft(10 * move)
@@ -483,8 +482,8 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
             MoveUp(patternMoveTime)
             MoveDown(200)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
 
@@ -508,13 +507,13 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
             MoveRight(patternMoveTime + (initialMoveLeft - 200))
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break
@@ -527,7 +526,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True) {
 
     move := 60
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(patternMoveTime * 1.5)
     MoveLateral(patternMoveTime, !left)
@@ -585,13 +584,13 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True) {
 
             MoveLateral(patternMoveTime, left)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break
@@ -604,7 +603,7 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
 
     move := 80
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     loop, %nbLoops% {
         if (A_Index = 1) {
@@ -663,13 +662,13 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
             MoveUp(3000)
             MoveLeft(3000)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break
@@ -682,7 +681,7 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
     move := 100
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(initialMoveDown)
     MoveLeft(initialMoveLeft)
@@ -711,8 +710,8 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
                 MoveRight(turnAroundTime)
             }
 
-            If (IsContainerFull()) {
-                containerFull := True
+            If (ShouldStopFetching()) {
+                stopFetching := True
                 break
             }
 
@@ -739,13 +738,13 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
             MoveRight(500)
 
-            If (IsContainerFull()) {
-                containerFull := True
+            If (ShouldStopFetching()) {
+                stopFetching := True
                 break
             }
         }
 
-        If (containerFull || A_Index = nbLoops) {
+        If (stopFetching || A_Index = nbLoops) {
             MoveUp(5000)
             MoveRight(5000)
             break
@@ -758,7 +757,7 @@ WalkCloverPattern(nbLoops, subrepeat) {
 
     move := 80
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(15 * move)
     MoveRight(15 * move)
@@ -817,13 +816,13 @@ WalkCloverPattern(nbLoops, subrepeat) {
 
             MoveRight(200)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break
@@ -835,7 +834,7 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
 
     move := 85
     patternMoveTime := move * patternWidth
-    containerFull := False
+    stopFetching := False
 
     MoveDown(15 * move)
     MoveLeft(10 * move)
@@ -885,13 +884,13 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
             MoveRight(patternMoveTime * 1.5)
             MoveDown(patternMoveTime)
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break
@@ -909,7 +908,7 @@ MoveLateral(time, left := True) {
 
 WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
 
-    containerFull := False
+    stopFetching := False
 
     loop, %nbLoops% {
         if (A_Index = 1) {
@@ -947,8 +946,8 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
                 MoveLateral(move * 1.25, left)
             }
 
-            if (IsContainerFull()) {
-                containerFull := True
+            if (ShouldStopFetching()) {
+                stopFetching := True
                 Break
             }
 
@@ -960,7 +959,7 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             MoveDown(100)
         }
 
-        if (containerFull || A_Index = nbLoops) {
+        if (stopFetching || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
             Break

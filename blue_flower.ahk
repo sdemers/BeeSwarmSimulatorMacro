@@ -74,6 +74,10 @@ ToHiveFromBlueFlower() {
 }
 
 ExecuteBlueFlowerScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
+
     Respawn()
 
     loop {
@@ -87,6 +91,10 @@ ExecuteBlueFlowerScript() {
             if (ToHiveFromBlueFlower()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

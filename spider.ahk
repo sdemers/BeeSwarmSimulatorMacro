@@ -53,6 +53,9 @@ ToHiveFromSpider() {
 }
 
 ExecuteSpiderScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     loop {
@@ -65,6 +68,10 @@ ExecuteSpiderScript() {
             if (ToHiveFromSpider()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

@@ -61,6 +61,9 @@ ToHiveFromSunflower() {
 }
 
 ExecuteSunflowerScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     loop {
@@ -74,6 +77,10 @@ ExecuteSunflowerScript() {
             if (ToHiveFromSunflower()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()

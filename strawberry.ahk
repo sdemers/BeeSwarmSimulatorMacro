@@ -52,6 +52,9 @@ ToHiveFromStrawberry() {
 }
 
 ExecuteStrawberryScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
     Respawn()
 
     loop {
@@ -66,6 +69,10 @@ ExecuteStrawberryScript() {
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()
