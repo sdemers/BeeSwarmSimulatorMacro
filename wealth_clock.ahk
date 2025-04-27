@@ -4,17 +4,17 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 global lastWeathClock := 0
+ReadWealthClock()
+
+global useWealthClock := 1
+ReadUseWealthClock()
 
 ShouldGoToWealthClock() {
+    ReadUseWealthClock()
+    Debug("Last Wealth Clock: " . lastWeathClock, 5)
 
-    if (useWealthClock and A_NowUTC - lastWeathClock > 3630) {
+    if (useWealthClock = 1 and A_NowUTC - lastWeathClock > 3630) {
         return True
     }
 }
@@ -41,6 +41,22 @@ MoveToClock(hive) {
 
 }
 
+ReadUseWealthClock() {
+    IniRead, Name, config.ini, Config, UseWealthClock
+    useWealthClock := Name
+}
+
+ReadWealthClock() {
+    IniRead, Name, config.ini, Config, LastWealthClock
+    lastWeathClock := Name
+    Debug("Last Wealth Clock: " . lastWeathClock)
+}
+
+WriteWealthClock(Value) {
+    lastWeathClock := Value
+    IniWrite, %Value%, config.ini, Config, LastWealthClock
+}
+
 ExecuteWealthClockScript() {
     Respawn()
 
@@ -48,8 +64,6 @@ ExecuteWealthClockScript() {
     if (MoveToClock(hivePosition)) {
         KeyPress("e", 15)
         Sleep, 200
-        lastWeathClock := A_NowUTC
+        WriteWealthClock(A_NowUTC)
     }
 }
-
-;ExecuteWealthClockScript()

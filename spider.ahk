@@ -77,6 +77,4 @@ ExecuteSpiderScript() {
     }
 }
 
-;WalkSpiderPattern(patternRepeat, subpatternRepeat)
-
 ExecuteSpiderScript()

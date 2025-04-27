@@ -305,7 +305,7 @@ MoveToHiveLeft() {
     }
 
     step := 0
-    while (step < 30) {
+    while (step < 100) {
         MoveLeft(125)
         If (ValidateMakeHoney()) {
             return True
@@ -322,7 +322,7 @@ MoveToHiveRight() {
     }
 
     step := 0
-    while (step < 60) {
+    while (step < 100) {
         MoveRight(125)
         If (ValidateMakeHoney()) {
             return True
