@@ -1,5 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 
+#Include, wealth_clock.ahk
+
 global GoToHiveRequested := False
 
 global movespeedFactor := 28 / speed
@@ -51,13 +53,14 @@ ResetSprinklers() {
 
 PlaceSprinkler(totalSprinklers := 4) {
 
-    if (A_NowUTC - lastSprinkler > 10 && nbSprinklers < totalSprinklers) {
+    if (A_NowUTC - lastSprinkler > sprinklerPlacementDelay && nbSprinklers < totalSprinklers) {
         nbSprinklers := nbSprinklers + 1
         lastSprinkler := A_NowUTC
         Sleep, 300
         Jump(25)
         Sleep, 100
         KeyPress("1", 15)
+        Sleep, 300
         return True
     }
 
@@ -241,7 +244,7 @@ CheckPixel(x, y, color, xytolerance := 5) {
 
 CompareColorAt(x, y, targetColor, tolerance := 20) {
     PixelGetColor, color, x, y
-    Debug("Pixel at " . x . "," . y . " is " . color)
+    Debug("Pixel at " . x . "," . y . " is " . color, 4)
 
     tr := format("{:d}","0x" . substr(targetColor, 3, 2))
     tg := format("{:d}","0x" . substr(targetColor, 5, 2))
@@ -254,7 +257,6 @@ CompareColorAt(x, y, targetColor, tolerance := 20) {
 
     ;check distance
     distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
-    ;Debug(distance)
     return distance <= tolerance
 }
 
@@ -285,6 +287,8 @@ FromHiveToCannon(hive, fire := True) {
         MoveDown(50)
         FireCannon()
     }
+
+    ZoomOut(5)
 }
 
 JumpToCannonAndFire() {
@@ -318,7 +322,7 @@ MoveToHiveRight() {
     }
 
     step := 0
-    while (step < 30) {
+    while (step < 60) {
         MoveRight(125)
         If (ValidateMakeHoney()) {
             return True
@@ -336,7 +340,7 @@ MoveFromHiveToCannon() {
     Loop, 50 {
         MoveRight(1000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break
@@ -349,6 +353,10 @@ MoveFromHiveToCannon() {
 IsContainerFull() {
     if GoToHiveRequested {
         GoToHiveRequested := False
+        return True
+    }
+
+    if (ShouldGoToWealthClock()) {
         return True
     }
 
@@ -514,15 +522,15 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
     }
 }
 
-WalkSpiderPattern(nbLoops, subrepeat) {
+WalkSpiderPattern(nbLoops, subrepeat, left := True) {
     StartFetching()
 
-    move := 80
+    move := 60
     patternMoveTime := move * patternWidth
     containerFull := False
 
-    MoveDown(15 * move)
-    MoveRight(10 * move)
+    MoveDown(patternMoveTime * 1.5)
+    MoveLateral(patternMoveTime, !left)
 
     loop, %nbLoops% {
 
@@ -533,48 +541,49 @@ WalkSpiderPattern(nbLoops, subrepeat) {
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * patternLength / 4
 
-            MoveRight(200)
+            MoveLateral(200, !left)
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
+                MoveLateral(turnAroundTime * 0.5, !left)
                 MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
                 PlaceSprinkler(sprinklers)
+                MoveLateral(turnAroundTime, !left)
             }
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
+                MoveLateral(turnAroundTime * 0.5, left)
                 MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
+                MoveLateral(turnAroundTime, left)
+            }
+
+            PlaceSprinkler(sprinklers)
+
+            MoveUp(patternMoveTime * 1.5)
+            MoveDown(300)
+
+            Loop, 2 {
+                MoveLateral(patternMoveTime, !left)
+                MoveDown(turnAroundTime * 0.5)
                 PlaceSprinkler(sprinklers)
+                MoveLateral(patternMoveTime, left)
+                MoveDown(turnAroundTime * 0.75)
             }
 
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(500)
+            MoveLateral(patternMoveTime / 3, !left)
+            MoveDown(300)
 
             Loop, 2 {
-                MoveRight(patternMoveTime)
+                MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
                 PlaceSprinkler(sprinklers)
+                MoveLateral(patternMoveTime, !left)
+                MoveDown(turnAroundTime)
             }
 
-            MoveRight(patternMoveTime / 3)
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(500)
-
-            Loop, 2 {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-                PlaceSprinkler(sprinklers)
-            }
-
-            MoveLeft(patternMoveTime)
+            MoveLateral(patternMoveTime, left)
 
             if (IsContainerFull()) {
                 containerFull := True
@@ -917,7 +926,9 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
 
             Loop, 3 {
                 MoveLateral(move * 0.75, left)
-                PlaceSprinkler()
+                if (A_Index = 2) {
+                    PlaceSprinkler()
+                }
                 MoveDown(move * 2.5)
                 MoveLateral(move * 1.25, left)
                 MoveUp(move * 2.5)
@@ -929,6 +940,9 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             Loop, 2 {
                 MoveDown(move * 2.5)
                 MoveLateral(move * 0.75, left)
+                if (A_Index = 1) {
+                    PlaceSprinkler()
+                }
                 MoveUp(move * 2.5)
                 MoveLateral(move * 1.25, left)
             }
@@ -949,81 +963,6 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
         if (containerFull || A_Index = nbLoops) {
             Debug("", 2)
             Debug("", 3)
-            Break
-        }
-    }
-}
-
-WalkCoconutPattern(nbLoops, subrepeat) {
-    StartFetching()
-
-    move := 90
-    patternMoveTime := move * patternWidth
-    containerFull := False
-
-    MoveDown(10 * move)
-    MoveLeft(10 * move)
-
-    loop, %nbLoops% {
-        if (A_Index = 1) {
-            PlaceSprinkler()
-        }
-
-        Debug("Pattern #" . A_Index . "/" . nbLoops)
-        loop, %subrepeat% {
-
-            turnAroundTime := move * patternLength / 5
-
-            MoveLeft(200)
-
-            Loop, 4 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
-                PlaceSprinkler()
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
-
-            PlaceSprinkler()
-
-            Loop, 4 {
-                MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime)
-                MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
-            }
-
-            MoveUp(patternMoveTime)
-
-            Loop, 2 {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveLeft(patternMoveTime / 3)
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
-
-            Loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveRight(patternMoveTime)
-
-            if (IsContainerFull()) {
-                containerFull := True
-                Break
-            }
-        }
-
-        if (containerFull || A_Index = nbLoops) {
-            MoveRight(5000 * movespeedFactor)
-            MoveUp(5000 * movespeedFactor)
             Break
         }
     }

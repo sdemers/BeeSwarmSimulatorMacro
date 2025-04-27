@@ -1,6 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, wealth_clock.ahk
 #Include, config.ahk
 #Include, common.ahk
 
@@ -63,7 +64,7 @@ ToHiveFromCoconut() {
     MoveDown(5000)
     MoveUp(2000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(hivePosition, 1) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -72,6 +73,10 @@ ToHiveFromCoconut() {
 }
 
 ExecuteCoconutScript() {
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+    }
+
     Respawn()
 
     loop {
@@ -82,11 +87,15 @@ ExecuteCoconutScript() {
             MoveRight(5000)
             ZoomOut()
             ResetSprinklers()
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(patternRepeat, subpatternRepeat, False)
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")
                 ConvertHoney()
+                if (ShouldGoToWealthClock()) {
+                    ExecuteWealthClockScript()
+                    Respawn()
+                }
             } else {
                 Debug("Respawning")
                 Respawn()
@@ -98,4 +107,5 @@ ExecuteCoconutScript() {
         }
     }
 }
+
 ExecuteCoconutScript()

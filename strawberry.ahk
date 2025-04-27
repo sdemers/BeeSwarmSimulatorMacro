@@ -23,8 +23,6 @@ MoveToStrawberry() {
     Sleep 1500
     RotateCamera(4)
 
-    MoveUp(5000)
-    MoveRight(5000)
     return True
 }
 
@@ -61,7 +59,9 @@ ExecuteStrawberryScript() {
         if (MoveToStrawberry()) {
             Debug("Walk pine tree pattern")
             ResetSprinklers()
-            WalkCoconutPattern(patternRepeat, subpatternRepeat)
+            MoveLeft(3000)
+            MoveUp(3000)
+            WalkSpiderPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")
