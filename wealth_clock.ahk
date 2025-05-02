@@ -24,18 +24,17 @@ ShouldGoToWealthClock() {
 MoveToClock(hive) {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        MoveLeft(900)
+        MoveLeft(1500)
         DeployChute()
-        MoveUp(100)
-        Sleep, 1000
-        MoveUp(100)
-        Sleep, 1100
+        loop, 40 {
+            MoveUp(50)
+            MoveLeft(50)
+        }
+        Sleep, 2000
         MoveLeft(1000)
-        Sleep, 7000
-        MoveLeft(1000)
-        MoveUp(1000)
-        MoveRight(500)
-        MoveDown(500)
+        MoveDown(3000)
+        MoveRight(750)
+        MoveDown(400)
         return True
     }
 
@@ -69,3 +68,7 @@ ExecuteWealthClockScript() {
         WriteWealthClock(A_NowUTC)
     }
 }
+
+; WinActivate Roblox
+; Sleep 200
+; ExecuteWealthClockScript()
