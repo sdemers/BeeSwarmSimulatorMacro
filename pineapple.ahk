@@ -20,13 +20,7 @@ WinActivate Roblox
 Sleep 200
 
 ValidateField() {
-    day := CompareColorAt(170, 1900, 0x006493) && CompareColorAt(2730, 270, 0x958465)
-    If (day) {
-        Return True
-    }
-
-    night := CompareColorAt(170, 1900, 0x006491) && CompareColorAt(2730, 270, 0x000000)
-    Return night
+    return (CompareColorAt(170, 1900, 0x006493) or CompareColorAt(170, 1900, 0x006491) or CompareColorAt(170, 1900, 0x006593)) && (CompareColorAt(2730, 270, 0x958465) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x000000))
 }
 
 MoveToPineapple() {
@@ -126,6 +120,9 @@ WalkPineapplePattern(nbLoops, subrepeat) {
 ToHiveFromPineapple() {
     global hivePosition
 
+    MoveUp(5000)
+    MoveRight(10000)
+
     StopFetching()
 
     RotateCamera(4)
@@ -164,7 +161,7 @@ ExecutePineappleScript() {
         If (MoveToPineapple()) {
             Debug("Walk pineapple pattern")
             ResetSprinklers()
-            WalkPineapplePattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(patternRepeat, subpatternRepeat, move:= 70)
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")

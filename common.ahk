@@ -22,7 +22,7 @@ StopScript() {
 }
 
 Debug(text, index := 2) {
-    FormatTime, CurrentTime, A_Now, yyyy-MM-dd HH:mm:ss
+    CurrentTime := A_Now
     FileAppend, [%CurrentTime%] %text% `n, log.txt
     ToolTip %text%, 50, 400 + (index * 50), index
 }
@@ -60,7 +60,7 @@ PlaceSprinkler(totalSprinklers := 4) {
         Jump(25)
         Sleep, 100
         KeyPress("1", 15)
-        Sleep, 300
+        Sleep, 600
         return True
     }
 
@@ -210,14 +210,8 @@ DeployChute() {
     SendSpace()
 }
 
-; Fouille moé pourquoi faut faire ça...
 ReleaseChute() {
-    SendSpace(15)
-    SendSpace(15)
-    SendSpace(15)
-    SendSpace(15)
-    SendSpace(15)
-    SendSpace(15)
+    SendSpace()
 }
 
 MoveToHiveSlot(slot, fromSlot := 3) {
@@ -340,7 +334,7 @@ MoveFromHiveToCannon() {
     Loop, 50 {
         MoveRight(1000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break
@@ -521,10 +515,9 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
     }
 }
 
-WalkSpiderPattern(nbLoops, subrepeat, left := True) {
+WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
     StartFetching()
 
-    move := 60
     patternMoveTime := move * patternWidth
     stopFetching := False
 
@@ -601,71 +594,83 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True) {
 WalkSunflowerPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 80
+    move := 60
     patternMoveTime := move * patternWidth
     stopFetching := False
 
+    sprinklerPlacementDelay := 0
+
+    ZoomOut(5)
+
+    MoveRight(1000)
+    MoveDown(1000)
+    PlaceSprinkler()
+    MoveRight(1000)
+    PlaceSprinkler()
+    MoveDown(1000)
+    PlaceSprinkler()
+    MoveLeft(1000)
+    PlaceSprinkler()
+    MoveUp(2000)
+    MoveLeft(2000)
+
     loop, %nbLoops% {
-        if (A_Index = 1) {
-            PlaceSprinkler()
-        }
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
-            StartFetching()
 
-            MoveDown(200)
-            MoveRight(15 * move)
-            MoveDown(15 * move)
+            If (A_Index > 3) {
+                MoveRight(1000)
+                MoveDown(700)
+            }
+            Else {
+                MoveLeft(500)
+                MoveDown(350)
+            }
+
             ZoomOut(5)
-
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * patternLength / 6
 
-            Loop, 3 {
+            StartFetching()
+            loop, 4 {
                 Loop, 2 {
-                    MoveUp(patternMoveTime)
-                    MoveRight(turnAroundTime * 0.5)
-                    PlaceSprinkler()
                     MoveDown(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                    MoveUp(patternMoveTime)
                     MoveRight(turnAroundTime)
                 }
 
                 Loop, 2 {
-                    MoveUp(patternMoveTime)
-                    MoveLeft(turnAroundTime * 0.5)
                     MoveDown(patternMoveTime)
                     MoveLeft(turnAroundTime)
+                    MoveUp(patternMoveTime)
+                    if (A_Index = 1) {
+                        MoveLeft(turnAroundTime)
+                    }
                 }
-
-                MoveUp(patternMoveTime * 1.5)
-                MoveDown(200)
 
                 Loop, 2 {
                     MoveRight(patternMoveTime)
-                    MoveDown(turnAroundTime * 0.5)
+                    MoveDown(turnAroundTime)
                     MoveLeft(patternMoveTime)
                     MoveDown(turnAroundTime)
                 }
 
-                MoveRight(patternMoveTime / 3)
-                MoveUp(patternMoveTime * 1.5)
-                MoveDown(200)
+                if (ShouldStopFetching()) {
+                    stopFetching := True
+                    Break
+                }
 
                 Loop, 2 {
-                    MoveLeft(patternMoveTime)
-                    MoveDown(turnAroundTime * 0.5)
                     MoveRight(patternMoveTime)
-                    MoveDown(turnAroundTime)
+                    MoveUp(turnAroundTime)
+                    MoveLeft(patternMoveTime)
+                    MoveUp(turnAroundTime)
                 }
             }
 
-            MoveUp(3000)
+            MoveUp(1500)
             MoveLeft(3000)
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
         }
 
         if (stopFetching || A_Index = nbLoops) {
@@ -679,8 +684,9 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
 WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 1000) {
     StartFetching()
 
-    move := 100
+    move := 70
     patternMoveTime := move * patternWidth
+    turnAroundTime := move * patternLength / 4
     stopFetching := False
 
     MoveDown(initialMoveDown)
@@ -693,13 +699,16 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
-
-            turnAroundTime := move * patternLength / 4
             loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.5)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
+            }
+
+            If (ShouldStopFetching()) {
+                stopFetching := True
+                break
             }
 
             loop, 2 {
@@ -708,11 +717,6 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
                 MoveDown(patternMoveTime)
                 PlaceSprinkler()
                 MoveRight(turnAroundTime)
-            }
-
-            If (ShouldStopFetching()) {
-                stopFetching := True
-                break
             }
 
             MoveUp(patternMoveTime * 3)
@@ -726,6 +730,12 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             }
 
             MoveLeft(patternMoveTime / 3)
+
+            If (ShouldStopFetching()) {
+                stopFetching := True
+                break
+            }
+
             MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
@@ -737,11 +747,6 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             }
 
             MoveRight(500)
-
-            If (ShouldStopFetching()) {
-                stopFetching := True
-                break
-            }
         }
 
         If (stopFetching || A_Index = nbLoops) {
@@ -963,6 +968,59 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             Debug("", 2)
             Debug("", 3)
             Break
+        }
+    }
+}
+
+WalkCactusPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 2000
+    stopFetching := False
+
+    StartFetching()
+
+    sprinklerPlacementDelay := 0
+
+    MoveDown(500)
+    PlaceSprinkler()
+    MoveDown(700)
+    MoveLeft(400)
+    PlaceSprinkler()
+    MoveRight(800)
+    PlaceSprinkler()
+    MoveLeft(400)
+    MoveDown(700)
+    PlaceSprinkler()
+    MoveUp(3000)
+
+    loop, %nbLoops% {
+
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+
+        loop, %subrepeat% {
+            StartFetching()
+
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+
+            MoveDown(1200)
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                break
+            }
+
+            MoveLeft(40)
+            MoveUp(1500)
+            MoveRight(50)
+
+            if (stopFetching || A_Index = subrepeat) {
+                break
+            }
+        }
+
+        if (stopFetching || A_Index = nbLoops) {
+            break
         }
     }
 }

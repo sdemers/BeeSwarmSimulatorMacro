@@ -12,9 +12,11 @@ ReadUseWealthClock()
 
 ShouldGoToWealthClock() {
     ReadUseWealthClock()
-    Debug("Last Wealth Clock: " . lastWeathClock, 5)
+    nextWealthClock := (lastWeathClock + 3600)
+    nextIn := nextWealthClock - A_NowUTC
+    Debug("Next Wealth clock in: " . nextIn . " seconds", 5)
 
-    if (useWealthClock = 1 and A_NowUTC - lastWeathClock > 3630) {
+    if (useWealthClock = 1 and nextIn < 0) {
         return True
     }
 }

@@ -10,7 +10,7 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToPumpkin(hivePosition) {
+MoveToCactus(hivePosition) {
     FromHiveToCannon(hivePosition)
 
     RotateCamera(4)
@@ -23,8 +23,8 @@ MoveToPumpkin(hivePosition) {
     SendSpace()
     Sleep 1000
 
-    MoveUp(5000)
-    MoveRight(5000)
+    MoveRight(3000)
+    MoveDown(6000)
     RotateRight()
 
     ZoomOut(5)
@@ -39,20 +39,20 @@ MoveToHiveSlotFrom1(slot) {
     return MoveToHiveLeft()
 }
 
-ToHiveFromPumpkin() {
+ToHiveFromCactus() {
     global hivePosition
 
-    StopFetching()
-
-    RotateLeft()
-    MoveLeft(5000)
     MoveUp(3000)
-    MoveRight(12000)
+    MoveRight(2000)
+    MoveDown(500)
+    MoveRight(500)
+    MoveUp(1000)
+    RotateRight()
 
-    RotateCamera(4)
-    MoveUp(10000)
+    MoveUp(15000)
+    MoveLeft(300)
 
-    JumpFromPolarBearToHive()
+    StopFetching()
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
@@ -62,21 +62,21 @@ ToHiveFromPumpkin() {
     return True
 }
 
-ExecutePumpkinScript() {
+ExecuteCactusScript() {
     if (ShouldGoToWealthClock()) {
         ExecuteWealthClockScript()
     }
     Respawn()
 
     loop {
-        Debug("Moving to Pumpkin")
-        if (MoveToPumpkin(hivePosition)) {
-            Debug("Walk Pumpkin pattern")
+        Debug("Moving to cactus")
+        if (MoveToCactus(hivePosition)) {
+            Debug("Walk Cactus pattern")
             ZoomOut(5)
             ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkCactusPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")
-            if (ToHiveFromPumpkin()) {
+            if (ToHiveFromCactus()) {
                 Debug("Convert honey")
                 ConvertHoney()
                 if (ShouldGoToWealthClock()) {
@@ -95,4 +95,4 @@ ExecutePumpkinScript() {
     }
 }
 
-ExecutePumpkinScript()
+ExecuteCactusScript()

@@ -20,8 +20,8 @@ MoveToMushroom(hivePosition) {
     Sleep, 500
     RotateCamera(4)
 
-    MoveRight(4000)
     MoveUp(4000)
+    MoveLeft(4000)
 
     return True
 }
@@ -30,7 +30,7 @@ ToHiveFromMushroom() {
 
     StopFetching()
 
-    MoveUp(10000)
+    MoveUp(2000)
     MoveRight(10000)
     RotateCamera(4)
 

@@ -1,7 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global hivePosition := 4
+global hivePosition := 3
 global speed := 33.5
 global sprinklers := 6
 global sprinklerPlacementDelay := 20

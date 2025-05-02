@@ -43,10 +43,9 @@ ToHiveFromSunflower() {
     StopFetching()
 
     MoveUp(5000)
-    MoveLeft(5000)
+    MoveLeft(15000)
     MoveDown(1000)
     MoveLeft(3000)
-    Sleep, 15000
     MoveDown(1300)
     RotateLeft()
     MoveUp(1000)
@@ -70,7 +69,6 @@ ExecuteSunflowerScript() {
         Debug("Moving to Sunflower")
         if (MoveToSunflower(hivePosition)) {
             Debug("Walk Sunflower pattern")
-            ZoomOut(5)
             ResetSprinklers()
             WalkSunflowerPattern(patternRepeat, subpatternRepeat)
             Debug("Moving to hive")

@@ -1,18 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
+#Include, config.ahk
 #Include, common.ahk
-
-global hivePosition := 5
-global speed := 33.35
-
-; Set the snake pattern parameters (adjust to your liking)
-global patternRepeat := 10
-global subpatternRepeat := 10
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
 
 CoordMode, Pixel, Screen
 
@@ -30,8 +20,6 @@ MoveToClover() {
         Sleep, 3000
         SendSpace()
         Sleep, 2000
-        ;Sleep, 2000
-        ;RotateCamera(4)
 
         MoveUp(3000)
         MoveLeft(3000)
