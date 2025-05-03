@@ -48,9 +48,9 @@ ToHiveFromBamboo() {
     MoveDown(1000)
 
     ; Move to hive
-    MoveUp(10000)
+    MoveUp(6000)
     MoveRight(600)
-    MoveUp(8000)
+    MoveUp(12000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
@@ -74,7 +74,7 @@ ExecuteBambooScript() {
             Debug("Walk bamboo pattern")
             ZoomOut()
             ResetSprinklers()
-            WalkPineTreePattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(patternRepeat, subpatternRepeat, left := False)
             Debug("Moving to hive")
             if (ToHiveFromBamboo()) {
                 Debug("Convert honey")

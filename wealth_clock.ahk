@@ -11,14 +11,15 @@ global useWealthClock := 1
 ReadUseWealthClock()
 
 ShouldGoToWealthClock() {
-    ReadUseWealthClock()
-    nextWealthClock := (lastWeathClock + 3600)
-    nextIn := nextWealthClock - A_NowUTC
-    Debug("Next Wealth clock in: " . nextIn . " seconds", 5)
+    nextIn := (A_TickCount / 1000) - lastWeathClock
+    Debug("Next wealth clock in " . nextIn . " seconds", 5)
 
-    if (useWealthClock = 1 and nextIn < 0) {
-        return True
+    if (nextIn > 3610) {
+        ReadUseWealthClock()
+        return useWealthClock
     }
+
+    return False
 }
 
 MoveToClock(hive) {
@@ -65,7 +66,7 @@ ExecuteWealthClockScript() {
     if (MoveToClock(hivePosition)) {
         KeyPress("e", 15)
         Sleep, 200
-        WriteWealthClock(A_NowUTC)
+        WriteWealthClock(A_TickCount / 1000)
     }
 }
 

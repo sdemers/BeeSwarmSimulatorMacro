@@ -594,7 +594,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
 WalkSunflowerPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 60
+    move := 50
     patternMoveTime := move * patternWidth
     stopFetching := False
 
@@ -602,37 +602,32 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
 
     ZoomOut(5)
 
-    MoveRight(1000)
-    MoveDown(1000)
+    sprinklerMove := 700
+    MoveRight(sprinklerMove)
+    MoveDown(sprinklerMove)
     PlaceSprinkler()
-    MoveRight(1000)
+    MoveRight(sprinklerMove)
     PlaceSprinkler()
-    MoveDown(1000)
+    MoveDown(sprinklerMove)
     PlaceSprinkler()
-    MoveLeft(1000)
+    MoveLeft(sprinklerMove)
     PlaceSprinkler()
-    MoveUp(2000)
-    MoveLeft(2000)
+    MoveUp(sprinklerMove * 2)
+    MoveLeft(sprinklerMove * 2)
 
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            If (A_Index > 3) {
-                MoveRight(1000)
-                MoveDown(700)
-            }
-            Else {
-                MoveLeft(500)
-                MoveDown(350)
-            }
+            MoveRight(600)
+            MoveDown(600)
 
             ZoomOut(5)
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * patternLength / 6
 
             StartFetching()
-            loop, 4 {
+            loop, 16 {
                 Loop, 2 {
                     MoveDown(patternMoveTime)
                     MoveRight(turnAroundTime)
@@ -644,33 +639,21 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
                     MoveDown(patternMoveTime)
                     MoveLeft(turnAroundTime)
                     MoveUp(patternMoveTime)
-                    if (A_Index = 1) {
-                        MoveLeft(turnAroundTime)
-                    }
-                }
-
-                Loop, 2 {
-                    MoveRight(patternMoveTime)
-                    MoveDown(turnAroundTime)
-                    MoveLeft(patternMoveTime)
-                    MoveDown(turnAroundTime)
+                    MoveLeft(turnAroundTime)
                 }
 
                 if (ShouldStopFetching()) {
                     stopFetching := True
                     Break
                 }
-
-                Loop, 2 {
-                    MoveRight(patternMoveTime)
-                    MoveUp(turnAroundTime)
-                    MoveLeft(patternMoveTime)
-                    MoveUp(turnAroundTime)
-                }
             }
 
             MoveUp(1500)
             MoveLeft(3000)
+
+            if (stopFetching) {
+                Break
+            }
         }
 
         if (stopFetching || A_Index = nbLoops) {

@@ -40,9 +40,9 @@ ToHiveFromSpider() {
 
     ; Move towards the hives, turn left then move to the hives
     RotateCamera(4)
-    MoveUp(9000)
-    MoveRight(500)
     MoveUp(6000)
+    MoveRight(500)
+    MoveUp(10000)
 
     if (MoveToHiveSlot(hivePosition) = False) {
         Debug("Hive not found...")
