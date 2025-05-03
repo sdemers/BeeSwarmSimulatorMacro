@@ -1,16 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global hivePosition := 3
-global speed := 33.35
-
-global patternRepeat := 20
-global subpatternRepeat := 20
-global patternLength := 10
-global patternWidth := 10
-
-global movespeedFactor := 28 / speed
-
+#Include, config.ahk
 #Include, common.ahk
 
 CoordMode, Pixel, Screen
@@ -26,8 +17,8 @@ ValidateField() {
 MoveToPineapple() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        Sleep 2300
-        MoveLeft(5500)
+        Sleep 2500
+        MoveLeft(7000)
         RotateCamera(4)
 
         MoveUp(3000)

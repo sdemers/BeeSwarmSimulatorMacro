@@ -44,6 +44,15 @@ KeyPress(key, duration := 0)
     Send, {%key% up}
 }
 
+TwoKeyPress(key1, key2, duration := 0)
+{
+    Send, {%key1% down}
+    Send, {%key2% down}
+    Sleep, (duration * movespeedFactor)
+    Send, {%key1% up}
+    Send, {%key2% up}
+}
+
 global nbSprinklers := 0
 global lastSprinkler := 0
 

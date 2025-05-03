@@ -33,32 +33,31 @@ MoveToRoseField() {
         Sleep 2300
         SendSpace()
         Sleep 500
+        RotateCamera(4)
+        TwoKeyPress("w", "d", 3000)
         MoveRight(1000)
-        MoveUp(2500)
-        MoveRight(3500)
+        MoveUp(1000)
+        ;MoveRight(1000)
+        ;MoveUp(2500)
+        ;MoveRight(3500)
         return True
     }
 
     return False
 }
 
-ToHiveFromField() {
+ToHiveFromRoseField() {
     global hivePosition
+
+    TwoKeyPress("w", "d", 5000)
+    Loop, 6 {
+        MoveLeft(500)
+        MoveUp(500)
+    }
 
     StopFetching()
 
-    ; Walk to switch next to blue cannon
-    ; Give enough time to disable haste
-    MoveUp(5000)
-    MoveRight(5000)
-
-    MoveDown(5000)
-    RotateCamera(4)
-
-    Loop, 5 {
-        MoveRight(800)
-        MoveUp(800)
-    }
+    TwoKeyPress("w", "d", 3000)
 
     MoveUp(12000)
     MoveRight(13000)
@@ -86,9 +85,10 @@ ExecuteRoseScript() {
         If (MoveToRoseField()) {
             Debug("Walk rose pattern")
             ResetSprinklers()
-            WalkRosePattern(patternRepeat, subpatternRepeat)
+            ;WalkRosePattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(patternRepeat, subpatternRepeat, left := False, move:= 70)
             Debug("Moving to hive")
-            If (ToHiveFromField()) {
+            If (ToHiveFromRoseField()) {
                 Debug("Convert honey")
                 ConvertHoney()
                 if (ShouldGoToWealthClock()) {
