@@ -21,8 +21,7 @@ MoveToPineapple() {
         MoveLeft(7000)
         RotateCamera(4)
 
-        MoveUp(3000)
-        MoveLeft(3000)
+        TwoKeyPress("w", "a", 5000)
 
         If (ValidateField()) {
             Return True
@@ -32,85 +31,7 @@ MoveToPineapple() {
     Return False
 }
 
-WalkPineapplePattern(nbLoops, subrepeat) {
-    StartFetching()
-
-    move := 100
-    patternMoveTime := move * patternWidth
-    stopFetching := False
-
-    MoveDown(20 * move)
-    MoveRight(20 * move)
-
-    loop, %nbLoops% {
-        If (A_Index = 1) {
-            PlaceSprinkler()
-        }
-
-        Debug("Pattern #" . A_Index . "/" . nbLoops)
-        loop, %subrepeat% {
-
-            turnAroundTime := move * patternLength / 6
-
-            loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
-
-            loop, 2 {
-                MoveUp(patternMoveTime)
-                PlaceSprinkler()
-                MoveRight(turnAroundTime)
-                MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
-            }
-
-            If (ShouldStopFetching()) {
-                stopFetching := True
-                break
-            }
-
-            MoveUp(patternMoveTime)
-
-            loop, 2 {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveLeft(patternMoveTime / 3)
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
-
-            loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveRight(500)
-
-            If (ShouldStopFetching()) {
-                stopFetching := True
-                break
-            }
-        }
-
-        If (stopFetching || A_Index = nbLoops) {
-            MoveUp(5000)
-            MoveRight(5000)
-            break
-        }
-    }
-}
-
 ToHiveFromPineapple() {
-    global hivePosition
-
     MoveUp(5000)
     MoveRight(10000)
 
@@ -141,6 +62,22 @@ ToHiveFromPineapple() {
     Return True
 }
 
+PlacePineappleSprinklers() {
+    ResetSprinklers()
+    sprinklerPlacementDelay := 0
+    MoveDown(600)
+    MoveRight(600)
+    PlaceSprinkler()
+    MoveDown(600)
+    PlaceSprinkler()
+    MoveRight(600)
+    PlaceSprinkler()
+    MoveUp(600)
+    PlaceSprinkler()
+    MoveLeft(1000)
+    MoveUp(1000)
+}
+
 ExecutePineappleScript() {
     if (ShouldGoToWealthClock()) {
         ExecuteWealthClockScript()
@@ -151,8 +88,8 @@ ExecutePineappleScript() {
         Debug("Moving to pineapple")
         If (MoveToPineapple()) {
             Debug("Walk pineapple pattern")
-            ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat, move:= 70)
+            PlacePineappleSprinklers()
+            WalkSpiderPattern(patternRepeat, subpatternRepeat, True, 70, False)
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")

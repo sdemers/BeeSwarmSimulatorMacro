@@ -524,7 +524,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
     }
 }
 
-WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
+WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers := True) {
     StartFetching()
 
     patternMoveTime := move * patternWidth
@@ -548,7 +548,9 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
                 MoveUp(patternMoveTime)
                 MoveLateral(turnAroundTime * 0.5, !left)
                 MoveDown(patternMoveTime)
-                PlaceSprinkler(sprinklers)
+                if (placeSplinkers) {
+                    PlaceSprinkler(sprinklers)
+                }
                 MoveLateral(turnAroundTime, !left)
             }
 
@@ -559,7 +561,9 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
                 MoveLateral(turnAroundTime, left)
             }
 
-            PlaceSprinkler(sprinklers)
+            if (placeSplinkers) {
+                PlaceSprinkler(sprinklers)
+            }
 
             MoveUp(patternMoveTime * 1.5)
             MoveDown(300)
@@ -567,7 +571,9 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
             Loop, 2 {
                 MoveLateral(patternMoveTime, !left)
                 MoveDown(turnAroundTime * 0.5)
-                PlaceSprinkler(sprinklers)
+                if (placeSplinkers) {
+                    PlaceSprinkler(sprinklers)
+                }
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.75)
             }
@@ -579,7 +585,9 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60) {
             Loop, 2 {
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.5)
-                PlaceSprinkler(sprinklers)
+                if (placeSplinkers) {
+                    PlaceSprinkler(sprinklers)
+                }
                 MoveLateral(patternMoveTime, !left)
                 MoveDown(turnAroundTime)
             }

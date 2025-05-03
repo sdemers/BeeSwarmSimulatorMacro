@@ -11,7 +11,8 @@ global useWealthClock := 1
 ReadUseWealthClock()
 
 ShouldGoToWealthClock() {
-    nextIn := 3610 - ((A_TickCount / 1000) - lastWeathClock)
+    nextIn := Round((3610000 - (A_TickCount - lastWeathClock)) / 1000)
+    ;Debug("A_TickCount: " . A_TickCount . ", lastWeathClock: " . lastWeathClock . ", Next wealth clock in " . nextIn . " seconds", 5)
     Debug("Next wealth clock in " . nextIn . " seconds", 5)
 
     if (nextIn < 0) {
@@ -66,11 +67,11 @@ ExecuteWealthClockScript() {
     Debug("Moving to Wealth Clock")
     if (MoveToClock(hivePosition)) {
         KeyPress("e", 15)
-        Sleep, 200
-        WriteWealthClock(A_TickCount / 1000)
+        Sleep, 500
+        WriteWealthClock(A_TickCount)
     }
 }
 
-WinActivate Roblox
-Sleep 200
-ExecuteWealthClockScript()
+;WinActivate Roblox
+;Sleep 200
+;ExecuteWealthClockScript()

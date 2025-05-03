@@ -31,8 +31,6 @@ MoveToBamboo() {
 }
 
 ToHiveFromBamboo() {
-    global hivePosition
-
     StopFetching()
 
     ; Move to the wall on the right side
