@@ -3,8 +3,8 @@
 
 global hivePosition := 3
 global speed := 33.5
-global sprinklers := 6
-global sprinklerPlacementDelay := 20
+global sprinklers := 1
+global sprinklerPlacementDelay := 0
 
 global patternRepeat := 100
 global subpatternRepeat := 100

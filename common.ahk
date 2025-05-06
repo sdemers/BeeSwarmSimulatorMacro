@@ -22,8 +22,9 @@ StopScript() {
 }
 
 Debug(text, index := 2) {
-    CurrentTime := A_Now
-    FileAppend, [%CurrentTime%] %text% `n, log.txt
+    FormatTime, currentTime, A_Now, yyyy-MM-dd HH:mm:ss
+
+    FileAppend, [%currentTime%] %text% `n, log.txt
     ToolTip %text%, 50, 400 + (index * 50), index
 }
 
@@ -194,7 +195,7 @@ ResetKeys() {
     Click up
 }
 
-Respawn() {
+Reset() {
     ResetKeys()
     Send {Esc}
     Sleep 300
@@ -202,9 +203,13 @@ Respawn() {
     Sleep 300
     Send {Enter}
     Sleep 7000
+}
 
-    If (!ValidateStart()) {
-        Respawn()
+Respawn() {
+    done := False
+    while (!done) {
+        Reset()
+        done := ValidateStart()
     }
 }
 
@@ -263,16 +268,12 @@ CompareColorAt(x, y, targetColor, tolerance := 20) {
     return distance <= tolerance
 }
 
-ValidatePixel(x, y, color) {
-    return CompareColorAt(x, y, color)
-}
-
 ValidateMakeHoney() {
     return CompareColorAt(2170, 240, 0xf9fff7) && CompareColorAt(2197, 185, 0xf9fff7)
 }
 
 ValidateStart() {
-    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F)
+    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404)
 }
 
 FireCannon() {
