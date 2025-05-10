@@ -10,8 +10,8 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToMushroom(hivePosition) {
-    FromHiveToCannon(hivePosition)
+MoveToMushroom(g_hivePosition) {
+    FromHiveToCannon(g_hivePosition)
 
     Sleep, 100
     DeployChute()
@@ -38,7 +38,7 @@ ToHiveFromMushroom() {
     MoveRight(200)
     MoveUp(10000)
 
-    if (MoveToHiveSlot(hivePosition, 5) = False) {
+    if (MoveToHiveSlot(g_hivePosition, 5) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -54,13 +54,13 @@ ExecuteMushroomScript() {
 
     loop {
         Debug("Moving to mushroom")
-        if (MoveToMushroom(hivePosition)) {
+        if (MoveToMushroom(g_hivePosition)) {
             Debug("Walk mushroom pattern")
             ZoomOut()
             MoveUp(2000)
             MoveLeft(3000)
             ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromMushroom()) {
                 Debug("Convert honey")

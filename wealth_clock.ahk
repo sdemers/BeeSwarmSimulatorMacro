@@ -65,7 +65,7 @@ ExecuteWealthClockScript() {
     Respawn()
 
     Debug("Moving to Wealth Clock")
-    if (MoveToClock(hivePosition)) {
+    if (MoveToClock(g_hivePosition)) {
         KeyPress("e", 15)
         Sleep, 500
         WriteWealthClock(A_TickCount)

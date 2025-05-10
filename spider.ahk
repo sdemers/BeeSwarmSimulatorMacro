@@ -30,7 +30,7 @@ MoveToSpider() {
 }
 
 ToHiveFromSpider() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -44,7 +44,7 @@ ToHiveFromSpider() {
     MoveRight(500)
     MoveUp(10000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -63,7 +63,7 @@ ExecuteSpiderScript() {
         if (MoveToSpider()) {
             Debug("Walk spider pattern")
             ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromSpider()) {
                 Debug("Convert honey")

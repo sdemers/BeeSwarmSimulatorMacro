@@ -10,8 +10,8 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToCactus(hivePosition) {
-    FromHiveToCannon(hivePosition)
+MoveToCactus(g_hivePosition) {
+    FromHiveToCannon(g_hivePosition)
 
     RotateCamera(4)
 
@@ -31,16 +31,8 @@ MoveToCactus(hivePosition) {
     return True
 }
 
-MoveToHiveSlotFrom1(slot) {
-    ; We should be facing the wall at slot #1
-
-    MoveDown(500)
-
-    return MoveToHiveLeft()
-}
-
 ToHiveFromCactus() {
-    global hivePosition
+    global g_hivePosition
 
     MoveUp(3000)
     MoveRight(2000)
@@ -54,7 +46,7 @@ ToHiveFromCactus() {
 
     StopFetching()
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -70,11 +62,11 @@ ExecuteCactusScript() {
 
     loop {
         Debug("Moving to cactus")
-        if (MoveToCactus(hivePosition)) {
+        if (MoveToCactus(g_hivePosition)) {
             Debug("Walk Cactus pattern")
             ZoomOut(5)
             ResetSprinklers()
-            WalkCactusPattern(patternRepeat, subpatternRepeat)
+            WalkCactusPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromCactus()) {
                 Debug("Convert honey")
@@ -95,4 +87,4 @@ ExecuteCactusScript() {
     }
 }
 
-ExecuteCactusScript()
+;ExecuteCactusScript()
