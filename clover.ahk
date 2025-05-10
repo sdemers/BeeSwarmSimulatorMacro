@@ -31,7 +31,7 @@ MoveToClover() {
 }
 
 ToHiveFromClover() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -76,7 +76,7 @@ ExecuteCloverScript() {
         if (MoveToClover()) {
             Debug("Walk clover pattern")
             ResetSprinklers()
-            WalkCloverPattern(patternRepeat, subpatternRepeat)
+            WalkCloverPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromClover()) {
                 Debug("Convert honey")

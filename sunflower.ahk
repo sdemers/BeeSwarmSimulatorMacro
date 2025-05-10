@@ -29,16 +29,8 @@ MoveToSunflower(hive) {
 
 }
 
-MoveToHiveSlotFrom1(slot) {
-    ; We should be facing the wall at slot #1
-
-    MoveDown(500)
-
-    return MoveToHiveLeft()
-}
-
 ToHiveFromSunflower() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -51,7 +43,7 @@ ToHiveFromSunflower() {
     MoveUp(1000)
     MoveRight(1000)
 
-    if (MoveToHiveSlotFrom1(hivePosition) = False) {
+    if (MoveToHiveSlotFrom1(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -67,10 +59,10 @@ ExecuteSunflowerScript() {
 
     loop {
         Debug("Moving to Sunflower")
-        if (MoveToSunflower(hivePosition)) {
+        if (MoveToSunflower(g_hivePosition)) {
             Debug("Walk Sunflower pattern")
             ResetSprinklers()
-            WalkSunflowerPattern(patternRepeat, subpatternRepeat)
+            WalkSunflowerPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
                 Debug("Convert honey")
@@ -91,4 +83,4 @@ ExecuteSunflowerScript() {
     }
 }
 
-ExecuteSunflowerScript()
+;ExecuteSunflowerScript()

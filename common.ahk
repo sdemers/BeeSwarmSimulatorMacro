@@ -4,8 +4,6 @@
 
 global GoToHiveRequested := False
 
-global movespeedFactor := 28 / speed
-
 ToolTip Press F2 to stop script / F3 to go to hive, 50, 400, 1
 
 Hotkey, F2, StopScript
@@ -41,7 +39,7 @@ KeyUp(key)
 KeyPress(key, duration := 0)
 {
     Send, {%key% down}
-    Sleep, (duration * movespeedFactor)
+    Sleep, (duration * g_movespeedFactor)
     Send, {%key% up}
 }
 
@@ -49,7 +47,7 @@ TwoKeyPress(key1, key2, duration := 0)
 {
     Send, {%key1% down}
     Send, {%key2% down}
-    Sleep, (duration * movespeedFactor)
+    Sleep, (duration * g_movespeedFactor)
     Send, {%key1% up}
     Send, {%key2% up}
 }
@@ -63,8 +61,15 @@ ResetSprinklers() {
 
 PlaceSprinkler(totalSprinklers := 4) {
 
-    if (A_NowUTC - lastSprinkler > sprinklerPlacementDelay && nbSprinklers < totalSprinklers) {
+    ;Debug("Total sprinklers: " . totalSprinklers)
+
+    if (totalSprinklers = 0) {
+        return True
+    }
+
+    if (A_NowUTC - lastSprinkler > g_sprinklerPlacementDelay && nbSprinklers < totalSprinklers) {
         nbSprinklers := nbSprinklers + 1
+        Debug("Placing sprinkler #" . nbSprinklers . "/" . totalSprinklers)
         lastSprinkler := A_NowUTC
         Sleep, 300
         Jump(25)
@@ -228,6 +233,14 @@ ReleaseChute() {
     SendSpace()
 }
 
+MoveToHiveSlotFrom1(slot) {
+    ; We should be facing the wall at slot #1
+
+    MoveDown(500)
+
+    return MoveToHiveLeft()
+}
+
 MoveToHiveSlot(slot, fromSlot := 3) {
     ; We should be facing the wall at slot #fromSlot
 
@@ -320,6 +333,23 @@ MoveToHiveLeft() {
     return False
 }
 
+MoveToHiveUp() {
+    If (ValidateMakeHoney()) {
+        return True
+    }
+
+    step := 0
+    while (step < 200) {
+        MoveUp(125)
+        If (ValidateMakeHoney()) {
+            return True
+        }
+        step++
+    }
+
+    return False
+}
+
 MoveToHiveRight() {
     If (ValidateMakeHoney()) {
         return True
@@ -344,7 +374,7 @@ MoveFromHiveToCannon() {
     Loop, 50 {
         MoveRight(1000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A) or CompareColorAt(1950, 55, 0x7E706D)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break
@@ -390,20 +420,20 @@ JumpFromPolarBearToHive() {
 WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
     StartFetching()
 
-    patternMoveTime := move * patternWidth
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     StartFetching()
 
     loop, %nbLoops% {
         if (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            turnAroundTime := move * patternLength / 6
+            turnAroundTime := move * g_patternLength / 6
 
             loop, 4 {
                 MoveLeft(patternMoveTime)
@@ -414,7 +444,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
 
             MoveLeft(patternMoveTime * 1.5)
 
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
 
             Loop, 3 {
                 MoveUp(patternMoveTime)
@@ -425,7 +455,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
 
             KeyDown("a")
             KeyDown("w")
-            Sleep, 3000 * movespeedFactor
+            Sleep, 3000 * g_movespeedFactor
             KeyUp("a")
             KeyUp("w")
 
@@ -447,7 +477,7 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
 WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
     move := 85
-    patternMoveTime := move * patternWidth
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     MoveDown(15 * move)
@@ -455,7 +485,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
     loop, %nbLoops% {
         if (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
@@ -464,14 +494,14 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
             StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * g_patternLength / 4
 
             MoveLeft(initialMoveLeft)
 
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.5)
-                PlaceSprinkler()
+                PlaceSprinkler(g_sprinklers)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.75)
             }
@@ -528,7 +558,7 @@ WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers := True) {
     StartFetching()
 
-    patternMoveTime := move * patternWidth
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     MoveDown(patternMoveTime * 1.5)
@@ -541,7 +571,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
             StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * g_patternLength / 4
 
             MoveLateral(200, !left)
 
@@ -550,7 +580,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 MoveLateral(turnAroundTime * 0.5, !left)
                 MoveDown(patternMoveTime)
                 if (placeSplinkers) {
-                    PlaceSprinkler(sprinklers)
+                    PlaceSprinkler(g_sprinklers)
                 }
                 MoveLateral(turnAroundTime, !left)
             }
@@ -563,7 +593,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
             }
 
             if (placeSplinkers) {
-                PlaceSprinkler(sprinklers)
+                PlaceSprinkler(g_sprinklers)
             }
 
             MoveUp(patternMoveTime * 1.5)
@@ -573,7 +603,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 MoveLateral(patternMoveTime, !left)
                 MoveDown(turnAroundTime * 0.5)
                 if (placeSplinkers) {
-                    PlaceSprinkler(sprinklers)
+                    PlaceSprinkler(g_sprinklers)
                 }
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.75)
@@ -587,7 +617,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.5)
                 if (placeSplinkers) {
-                    PlaceSprinkler(sprinklers)
+                    PlaceSprinkler(g_sprinklers)
                 }
                 MoveLateral(patternMoveTime, !left)
                 MoveDown(turnAroundTime)
@@ -613,23 +643,21 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
     StartFetching()
 
     move := 50
-    patternMoveTime := move * patternWidth
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
-
-    sprinklerPlacementDelay := 0
 
     ZoomOut(5)
 
     sprinklerMove := 700
-    MoveRight(sprinklerMove)
-    MoveDown(sprinklerMove)
-    PlaceSprinkler()
-    MoveRight(sprinklerMove)
-    PlaceSprinkler()
-    MoveDown(sprinklerMove)
-    PlaceSprinkler()
-    MoveLeft(sprinklerMove)
-    PlaceSprinkler()
+    MoveRight(sprinklerMove * 1.5)
+    MoveDown(sprinklerMove * 1.5)
+    PlaceSprinkler(g_sprinklers)
+    MoveRight(sprinklerMove * 1.5)
+    PlaceSprinkler(g_sprinklers)
+    MoveDown(sprinklerMove * 1.5)
+    PlaceSprinkler(g_sprinklers)
+    MoveLeft(sprinklerMove * 1.5)
+    PlaceSprinkler(g_sprinklers)
     MoveUp(sprinklerMove * 2)
     MoveLeft(sprinklerMove * 2)
 
@@ -637,12 +665,12 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            MoveRight(600)
-            MoveDown(600)
+            MoveRight(500)
+            MoveDown(500)
 
             ZoomOut(5)
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 6
+            turnAroundTime := move * g_patternLength / 6
 
             StartFetching()
             loop, 16 {
@@ -660,14 +688,96 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
                     MoveLeft(turnAroundTime)
                 }
 
+                MoveRight(30)
+
                 if (ShouldStopFetching()) {
                     stopFetching := True
                     Break
                 }
             }
 
-            MoveUp(1500)
-            MoveLeft(3000)
+            MoveRight(1000)
+            MoveUp(3000)
+            MoveLeft(4000)
+
+            if (stopFetching) {
+                Break
+            }
+        }
+
+        if (stopFetching || A_Index = nbLoops) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+    }
+}
+
+WalkPepperPattern(nbLoops, subrepeat) {
+    StartFetching()
+
+    move := 50
+    patternMoveTime := move * g_patternWidth
+    stopFetching := False
+
+    g_sprinklerPlacementDelay := 0
+
+    ZoomOut(5)
+
+    sprinklerMove := 700
+    MoveLeft(sprinklerMove)
+    MoveDown(sprinklerMove)
+    if (g_sprinklers > 1) {
+        PlaceSprinkler(g_sprinklers)
+    }
+    MoveLeft(sprinklerMove)
+    if (g_sprinklers > 1) {
+        PlaceSprinkler(g_sprinklers)
+    }
+    MoveDown(sprinklerMove)
+    PlaceSprinkler(g_sprinklers)
+    MoveRight(sprinklerMove)
+    if (g_sprinklers > 1) {
+        PlaceSprinkler(g_sprinklers)
+    }
+    MoveUp(sprinklerMove * 2)
+    MoveRight(sprinklerMove * 2)
+
+    loop, %nbLoops% {
+        Debug("Pattern #" . A_Index . "/" . nbLoops)
+        loop, %subrepeat% {
+
+            MoveLeft(700)
+            MoveDown(700)
+
+            ZoomOut(5)
+            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
+            turnAroundTime := move * g_patternLength / 6
+
+            StartFetching()
+            loop, 15 {
+                Loop, 2 {
+                    MoveDown(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                    MoveUp(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                }
+
+                Loop, 2 {
+                    MoveDown(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                    MoveUp(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                }
+
+                if (ShouldStopFetching()) {
+                    stopFetching := True
+                    Break
+                }
+            }
+
+            MoveUp(2500)
+            MoveRight(2500)
 
             if (stopFetching) {
                 Break
@@ -686,8 +796,8 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
     StartFetching()
 
     move := 70
-    patternMoveTime := move * patternWidth
-    turnAroundTime := move * patternLength / 4
+    patternMoveTime := move * g_patternWidth
+    turnAroundTime := move * g_patternLength / 8
     stopFetching := False
 
     MoveDown(initialMoveDown)
@@ -695,14 +805,15 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
     loop, %nbLoops% {
         If (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
+            StartFetching()
             loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
+                MoveLeft(turnAroundTime)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime)
             }
@@ -714,18 +825,18 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
             loop, 2 {
                 MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
+                MoveRight(turnAroundTime)
                 MoveDown(patternMoveTime)
-                PlaceSprinkler()
+                PlaceSprinkler(g_sprinklers)
                 MoveRight(turnAroundTime)
             }
 
-            MoveUp(patternMoveTime * 3)
+            MoveUp(patternMoveTime * 1.5)
             MoveDown(200)
 
             loop, 2 {
                 MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
+                MoveDown(turnAroundTime)
                 MoveRight(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
@@ -742,7 +853,7 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 
             loop, 2 {
                 MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
+                MoveDown(turnAroundTime)
                 MoveLeft(patternMoveTime)
                 MoveDown(turnAroundTime)
             }
@@ -762,7 +873,7 @@ WalkCloverPattern(nbLoops, subrepeat) {
     StartFetching()
 
     move := 80
-    patternMoveTime := move * patternWidth
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     MoveDown(15 * move)
@@ -770,7 +881,7 @@ WalkCloverPattern(nbLoops, subrepeat) {
 
     loop, %nbLoops% {
         if (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
@@ -778,14 +889,14 @@ WalkCloverPattern(nbLoops, subrepeat) {
             StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * g_patternLength / 4
 
             ;MoveRight(200)
 
             Loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveRight(turnAroundTime * 0.5)
-                PlaceSprinkler()
+                PlaceSprinkler(g_sprinklers)
                 MoveDown(patternMoveTime)
                 MoveRight(turnAroundTime)
             }
@@ -838,8 +949,8 @@ WalkCloverPattern(nbLoops, subrepeat) {
 
 WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
 
-    move := 85
-    patternMoveTime := move * patternWidth
+    move := 70
+    patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     MoveDown(15 * move)
@@ -847,7 +958,7 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
 
     loop, %nbLoops% {
         if (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
@@ -856,14 +967,14 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
             StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * patternLength / 4
+            turnAroundTime := move * g_patternLength / 4
 
             MoveLeft(initialMoveLeft)
 
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.5)
-                PlaceSprinkler()
+                PlaceSprinkler(g_sprinklers)
                 MoveDown(patternMoveTime)
                 MoveLeft(turnAroundTime * 0.75)
             }
@@ -918,7 +1029,7 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
 
     loop, %nbLoops% {
         if (A_Index = 1) {
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
@@ -932,7 +1043,7 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             Loop, 3 {
                 MoveLateral(move * 0.75, left)
                 if (A_Index = 2) {
-                    PlaceSprinkler()
+                    PlaceSprinkler(g_sprinklers)
                 }
                 MoveDown(move * 2.5)
                 MoveLateral(move * 1.25, left)
@@ -946,7 +1057,7 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
                 MoveDown(move * 2.5)
                 MoveLateral(move * 0.75, left)
                 if (A_Index = 1) {
-                    PlaceSprinkler()
+                    PlaceSprinkler(g_sprinklers)
                 }
                 MoveUp(move * 2.5)
                 MoveLateral(move * 1.25, left)
@@ -958,7 +1069,7 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             }
 
             MoveDown(move * 2.5)
-            PlaceSprinkler()
+            PlaceSprinkler(g_sprinklers)
             MoveLateral(move * 6, !left)
             MoveLateral(100, left)
             MoveUp(move * 3)
@@ -981,18 +1092,18 @@ WalkCactusPattern(nbLoops, subrepeat) {
 
     StartFetching()
 
-    sprinklerPlacementDelay := 0
+    g_sprinklerPlacementDelay := 0
 
     MoveDown(500)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveDown(700)
     MoveLeft(400)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveRight(800)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveLeft(400)
     MoveDown(700)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveUp(3000)
 
     loop, %nbLoops% {

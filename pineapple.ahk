@@ -10,7 +10,7 @@ WinActivate Roblox
 
 Sleep 200
 
-ValidateField() {
+ValidatePineappleField() {
     return (CompareColorAt(170, 1900, 0x006493) or CompareColorAt(170, 1900, 0x006491) or CompareColorAt(170, 1900, 0x006593)) && (CompareColorAt(2730, 270, 0x958465) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x000000))
 }
 
@@ -23,7 +23,7 @@ MoveToPineapple() {
 
         TwoKeyPress("w", "a", 5000)
 
-        If (ValidateField()) {
+        If (ValidatePineappleField()) {
             Return True
         }
     }
@@ -41,7 +41,7 @@ ToHiveFromPineapple() {
 
     ; Walk to switch next to blue cannon
     ; Give enough time to disable haste
-    MoveUp(15000)
+    MoveUp(25000)
 
     MoveDown(800)
     MoveRight(2000)
@@ -54,7 +54,7 @@ ToHiveFromPineapple() {
     Sleep 2500
     MoveUp(5000)
 
-    If (MoveToHiveSlot(hivePosition) = False) {
+    If (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         Return False
     }
@@ -64,16 +64,16 @@ ToHiveFromPineapple() {
 
 PlacePineappleSprinklers() {
     ResetSprinklers()
-    sprinklerPlacementDelay := 0
+    g_sprinklerPlacementDelay := 0
     MoveDown(600)
     MoveRight(600)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveDown(600)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveRight(600)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveUp(600)
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
     MoveLeft(1000)
     MoveUp(1000)
 }
@@ -89,7 +89,7 @@ ExecutePineappleScript() {
         If (MoveToPineapple()) {
             Debug("Walk pineapple pattern")
             PlacePineappleSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat, True, 70, False)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, True, 70, False)
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")
@@ -110,4 +110,4 @@ ExecutePineappleScript() {
     }
 }
 
-ExecutePineappleScript()
+;ExecutePineappleScript()

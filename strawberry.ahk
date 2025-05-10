@@ -11,7 +11,7 @@ WinActivate Roblox
 Sleep 200
 
 MoveToStrawberry() {
-    FromHiveToCannon(hivePosition)
+    FromHiveToCannon(g_hivePosition)
 
     MoveRight(170)
     Sleep, 400
@@ -27,7 +27,7 @@ MoveToStrawberry() {
 }
 
 ToHiveFromStrawberry() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -43,7 +43,7 @@ ToHiveFromStrawberry() {
     MoveLeft(700)
     MoveUp(6000)
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -64,7 +64,7 @@ ExecuteStrawberryScript() {
             ResetSprinklers()
             MoveLeft(3000)
             MoveUp(3000)
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")
@@ -85,4 +85,4 @@ ExecuteStrawberryScript() {
     }
 }
 
-ExecuteStrawberryScript()
+;ExecuteStrawberryScript()

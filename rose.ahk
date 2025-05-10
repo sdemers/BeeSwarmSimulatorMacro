@@ -47,7 +47,7 @@ MoveToRoseField() {
 }
 
 ToHiveFromRoseField() {
-    global hivePosition
+    global g_hivePosition
 
     TwoKeyPress("w", "d", 5000)
     Loop, 6 {
@@ -66,7 +66,7 @@ ToHiveFromRoseField() {
 
     JumpFromPolarBearToHive()
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -85,8 +85,8 @@ ExecuteRoseScript() {
         If (MoveToRoseField()) {
             Debug("Walk rose pattern")
             ResetSprinklers()
-            ;WalkRosePattern(patternRepeat, subpatternRepeat)
-            WalkSpiderPattern(patternRepeat, subpatternRepeat, left := False, move:= 70)
+            ;WalkRosePattern(g_patternRepeat, g_subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False, move:= 70)
             Debug("Moving to hive")
             If (ToHiveFromRoseField()) {
                 Debug("Convert honey")

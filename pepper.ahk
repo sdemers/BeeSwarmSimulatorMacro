@@ -12,7 +12,7 @@ Sleep 200
 
 MoveToPepperField() {
     ZoomOut(5)
-    FromHiveToCannon(hivePosition, False)
+    FromHiveToCannon(g_hivePosition, False)
 
     MoveRight(4000)
 
@@ -45,33 +45,25 @@ MoveToPepperField() {
 }
 
 ToHiveFromPepperField() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
     MoveUp(5000)
     MoveRight(5000)
 
-    MoveDown(10000)
-    MoveRight(10000)
-
     RotateCamera(4)
+    MoveUp(10000)
+    MoveLeft(5000)
 
-    MoveUp(6000)
-    MoveDown(2000)
+    TwoKeyPress("w", "d", 2000)
+    MoveLeft(500)
+    MoveUp(500)
+    MoveRight(500)
+    MoveUp(2000)
 
-    Loop, 4 {
-        MoveRight(800)
-        MoveUp(800)
-    }
-
-    MoveDown(2000)
-
-    RotateRight()
-    ZoomOut(5)
-
-    MoveDown(500)
-    if (MoveToHiveLeft()) {
+    if (MoveToHiveUp()) {
+        RotateRight()
         return True
     }
 
@@ -90,7 +82,7 @@ ExecutePepperScript() {
         If (MoveToPepperField()) {
             Debug("Walk rose pattern")
             ResetSprinklers()
-            WalkRosePattern(patternRepeat, subpatternRepeat)
+            WalkPepperPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             If (ToHiveFromPepperField()) {
                 Debug("Convert honey")
@@ -111,4 +103,4 @@ ExecutePepperScript() {
     }
 }
 
-ExecutePepperScript()
+;ExecutePepperScript()

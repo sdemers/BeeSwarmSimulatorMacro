@@ -10,8 +10,8 @@ WinActivate Roblox
 
 Sleep 200
 
-MoveToPumpkin(hivePosition) {
-    FromHiveToCannon(hivePosition)
+MoveToPumpkin(g_hivePosition) {
+    FromHiveToCannon(g_hivePosition)
 
     RotateCamera(4)
 
@@ -31,16 +31,8 @@ MoveToPumpkin(hivePosition) {
     return True
 }
 
-MoveToHiveSlotFrom1(slot) {
-    ; We should be facing the wall at slot #1
-
-    MoveDown(500)
-
-    return MoveToHiveLeft()
-}
-
 ToHiveFromPumpkin() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -54,7 +46,7 @@ ToHiveFromPumpkin() {
 
     JumpFromPolarBearToHive()
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -70,11 +62,11 @@ ExecutePumpkinScript() {
 
     loop {
         Debug("Moving to Pumpkin")
-        if (MoveToPumpkin(hivePosition)) {
+        if (MoveToPumpkin(g_hivePosition)) {
             Debug("Walk Pumpkin pattern")
             ZoomOut(5)
             ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPumpkin()) {
                 Debug("Convert honey")
@@ -95,4 +87,4 @@ ExecutePumpkinScript() {
     }
 }
 
-ExecutePumpkinScript()
+;ExecutePumpkinScript()

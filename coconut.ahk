@@ -11,7 +11,7 @@ WinActivate Roblox
 
 Sleep 200
 
-ValidateField() {
+ValidateCoconutField() {
     return True
 
     day := CompareColorAt(3750, 2000, 0x7f7156) && CompareColorAt(1900, 650, 0xd06a42)
@@ -24,33 +24,17 @@ ValidateField() {
 }
 
 MoveToCoconut() {
-    FromHiveToCannon(hivePosition, False)
+    FromHiveToCannon(g_hivePosition)
 
-    MoveRight(4000)
+    MoveUp(300)
+    DeployChute()
+    MoveUp(300)
+    Sleep, 4000
+    MoveUp(3500)
+    MoveRight(10000)
+    MoveUp(1000)
 
-    KeyDown("d")
-    Jump()
-    Sleep, 2000
-    KeyUp("d")
-
-    KeyDown("w")
-    Sleep, 200
-    Jump()
-    Sleep, 3000
-    Jump()
-    Sleep, 200
-    Jump()
-    Sleep, 2000
-    KeyUp("w")
-
-    MoveLeft(1000)
-    MoveUp(3000)
-
-    if (ValidateField()) {
-        return True
-    }
-
-    return False
+    return True
 }
 
 ToHiveFromCoconut() {
@@ -63,8 +47,9 @@ ToHiveFromCoconut() {
     Sleep, 10000
     MoveDown(5000)
     MoveUp(2000)
+    MoveDown(500)
 
-    if (MoveToHiveSlot(hivePosition, 1) = False) {
+    if (MoveToHiveLeft() = False) {
         Debug("Hive not found...")
         return False
     }
@@ -83,11 +68,9 @@ ExecuteCoconutScript() {
         Debug("Moving to coconut")
         if (MoveToCoconut()) {
             Debug("Walk coconut pattern")
-            MoveUp(5000)
-            MoveRight(5000)
             ZoomOut()
             ResetSprinklers()
-            WalkSpiderPattern(patternRepeat, subpatternRepeat, False)
+            WalkRosePattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")
@@ -108,4 +91,4 @@ ExecuteCoconutScript() {
     }
 }
 
-ExecuteCoconutScript()
+;ExecuteCoconutScript()

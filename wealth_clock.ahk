@@ -28,13 +28,8 @@ MoveToClock(hive) {
         JumpToCannonAndFire()
         MoveLeft(1500)
         DeployChute()
-        TwoKeyPress("w", "a", 8000)
-        ; loop, 40 {
-        ;     MoveUp(50)
-        ;     MoveLeft(50)
-        ; }
-        ; Sleep, 2000
-        MoveLeft(1000)
+        TwoKeyPress("w", "a", 9000)
+        MoveLeft(1500)
         MoveDown(3000)
         MoveRight(750)
         MoveDown(400)
@@ -65,7 +60,7 @@ ExecuteWealthClockScript() {
     Respawn()
 
     Debug("Moving to Wealth Clock")
-    if (MoveToClock(hivePosition)) {
+    if (MoveToClock(g_hivePosition)) {
         KeyPress("e", 15)
         Sleep, 500
         WriteWealthClock(A_TickCount)

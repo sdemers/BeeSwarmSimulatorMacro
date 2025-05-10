@@ -1,11 +1,11 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global hivePosition := 5
-global speed := 33.3
-global patternRepeat := 10
-global patternWidth := 8
-global patternLength := 10
+global g_hivePosition := 5
+global g_speed := 33.3
+global g_patternRepeat := 10
+global g_patternWidth := 8
+global g_patternLength := 10
 
 #Include, common.ahk
 
@@ -14,21 +14,21 @@ WinActivate Roblox
 Sleep 200
 
 MoveToMountainTop() {
-    FromHiveToCannon(hivePosition)
+    FromHiveToCannon(g_hivePosition)
 
     Sleep 3000
 
-    PlaceSprinkler()
+    PlaceSprinkler(g_sprinklers)
 
     return True
 }
 
-WalkMountainTopPattern(patternRepeat) {
+WalkMountainTopPattern(g_patternRepeat) {
     RotateCamera(4)
 
     MoveUp(5000)
     MoveRight(3000)
-    WalkRosePattern(patternRepeat, 10, 3000, 500)
+    WalkRosePattern(g_patternRepeat, 10, 3000, 500)
 }
 
 ;     loop, %nbLoops% {
@@ -63,7 +63,7 @@ WalkMountainTopPattern(patternRepeat) {
 ; }
 
 ToHiveFromMountainTop() {
-    global hivePosition
+    global g_hivePosition
 
     StopFetching()
 
@@ -78,7 +78,7 @@ ToHiveFromMountainTop() {
 
     JumpFromPolarBearToHive()
 
-    MoveToHiveSlot(hivePosition)
+    MoveToHiveSlot(g_hivePosition)
 }
 
 ExecuteMountainTopScript() {
@@ -93,7 +93,7 @@ ExecuteMountainTopScript() {
         if (MoveToMountainTop()) {
             Debug("Walk mountain top pattern")
             ResetSprinklers()
-            WalkMountainTopPattern(patternRepeat)
+            WalkMountainTopPattern(g_patternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromMountainTop()) {
                 Debug("Convert honey")

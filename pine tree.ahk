@@ -10,7 +10,7 @@ WinActivate Roblox
 
 Sleep 200
 
-ValidateField() {
+ValidatePineTreeField() {
 
     day := CompareColorAt(3780, 80, 0x7f6e45)
     If (day) {
@@ -25,10 +25,10 @@ ValidateField() {
 }
 
 MoveToPineTree() {
-    FromHiveToCannon(hivePosition)
+    FromHiveToCannon(g_hivePosition)
 
     Sleep 320
-    MoveRight(170)
+    MoveRight(200)
     Sleep 250
     DeployChute()
     Sleep 4700
@@ -41,15 +41,17 @@ MoveToPineTree() {
     MoveRight(5000)
     MoveUp(5000)
 
-    if (ValidateField()) {
-        return True
-    }
+    return True
 
-    return False
+    ; if (ValidateField()) {
+    ;     return True
+    ; }
+
+    ; return False
 }
 
 ToHiveFromPineTree() {
-    global hivePosition
+    global g_hivePosition
 
     MoveRight(5000)
     MoveUp(5000)
@@ -64,7 +66,7 @@ ToHiveFromPineTree() {
 
     JumpFromPolarBearToHive()
 
-    if (MoveToHiveSlot(hivePosition) = False) {
+    if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -83,10 +85,9 @@ ExecutePineTreeScript() {
         if (MoveToPineTree()) {
             Debug("Walk pine tree pattern")
             ZoomOut()
-            MoveDown(800)
-            MoveLeft(400)
             ResetSprinklers()
-            WalkElolPattern(patternRepeat, subpatternRepeat)
+            ;WalkElolPattern(g_patternRepeat, g_subpatternRepeat)
+            WalkRosePattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPineTree()) {
                 Debug("Convert honey")
@@ -108,4 +109,4 @@ ExecutePineTreeScript() {
 }
 
 ;JumpToRedCannon()
-ExecutePineTreeScript()
+;ExecutePineTreeScript()
