@@ -11,14 +11,13 @@ Sleep 200
 MoveToStump() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        Sleep 1600
+        Sleep 1800
 
         DeployChute()
         RotateCamera(2)
         MoveUp(5000)
         Sleep, 3000
-        MoveDown(1600)
-        MoveLeft(1500)
+        MoveDown(800)
 
         return True
     }
@@ -46,8 +45,10 @@ ToHiveFromStump() {
     StopFetching()
 
     RotateCamera(-2)
-    MoveRight(2500)
     MoveUp(5000)
+    MoveRight(3000)
+    MoveDown(1400)
+    MoveRight(1500)
     KeyDown("d")
     Jump()
     Sleep, 400
@@ -70,7 +71,7 @@ ToHiveFromStump() {
         Return False
     }
 
-    MoveToHiveSlot(g_hivePosition)
+    Return True
 }
 
 ExecuteStumpScript() {
