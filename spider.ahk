@@ -63,7 +63,7 @@ ExecuteSpiderScript() {
         if (MoveToSpider()) {
             Debug("Walk spider pattern")
             ResetSprinklers()
-            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
+            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, True, 50)
             Debug("Moving to hive")
             if (ToHiveFromSpider()) {
                 Debug("Convert honey")
@@ -84,4 +84,4 @@ ExecuteSpiderScript() {
     }
 }
 
-ExecuteSpiderScript()
+;ExecuteSpiderScript()

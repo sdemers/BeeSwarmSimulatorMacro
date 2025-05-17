@@ -10,7 +10,7 @@ WinActivate Roblox
 
 Sleep 200
 
-ValidateField() {
+ValidateRoseField() {
     day := CompareColorAt(1818, 245, 0x070c6c) && CompareColorAt(2800, 2000, 0xfdfdfd)
     If (day) {
         return True
@@ -107,4 +107,4 @@ ExecuteRoseScript() {
     }
 }
 
-ExecuteRoseScript()
+;ExecuteRoseScript()

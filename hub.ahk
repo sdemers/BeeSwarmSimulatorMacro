@@ -24,7 +24,7 @@ WinActivate Roblox
 
 Sleep 200
 
-ToolTip Press F2 to stop script, 50, 400, 1
+ToolTip Press F2 to stop script, 3200, 400, 1
 
 WalkHubPattern(nbLoops, subrepeat) {
     StartFetching()

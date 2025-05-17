@@ -45,9 +45,9 @@ ToHiveFromCoconut() {
     MoveDown(5000)
     MoveLeft(8000)
     Sleep, 10000
-    MoveDown(5000)
-    MoveUp(2000)
-    MoveDown(500)
+    MoveDown(3000)
+    MoveUp(4000)
+    MoveDown(400)
 
     if (MoveToHiveLeft() = False) {
         Debug("Hive not found...")
@@ -70,7 +70,9 @@ ExecuteCoconutScript() {
             Debug("Walk coconut pattern")
             ZoomOut()
             ResetSprinklers()
-            WalkRosePattern(g_patternRepeat, g_subpatternRepeat)
+            RotateCamera(-1)
+            WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1000, 0)
+            RotateCamera(1)
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")

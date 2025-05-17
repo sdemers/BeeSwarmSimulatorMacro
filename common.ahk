@@ -3,11 +3,13 @@
 #Include, wealth_clock.ahk
 
 global GoToHiveRequested := False
+global g_pause := False
 
-ToolTip Press F2 to stop script / F3 to go to hive, 50, 400, 1
+ToolTip F2 to stop    F3 go to hive    F5 to pause/resume, 3200, 400, 1
 
 Hotkey, F2, StopScript
 Hotkey, F3, SetGoToHive
+Hotkey, F5, PauseResume
 
 SetGoToHive()
 {
@@ -19,11 +21,28 @@ StopScript() {
     ExitApp
 }
 
+PauseResume() {
+    g_pause := !g_pause
+}
+
+CheckPause() {
+    if (!g_pause) {
+        return
+    }
+
+    loop {
+        Sleep, 500
+        if (!g_pause) {
+            return
+        }
+    }
+}
+
 Debug(text, index := 2) {
     FormatTime, currentTime, A_Now, yyyy-MM-dd HH:mm:ss
 
     FileAppend, [%currentTime%] %text% `n, log.txt
-    ToolTip %text%, 50, 400 + (index * 50), index
+    ToolTip %text%, 3200, 400 + (index * 50), index
 }
 
 KeyDown(key)
@@ -38,6 +57,7 @@ KeyUp(key)
 
 KeyPress(key, duration := 0)
 {
+    CheckPause()
     Send, {%key% down}
     Sleep, (duration * g_movespeedFactor)
     Send, {%key% up}
@@ -45,6 +65,7 @@ KeyPress(key, duration := 0)
 
 TwoKeyPress(key1, key2, duration := 0)
 {
+    CheckPause()
     Send, {%key1% down}
     Send, {%key2% down}
     Sleep, (duration * g_movespeedFactor)
@@ -167,7 +188,7 @@ StopFetching() {
 
 ConvertHoney() {
     KeyPress("e", 50)
-    Loop, 90 {
+    Loop, 120 {
         Sleep, 1000
     }
 
@@ -596,7 +617,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 PlaceSprinkler(g_sprinklers)
             }
 
-            MoveUp(patternMoveTime * 1.5)
+            MoveUp(patternMoveTime * 2)
             MoveDown(300)
 
             Loop, 2 {
@@ -609,7 +630,7 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 MoveDown(turnAroundTime * 0.75)
             }
 
-            MoveUp(patternMoveTime * 1.5)
+            MoveUp(patternMoveTime * 2)
             MoveLateral(patternMoveTime / 3, !left)
             MoveDown(300)
 
@@ -672,8 +693,8 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * g_patternLength / 6
 
-            StartFetching()
             loop, 16 {
+                StartFetching()
                 Loop, 2 {
                     MoveDown(patternMoveTime)
                     MoveRight(turnAroundTime)
@@ -716,7 +737,7 @@ WalkSunflowerPattern(nbLoops, subrepeat) {
 WalkPepperPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 50
+    move := 55
     patternMoveTime := move * g_patternWidth
     stopFetching := False
 
@@ -770,6 +791,12 @@ WalkPepperPattern(nbLoops, subrepeat) {
                     MoveRight(turnAroundTime)
                 }
 
+                if (A_Index = 5 or A_Index = 10) {
+                    MoveUp(20)
+                    MoveRight(20)
+
+                }
+
                 if (ShouldStopFetching()) {
                     stopFetching := True
                     Break
@@ -800,6 +827,10 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
     turnAroundTime := move * g_patternLength / 8
     stopFetching := False
 
+    ;Debug("Before move " . initialMoveDown . " " . initialMoveLeft)
+
+    MoveDown(100)
+    MoveLeft(100)
     MoveDown(initialMoveDown)
     MoveLeft(initialMoveLeft)
 

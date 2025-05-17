@@ -81,4 +81,4 @@ ExecuteMushroomScript() {
     }
 }
 
-ExecuteMushroomScript()
+;ExecuteMushroomScript()
