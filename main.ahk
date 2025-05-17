@@ -8,7 +8,7 @@ runSunflower := False
 runCactus := False
 runStrawberry := False
 runPumpkin := False
-runBlueFlower := False
+runBlueFlower := True
 runPepper := False
 runPineTree := False
 runPineapple := False
@@ -17,7 +17,7 @@ runRose := False
 runMountainTop := False
 runSpider := False
 runMushroom := False
-runStump := True
+runStump := False
 
 If (runSunflower) {
     #Include, sunflower.ahk

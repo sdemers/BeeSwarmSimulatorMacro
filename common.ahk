@@ -5,6 +5,8 @@
 global GoToHiveRequested := False
 global g_pause := False
 
+CoordMode, Pixel, Screen
+
 ToolTip F2 to stop    F3 go to hive    F5 to pause/resume, 3200, 400, 1
 
 Hotkey, F2, StopScript
@@ -303,7 +305,10 @@ CompareColorAt(x, y, targetColor, tolerance := 20) {
 }
 
 ValidateMakeHoney() {
-    return CompareColorAt(2170, 240, 0xf9fff7) && CompareColorAt(2197, 185, 0xf9fff7)
+    if (CompareColorAt(2170, 240, 0xf9fff7)) {
+        return CompareColorAt(2197, 185, 0xf9fff7)
+    }
+    return False
 }
 
 ValidateStart() {
