@@ -190,29 +190,25 @@ StopFetching() {
 
 ConvertHoney() {
     KeyPress("e", 50)
-    Loop, 120 {
+
+    initialCount := 0
+    safeCount := 0
+    Loop {
+        initialCount := initialCount + 1
+        If (initialCount > 10) {
+            If (CompareColorAt(1851, 112, 0x646d70)) {
+                safeCount := safeCount + 1
+            }
+            Else {
+                safeCount := 0
+            }
+        }
+
+        if (safeCount > 5) {
+            Break
+        }
         Sleep, 1000
     }
-
-    ; ; Wait to convert honey to start
-    ; Debug("Waiting to start converting honey")
-    ; While IsConvertingHoney() = False {
-    ;     Sleep, 250
-    ; }
-
-    ; ; Wait to convert honey to end
-    ; Debug("Waiting to end converting honey")
-    ; While, IsConvertingHoney() {
-    ;     Sleep, 250
-    ; }
-
-    ; Debug("")
-    ; ; Loop {
-    ; ;     Sleep 500
-    ; ;     If (IsConvertingHoney() = False) {
-    ; ;         Break
-    ; ;     }
-    ; ; }
 }
 
 ResetKeys() {
@@ -824,7 +820,7 @@ WalkPepperPattern(nbLoops, subrepeat) {
     }
 }
 
-WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 1000) {
+WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 1000, moveDown := 200) {
     StartFetching()
 
     move := 70
@@ -868,7 +864,7 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             }
 
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
+            MoveDown(moveDown)
 
             loop, 2 {
                 MoveLeft(patternMoveTime)
@@ -885,7 +881,7 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             }
 
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
+            MoveDown(moveDown)
 
             loop, 2 {
                 MoveRight(patternMoveTime)

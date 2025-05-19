@@ -14,11 +14,12 @@ WinActivate Roblox
 Sleep 200
 
 MoveToMountainTop() {
-    FromHiveToCannon(g_hivePosition)
-
-    Sleep 3000
-
-    PlaceSprinkler(g_sprinklers)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
+        FromHiveToCannon(g_hivePosition)
+        Sleep 3000
+        PlaceSprinkler(g_sprinklers)
+    }
 
     return True
 }
@@ -26,41 +27,41 @@ MoveToMountainTop() {
 WalkMountainTopPattern(g_patternRepeat) {
     RotateCamera(4)
 
-    MoveUp(5000)
-    MoveRight(3000)
-    WalkRosePattern(g_patternRepeat, 10, 3000, 500)
+    MoveUp(4000)
+    MoveRight(2000)
+
+    length := 1200
+    turn := 50
+
+    Loop, %g_patternRepeat% {
+
+        MoveDown(1000)
+
+        Loop, 4 {
+            StartFetching()
+            MoveDown(length)
+            MoveLeft(turn)
+            MoveUp(length)
+            MoveLeft(turn)
+        }
+
+        Loop, 4 {
+            StartFetching()
+            MoveDown(length)
+            MoveRight(turn)
+            MoveUp(length)
+            MoveRight(turn)
+        }
+
+        if (ShouldStopFetching()) {
+            break
+        }
+
+        MoveLeft(500)
+        MoveUp(1500)
+        MoveRight(1000)
+    }
 }
-
-;     loop, %nbLoops% {
-;         Debug("Pattern #" . A_Index . "/" . nbLoops)
-
-;         MoveUp(4000)
-;         MoveRight(2000)
-
-;         MoveDown(500)
-
-;         loop, 6 {
-;             MoveLeft(700)
-;             MoveDown(200)
-;             MoveRight(500)
-;             MoveDown(200)
-;         }
-
-;         MoveLeft(2000)
-;         MoveRight(1000)
-
-;         loop, 4 {
-;             MoveRight(800)
-;             MoveUp(200)
-;             MoveLeft(500)
-;             MoveUp(200)
-;         }
-
-;         if (stop) {
-;             Break
-;         }
-;     }
-; }
 
 ToHiveFromMountainTop() {
     global g_hivePosition

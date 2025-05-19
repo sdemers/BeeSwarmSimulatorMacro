@@ -4,11 +4,14 @@
 #Include, config.ahk
 #Include, common.ahk
 
+; missing mountain top return to hive
+; missing dandelion return to hive
+
 runSunflower := False
 runCactus := False
 runStrawberry := False
 runPumpkin := False
-runBlueFlower := True
+runBlueFlower := False
 runPepper := False
 runPineTree := False
 runPineapple := False
@@ -18,6 +21,27 @@ runMountainTop := False
 runSpider := False
 runMushroom := False
 runStump := False
+runBamboo := False
+runDandelion := False
+runHub := False
+
+;runBamboo := True
+;runBlueFlower := True
+;runCactus := True
+;runCoconut := True
+;runDandelion := True
+;runHub := True
+;runMountainTop := True
+;runMushroom := True
+;runPepper := True
+runPineTree := True
+;runPineapple := True
+;runPumpkin := True
+;runRose := True
+;runSpider := True
+;runStrawberry := True
+;runStump := True
+;runSunflower := True
 
 If (runSunflower) {
     #Include, sunflower.ahk
@@ -87,4 +111,20 @@ If (runMushroom) {
 if (runStump) {
     #Include, stump.ahk
     ExecuteStumpScript()
+}
+
+If (runBamboo) {
+    #Include, bamboo.ahk
+    ExecuteBambooScript()
+}
+
+If (runDandelion) {
+    #Include, dandelion.ahk
+    ;MoveToDandelion()
+    ExecuteDandelionScript()
+}
+
+If (runHub) {
+    #Include, hub.ahk
+    WalkHubPattern()
 }
