@@ -172,12 +172,14 @@ Jump(time := 25) {
 }
 
 JumpToRedCannon() {
-    KeyDown("d")
-    KeyDown("w")
-    Jump(25)
-    Sleep, 100
-    KeyUp("w")
-    KeyUp("d")
+    DeployChute()
+    Sleep, 350
+    ReleaseChute()
+    Sleep, 300
+    DeployChute()
+    Sleep, 300
+    ReleaseChute()
+    Sleep, 500
 }
 
 StartFetching() {
@@ -308,7 +310,7 @@ ValidateMakeHoney() {
 }
 
 ValidateStart() {
-    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404)
+    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404) || CompareColorAt(1915, 2080, 0x9A4E3B)
 }
 
 FireCannon() {
@@ -316,25 +318,8 @@ FireCannon() {
     KeyPress("e", 15)
 }
 
-FromHiveToCannon(hive, fire := True) {
-    MoveUp(2875)
-    MoveRight(hive * 1200)
-    JumpToRedCannon()
-
-    if (fire) {
-        MoveRight(1300)
-        MoveDown(50)
-        FireCannon()
-    }
-
-    ZoomOut(5)
-}
-
 JumpToCannonAndFire() {
     JumpToRedCannon()
-    MoveUp(50)
-    MoveRight(1300)
-    MoveDown(100)
     FireCannon()
 }
 
@@ -904,71 +889,55 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
 WalkCloverPattern(nbLoops, subrepeat) {
     StartFetching()
 
-    move := 80
+    move := 50
     patternMoveTime := move * g_patternWidth
+    turnAroundTime := 50
     stopFetching := False
 
-    MoveDown(15 * move)
-    MoveRight(15 * move)
+    MoveRight(2500)
+    MoveDown(1500)
+
+    PlaceSprinkler(g_sprinklers)
 
     loop, %nbLoops% {
-        if (A_Index = 1) {
-            PlaceSprinkler(g_sprinklers)
-        }
-
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
-            StartFetching()
 
+            ZoomOut(5)
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * g_patternLength / 4
 
-            ;MoveRight(200)
+            loop, 16 {
+                StartFetching()
+                Loop, 2 {
+                    MoveDown(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                    MoveUp(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                }
 
-            Loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
-                PlaceSprinkler(g_sprinklers)
-                MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime)
+                Loop, 2 {
+                    MoveDown(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                    MoveUp(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                }
+
+                MoveRight(30)
+
+                if (ShouldStopFetching()) {
+                    stopFetching := True
+                    Break
+                }
             }
 
-            Loop, 2 {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime)
-            }
+            TwoKeyPress("w", "a", 3000)
 
-            MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
-
-            Loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveRight(500)
-            MoveUp(patternMoveTime * 1.5)
-            MoveLeft(patternMoveTime * 1.5)
-            MoveDown(200)
-            MoveRight(200)
-
-            Loop, 2 {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime)
-            }
-
-            MoveRight(200)
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
+            if (stopFetching) {
                 Break
             }
+
+            MoveRight(1500)
+            MoveDown(600)
         }
 
         if (stopFetching || A_Index = nbLoops) {

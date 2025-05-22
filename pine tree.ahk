@@ -25,29 +25,31 @@ ValidatePineTreeField() {
 }
 
 MoveToPineTree() {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    Sleep 320
-    MoveRight(200)
-    Sleep 250
-    DeployChute()
-    Sleep 4700
-    SendSpace()
-    Sleep 500
-    RotateRight()
+        Sleep 320
+        MoveRight(200)
+        Sleep 250
+        DeployChute()
+        Sleep 4700
+        SendSpace()
+        Sleep 500
+        RotateRight()
 
-    ZoomOut(5)
+        ZoomOut(5)
 
-    MoveRight(5000)
-    MoveUp(5000)
+        MoveRight(5000)
+        MoveUp(5000)
 
-    return True
+        return True
+    }
 
     ; if (ValidateField()) {
     ;     return True
     ; }
 
-    ; return False
+    return False
 }
 
 ToHiveFromPineTree() {

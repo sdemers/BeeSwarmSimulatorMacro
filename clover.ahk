@@ -4,8 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
 WinActivate Roblox
 
 Sleep 200
@@ -31,7 +29,6 @@ MoveToClover() {
 }
 
 ToHiveFromClover() {
-    global g_hivePosition
 
     StopFetching()
 
@@ -96,5 +93,3 @@ ExecuteCloverScript() {
         }
     }
 }
-
-ExecuteCloverScript()

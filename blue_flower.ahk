@@ -23,19 +23,23 @@ ValidateField() {
 }
 
 MoveToBlueFlowerField() {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    MoveLeft(550)
-    DeployChute()
-    Sleep, 3000
-    moveUp(300)
-    SendSpace()
-    Sleep, 2000
+        MoveLeft(550)
+        DeployChute()
+        Sleep, 3000
+        moveUp(300)
+        SendSpace()
+        Sleep, 2000
 
-    MoveUp(3000)
-    MoveRight(1000)
+        MoveUp(3000)
+        MoveRight(1000)
 
-    return True
+        return True
+    }
+
+    return False
 }
 
 ToHiveFromBlueFlower() {

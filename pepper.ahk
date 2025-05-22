@@ -11,37 +11,39 @@ WinActivate Roblox
 Sleep 200
 
 MoveToPepperField() {
-    ZoomOut(5)
-    FromHiveToCannon(g_hivePosition, False)
+    if (MoveFromHiveToCannon()) {
+        JumpToRedCannon()
+        MoveRight(4000)
 
-    MoveRight(4000)
-
-    KeyDown("d")
-    Jump()
-    Sleep, 2000
-    KeyUp("d")
-
-    KeyDown("w")
-    Loop, 10 {
-        Sleep, 700
+        KeyDown("d")
         Jump()
+        Sleep, 2000
+        KeyUp("d")
+
+        KeyDown("w")
+        Loop, 10 {
+            Sleep, 700
+            Jump()
+        }
+        KeyUp("w")
+
+        MoveUp(2000)a
+        MoveRight(2000)
+        KeyDown("d")
+        Sleep, 200
+        Jump()
+        Sleep, 2000
+        Jump()
+        KeyUp("d")
+
+        RotateRight()
+        MoveUp(5000)
+        MoveRight(5000)
+
+        return True
     }
-    KeyUp("w")
 
-    MoveUp(2000)a
-    MoveRight(2000)
-    KeyDown("d")
-    Sleep, 200
-    Jump()
-    Sleep, 2000
-    Jump()
-    KeyUp("d")
-
-    RotateRight()
-    MoveUp(5000)
-    MoveRight(5000)
-
-    return True
+    return False
 }
 
 ToHiveFromPepperField() {

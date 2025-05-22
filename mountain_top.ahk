@@ -16,7 +16,6 @@ Sleep 200
 MoveToMountainTop() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        FromHiveToCannon(g_hivePosition)
         Sleep 3000
         PlaceSprinkler(g_sprinklers)
     }

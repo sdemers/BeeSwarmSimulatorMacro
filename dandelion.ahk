@@ -8,20 +8,24 @@ WinActivate Roblox
 Sleep 200
 
 MoveToDandelion() {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    Sleep 500
-    DeployChute()
-    MoveUp(2500)
-    ReleaseChute()
-    Sleep, 2000
+        Sleep 500
+        DeployChute()
+        MoveUp(2500)
+        ReleaseChute()
+        Sleep, 2000
 
-    RotateLeft()
+        RotateLeft()
 
-    MoveRight(1500)
-    MoveUp(1500)
+        MoveRight(1500)
+        MoveUp(1500)
 
-    return True
+        return True
+    }
+
+    return False
 }
 
 WalkDandelionPattern(patternRepeat, subrepeat) {

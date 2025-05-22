@@ -7,6 +7,7 @@
 ; missing mountain top return to hive
 ; missing dandelion return to hive
 
+runClover := False
 runSunflower := False
 runCactus := False
 runStrawberry := False
@@ -28,13 +29,14 @@ runHub := False
 ;runBamboo := True
 ;runBlueFlower := True
 ;runCactus := True
+;runClover := True
 ;runCoconut := True
 ;runDandelion := True
 ;runHub := True
 ;runMountainTop := True
 ;runMushroom := True
-;runPepper := True
-runPineTree := True
+runPepper := True
+;runPineTree := True
 ;runPineapple := True
 ;runPumpkin := True
 ;runRose := True
@@ -127,4 +129,9 @@ If (runDandelion) {
 If (runHub) {
     #Include, hub.ahk
     WalkHubPattern()
+}
+
+If (runClover) {
+    #Include, clover.ahk
+    ExecuteCloverScript()
 }

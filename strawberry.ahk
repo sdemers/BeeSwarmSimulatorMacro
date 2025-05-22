@@ -11,17 +11,19 @@ WinActivate Roblox
 Sleep 200
 
 MoveToStrawberry() {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    MoveRight(170)
-    Sleep, 400
-    DeployChute()
-    Sleep, 600
-    MoveRight(100)
-    Sleep, 1000
-    SendSpace()
-    Sleep 1500
-    RotateCamera(4)
+        MoveRight(170)
+        Sleep, 400
+        DeployChute()
+        Sleep, 600
+        MoveRight(100)
+        Sleep, 1000
+        SendSpace()
+        Sleep 1500
+        RotateCamera(4)
+    }
 
     return True
 }

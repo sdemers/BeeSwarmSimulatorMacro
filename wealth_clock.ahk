@@ -15,7 +15,7 @@ ShouldGoToWealthClock() {
     ;Debug("A_TickCount: " . A_TickCount . ", lastWeathClock: " . lastWeathClock . ", Next wealth clock in " . nextIn . " seconds", 5)
     Debug("Next wealth clock in " . nextIn . " seconds", 5)
 
-    if (nextIn < 0) {
+    if (nextIn < 0 or nextIn > 3700) {
         ReadUseWealthClock()
         return useWealthClock
     }

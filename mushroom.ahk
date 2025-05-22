@@ -11,19 +11,23 @@ WinActivate Roblox
 Sleep 200
 
 MoveToMushroom(g_hivePosition) {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    Sleep, 100
-    DeployChute()
-    MoveDown(300)
-    ReleaseChute()
-    Sleep, 500
-    RotateCamera(4)
+        Sleep, 100
+        DeployChute()
+        MoveDown(300)
+        ReleaseChute()
+        Sleep, 500
+        RotateCamera(4)
 
-    MoveUp(4000)
-    MoveLeft(4000)
+        MoveUp(4000)
+        MoveLeft(4000)
 
-    return True
+        return True
+    }
+
+    return False
 }
 
 ToHiveFromMushroom() {

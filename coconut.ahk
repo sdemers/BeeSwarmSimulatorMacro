@@ -24,17 +24,21 @@ ValidateCoconutField() {
 }
 
 MoveToCoconut() {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    MoveUp(300)
-    DeployChute()
-    MoveUp(300)
-    Sleep, 4000
-    MoveUp(3500)
-    MoveRight(10000)
-    MoveUp(1000)
+        MoveUp(300)
+        DeployChute()
+        MoveUp(300)
+        Sleep, 4000
+        MoveUp(3500)
+        MoveRight(10000)
+        MoveUp(1000)
 
-    return True
+        return True
+    }
+
+    return False
 }
 
 ToHiveFromCoconut() {

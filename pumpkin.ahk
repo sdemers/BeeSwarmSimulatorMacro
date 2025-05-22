@@ -11,24 +11,26 @@ WinActivate Roblox
 Sleep 200
 
 MoveToPumpkin(g_hivePosition) {
-    FromHiveToCannon(g_hivePosition)
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
 
-    RotateCamera(4)
+        RotateCamera(4)
 
-    Sleep, 500
-    MoveLeft(200)
-    DeployChute()
-    Sleep 2000
-    MoveUp(1000)
-    SendSpace()
-    Sleep 1000
+        Sleep, 500
+        MoveLeft(200)
+        DeployChute()
+        Sleep 2000
+        MoveUp(1000)
+        SendSpace()
+        Sleep 1000
 
-    MoveUp(5000)
-    MoveRight(5000)
-    RotateRight()
+        MoveUp(5000)
+        MoveRight(5000)
+        RotateRight()
 
-    ZoomOut(5)
-    return True
+        ZoomOut(5)
+        return True
+    }
 }
 
 ToHiveFromPumpkin() {
