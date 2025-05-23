@@ -7,27 +7,27 @@
 ; missing mountain top return to hive
 ; missing dandelion return to hive
 
-runClover := False
-runSunflower := False
-runCactus := False
-runStrawberry := False
-runPumpkin := False
-runBlueFlower := False
-runPepper := False
-runPineTree := False
-runPineapple := False
-runCoconut := False
-runRose := False
-runMountainTop := False
-runSpider := False
-runMushroom := False
-runStump := False
 runBamboo := False
+runBlueFlower := False
+runCactus := False
+runClover := False
+runCoconut := False
 runDandelion := False
 runHub := False
+runMountainTop := False
+runMushroom := False
+runPepper := False
+runPineapple := False
+runPineTree := False
+runPumpkin := False
+runRose := False
+runSpider := False
+runStrawberry := False
+runStump := False
+runSunflower := False
 
-;runBamboo := True
-;runBlueFlower := True
+runBamboo := True
+;runBlueFlower := Trued
 ;runCactus := True
 ;runClover := True
 ;runCoconut := True
@@ -35,14 +35,14 @@ runHub := False
 ;runHub := True
 ;runMountainTop := True
 ;runMushroom := True
-runPepper := True
-;runPineTree := True
+;runPepper := True
 ;runPineapple := True
+;runPineTree := True
 ;runPumpkin := True
 ;runRose := True
 ;runSpider := True
 ;runStrawberry := True
-;runStump := True
+;runStump := Trueds
 ;runSunflower := True
 
 If (runSunflower) {

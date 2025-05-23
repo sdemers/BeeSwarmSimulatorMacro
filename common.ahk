@@ -173,7 +173,7 @@ Jump(time := 25) {
 
 JumpToRedCannon() {
     DeployChute()
-    Sleep, 350
+    Sleep, 300
     ReleaseChute()
     Sleep, 300
     DeployChute()
@@ -879,8 +879,6 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
         }
 
         If (stopFetching || A_Index = nbLoops) {
-            MoveUp(5000)
-            MoveRight(5000)
             break
         }
     }

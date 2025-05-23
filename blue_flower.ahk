@@ -26,14 +26,14 @@ MoveToBlueFlowerField() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
 
-        MoveLeft(550)
+        MoveLeft(600)
         DeployChute()
         Sleep, 3000
-        moveUp(300)
+        MoveDown(300)
         SendSpace()
         Sleep, 2000
 
-        MoveUp(3000)
+        MoveUp(2000)
         MoveRight(1000)
 
         return True

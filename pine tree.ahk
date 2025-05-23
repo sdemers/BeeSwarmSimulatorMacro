@@ -88,10 +88,8 @@ ExecutePineTreeScript() {
             Debug("Walk pine tree pattern")
             ZoomOut()
             ResetSprinklers()
-            ;WalkElolPattern(g_patternRepeat, g_subpatternRepeat)
             RotateCamera(-1)
             WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1000, 0)
-            MoveRight(500)
             RotateCamera(1)
             Debug("Moving to hive")
             if (ToHiveFromPineTree()) {
