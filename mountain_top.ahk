@@ -1,17 +1,7 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global g_hivePosition := 5
-global g_speed := 33.3
-global g_patternRepeat := 10
-global g_patternWidth := 8
-global g_patternLength := 10
-
 #Include, common.ahk
-
-WinActivate Roblox
-
-Sleep 200
 
 MoveToMountainTop() {
     if (MoveFromHiveToCannon()) {
@@ -29,36 +19,47 @@ WalkMountainTopPattern(g_patternRepeat) {
     MoveUp(4000)
     MoveRight(2000)
 
-    length := 1200
+    length := 600
     turn := 50
+    stop := false
 
     Loop, %g_patternRepeat% {
 
-        MoveDown(1000)
+        MoveDown(700)
+        MoveLeft(400)
 
-        Loop, 4 {
-            StartFetching()
-            MoveDown(length)
-            MoveLeft(turn)
-            MoveUp(length)
-            MoveLeft(turn)
+        Loop, 8 {
+            Loop, 3 {
+                StartFetching()
+                MoveDown(length)
+                MoveLeft(turn)
+                MoveUp(length)
+                MoveLeft(turn)
+            }
+
+            Loop, 3 {
+                StartFetching()
+                MoveDown(length)
+                MoveRight(turn)
+                MoveUp(length)
+                MoveRight(turn)
+            }
+
+            if (ShouldStopFetching()) {
+                stop := True
+                break
+            }
         }
 
-        Loop, 4 {
-            StartFetching()
-            MoveDown(length)
-            MoveRight(turn)
-            MoveUp(length)
-            MoveRight(turn)
-        }
+        MoveLeft(300)
+        MoveUp(300)
+        TwoKeyPress("w", "d", 1000)
+        MoveUp(1000)
+        MoveRight(1000)
 
-        if (ShouldStopFetching()) {
+        if (stop) {
             break
         }
-
-        MoveLeft(500)
-        MoveUp(1500)
-        MoveRight(1000)
     }
 }
 
@@ -67,18 +68,31 @@ ToHiveFromMountainTop() {
 
     StopFetching()
 
-    MoveDown(8000)
-    MoveRight(5000)
-    MoveUp(5000)
-    MoveRight(2000)
+    MoveRight(1000)
     MoveUp(2000)
-    MoveRight(1500)
-    MoveLeft(1500)
-    MoveUp(5000)
+    RotateCamera(4)
+    Jump()
+    MoveUp(1000)
 
-    JumpFromPolarBearToHive()
+    Loop, 3 {
+        SendSpace()
+        Sleep, 200
+        SendSpace()
+        Sleep, 1200
+    }
 
-    MoveToHiveSlot(g_hivePosition)
+    SendSpace()
+    Sleep, 200
+    SendSpace()
+
+    Sleep, 2000
+    TwoKeyPress("w", "d", 10000)
+
+    MoveDown(1000)
+    TwoKeyPress("w", "d", 2000)
+
+    MoveDown(450)
+    return MoveToHiveLeft()
 }
 
 ExecuteMountainTopScript() {
@@ -114,6 +128,6 @@ ExecuteMountainTopScript() {
     }
 }
 
-;ExecuteMountainTopScript()
-
-;WalkPineTreePattern(10, 10, 2, 400)
+; WinActivate Roblox
+; Sleep 200
+; ToHiveFromMountainTop()

@@ -232,6 +232,9 @@ Reset() {
 }
 
 Respawn() {
+    WinActivate Roblox
+    Sleep 200
+
     done := False
     while (!done) {
         Reset()

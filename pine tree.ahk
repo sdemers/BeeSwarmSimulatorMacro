@@ -4,12 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 ValidatePineTreeField() {
 
     day := CompareColorAt(3780, 80, 0x7f6e45)

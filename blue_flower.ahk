@@ -1,17 +1,6 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-;#Include, config.ahk
-;#Include, common.ahk
-
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
-Debug("nb sprinklers: " . g_sprinklers)
-
 ValidateField() {
     day := CompareColorAt(170, 1900, 0x006493) && CompareColorAt(2730, 270, 0x958465)
     if (day) {

@@ -4,6 +4,9 @@
 #Include, config.ahk
 #Include, common.ahk
 
+WinActivate Roblox
+Sleep 200
+
 ; missing mountain top return to hive
 ; missing dandelion return to hive
 
@@ -26,14 +29,14 @@ runStrawberry := False
 runStump := False
 runSunflower := False
 
-runBamboo := True
-;runBlueFlower := Trued
+;runBamboo := True
+;runBlueFlower := True
 ;runCactus := True
 ;runClover := True
 ;runCoconut := True
 ;runDandelion := True
 ;runHub := True
-;runMountainTop := True
+runMountainTop := True
 ;runMushroom := True
 ;runPepper := True
 ;runPineapple := True

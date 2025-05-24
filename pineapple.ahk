@@ -4,12 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 ValidatePineappleField() {
     return (CompareColorAt(170, 1900, 0x006493) or CompareColorAt(170, 1900, 0x006491) or CompareColorAt(170, 1900, 0x006593)) && (CompareColorAt(2730, 270, 0x958465) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x946736) or CompareColorAt(2730, 270, 0x000000))
 }
@@ -89,7 +83,9 @@ ExecutePineappleScript() {
         If (MoveToPineapple()) {
             Debug("Walk pineapple pattern")
             PlacePineappleSprinklers()
+            RotateCamera(1)
             WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, True, 70, False)
+            RotateCamera(-1)
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")

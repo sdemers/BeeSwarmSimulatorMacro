@@ -4,12 +4,6 @@
 #include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 MoveToBamboo() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
@@ -72,7 +66,9 @@ ExecuteBambooScript() {
             Debug("Walk bamboo pattern")
             ZoomOut()
             ResetSprinklers()
+            RotateCamera(-1)
             WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False)
+            RotateCamera(1)
             Debug("Moving to hive")
             if (ToHiveFromBamboo()) {
                 Debug("Convert honey")
@@ -92,5 +88,3 @@ ExecuteBambooScript() {
         }
     }
 }
-
-;ExecuteBambooScript()

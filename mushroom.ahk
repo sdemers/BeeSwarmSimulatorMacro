@@ -1,27 +1,15 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-#Include, config.ahk
 #Include, common.ahk
-
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
 
 MoveToMushroom(g_hivePosition) {
     if (MoveFromHiveToCannon()) {
-        JumpToCannonAndFire()
-
-        Sleep, 100
-        DeployChute()
-        MoveDown(300)
-        ReleaseChute()
-        Sleep, 500
         RotateCamera(4)
+        ZoomOut()
+        TwoKeyPress("w", "d", 5000)
 
-        MoveUp(4000)
+        MoveUp(10000)
         MoveLeft(4000)
 
         return True
@@ -60,10 +48,8 @@ ExecuteMushroomScript() {
         Debug("Moving to mushroom")
         if (MoveToMushroom(g_hivePosition)) {
             Debug("Walk mushroom pattern")
-            ZoomOut()
-            MoveUp(2000)
-            MoveLeft(3000)
             ResetSprinklers()
+            ZoomOut()
             WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromMushroom()) {
@@ -84,5 +70,3 @@ ExecuteMushroomScript() {
         }
     }
 }
-
-;ExecuteMushroomScript()

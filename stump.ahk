@@ -4,10 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-WinActivate Roblox
-
-Sleep 200
-
 MoveToStump() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()

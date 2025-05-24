@@ -4,12 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 MoveToSunflower(hive) {
     if (MoveFromHiveToCannon()) {
         MoveDown(4000)

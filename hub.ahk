@@ -3,10 +3,6 @@
 
 #Include, common.ahk
 
-WinActivate Roblox
-
-Sleep 200
-
 WalkHubPattern() {
 
     loop {

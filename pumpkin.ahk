@@ -4,12 +4,6 @@
 #Include, config.ahk
 #Include, common.ahk
 
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
-
 MoveToPumpkin(g_hivePosition) {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()

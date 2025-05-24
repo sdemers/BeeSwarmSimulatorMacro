@@ -1,15 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-#Include, wealth_clock.ahk
 #Include, config.ahk
 #Include, common.ahk
-
-CoordMode, Pixel, Screen
-
-WinActivate Roblox
-
-Sleep 200
 
 ValidateCoconutField() {
     return True
