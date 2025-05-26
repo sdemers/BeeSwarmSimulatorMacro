@@ -4,6 +4,7 @@
 
 global GoToHiveRequested := False
 global g_pause := False
+global g_startTimestamp := 0
 
 CoordMode, Pixel, Screen
 
@@ -247,6 +248,8 @@ Respawn() {
         Reset()
         done := ValidateStart()
     }
+
+    g_startTimestamp := A_TickCount / (1000 * 60)
 }
 
 SendSpace(wait := 100) {
@@ -408,6 +411,12 @@ ShouldStopFetching() {
     }
 
     if (ShouldGoToWealthClock()) {
+        return True
+    }
+
+    minutes := A_TickCount / (1000 * 60)
+    ;Debug("minutes: " . minutes . ", startTimestamp: " . g_startTimestamp . ", maxTimeMin: " . g_maxTimeMin, 6)
+    if (minutes - g_startTimestamp >= g_maxTimeMin) {
         return True
     }
 
@@ -771,7 +780,7 @@ WalkPepperPattern(nbLoops, subrepeat) {
             turnAroundTime := move * g_patternLength / 6
 
             StartFetching()
-            loop, 15 {
+            loop, 16 {
                 Loop, 2 {
                     MoveDown(patternMoveTime)
                     MoveLeft(turnAroundTime)

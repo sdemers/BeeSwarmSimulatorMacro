@@ -2,6 +2,7 @@
 #Persistent
 
 global g_hivePosition := 3
+global g_maxTimeMin := 30
 global g_speed := 34.5
 global g_sprinklers := 1
 global g_sprinklerPlacementDelay := 0
