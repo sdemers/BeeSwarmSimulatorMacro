@@ -47,18 +47,15 @@ MoveToPineTree() {
 }
 
 ToHiveFromPineTree() {
-    global g_hivePosition
-
-    MoveRight(5000)
-    MoveUp(5000)
+    MoveRight(2000)
+    MoveUp(2000)
 
     StopFetching()
 
     ; Move next to polar bear
-    MoveRight(7000)
-    MoveDown(13000)
+    MoveDown(11000)
     RotateLeft()
-    MoveUp(10000)
+    MoveUp(9000)
 
     JumpFromPolarBearToHive()
 

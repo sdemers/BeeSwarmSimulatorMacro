@@ -75,10 +75,7 @@ ToHiveFromMountainTop() {
     MoveUp(1000)
 
     Loop, 3 {
-        SendSpace()
-        Sleep, 200
-        SendSpace()
-        Sleep, 1200
+        MoveByChute()
     }
 
     SendSpace()

@@ -28,19 +28,17 @@ MoveToPumpkin(g_hivePosition) {
 }
 
 ToHiveFromPumpkin() {
-    global g_hivePosition
+    MoveUp(3000)
+    MoveRight(7000)
+    MoveDown(500)
+    MoveRight(500)
+    MoveUp(1000)
+    RotateRight()
+
+    MoveUp(15000)
+    MoveLeft(500)
 
     StopFetching()
-
-    RotateLeft()
-    MoveLeft(5000)
-    MoveUp(3000)
-    MoveRight(12000)
-
-    RotateCamera(4)
-    MoveUp(10000)
-
-    JumpFromPolarBearToHive()
 
     if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")

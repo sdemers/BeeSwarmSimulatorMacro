@@ -37,13 +37,17 @@ MoveToCoconut() {
 ToHiveFromCoconut() {
     StopFetching()
 
-    MoveUp(5000)
-    MoveRight(5000)
+    MoveUp(3000)
+    MoveRight(3000)
     MoveDown(5000)
     MoveLeft(8000)
-    Sleep, 10000
-    MoveDown(3000)
-    MoveUp(4000)
+    MoveUp(500)
+    MoveDown(500)
+    MoveByChute()
+    MoveByChute()
+    Sleep, 100
+    ReleaseChute()
+    MoveUp(20000)
     MoveDown(400)
 
     if (MoveToHiveLeft() = False) {

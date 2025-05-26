@@ -35,17 +35,17 @@ ToHiveFromPineapple() {
 
     ; Walk to switch next to blue cannon
     ; Give enough time to disable haste
-    MoveUp(25000)
+    MoveUp(12000)
 
-    MoveDown(800)
-    MoveRight(2000)
-    KeyDown("d")
-    Jump()
-    Sleep, 300
-    KeyUp("d")
-    Sleep, 500
+    MoveRight(3000)
+    MoveUp(500)
+    MoveDown(1000)
+    MoveByChute()
+    TwoKeyPress("a", "s", 100)
+
     FireCannon()
     Sleep 2500
+    ZoomOut()
     MoveUp(5000)
 
     If (MoveToHiveSlot(g_hivePosition) = False) {

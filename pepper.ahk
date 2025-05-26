@@ -21,7 +21,7 @@ MoveToPepperField() {
         }
         KeyUp("w")
 
-        MoveUp(2000)a
+        MoveUp(2000)
         MoveRight(2000)
         KeyDown("d")
         Sleep, 200

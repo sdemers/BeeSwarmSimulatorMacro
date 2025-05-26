@@ -190,6 +190,13 @@ StopFetching() {
     Click, Up
 }
 
+MoveByChute() {
+    SendSpace()
+    Sleep, 200
+    SendSpace()
+    Sleep, 1200
+}
+
 ConvertHoney() {
     KeyPress("e", 50)
 
@@ -332,12 +339,12 @@ MoveToHiveLeft() {
     }
 
     step := 0
-    while (step < 100) {
-        MoveLeft(125)
+    while (step < 500) {
+        MoveLeft(50)
         If (ValidateMakeHoney()) {
             return True
         }
-        step++
+        step := step + 1
     }
 
     return False
@@ -349,12 +356,12 @@ MoveToHiveUp() {
     }
 
     step := 0
-    while (step < 200) {
-        MoveUp(125)
+    while (step < 500) {
+        MoveUp(50)
         If (ValidateMakeHoney()) {
             return True
         }
-        step++
+        step := step + 1
     }
 
     return False
@@ -366,12 +373,12 @@ MoveToHiveRight() {
     }
 
     step := 0
-    while (step < 100) {
-        MoveRight(125)
+    while (step < 500) {
+        MoveRight(50)
         If (ValidateMakeHoney()) {
             return True
         }
-        step++
+        step := step + 1
     }
 
     return False
@@ -415,16 +422,12 @@ IsConvertingHoney() {
 }
 
 JumpFromPolarBearToHive() {
-    MoveDown(50)
-    KeyDown("w")
-    SendSpace(10)
-    Sleep, 500
-    KeyUp("w")
-    Sleep, 500
-    MoveRight(500)
-    MoveUp(10000)
-    MoveRight(600)
-    MoveUp(8000)
+    MoveRight(2000)
+    MoveDown(500)
+    MoveUp(1000)
+    MoveByChute()
+    MoveUp(7000)
+    MoveLeft(600)
 }
 
 WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
@@ -753,12 +756,15 @@ WalkPepperPattern(nbLoops, subrepeat) {
     MoveUp(sprinklerMove * 2)
     MoveRight(sprinklerMove * 2)
 
+    TwoKeyPress("a", "s", 800)
+    MoveLeft(300)
+
     loop, %nbLoops% {
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            MoveLeft(700)
-            MoveDown(700)
+            TwoKeyPress("a", "s", 600)
+            MoveLeft(200)
 
             ZoomOut(5)
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
@@ -780,20 +786,13 @@ WalkPepperPattern(nbLoops, subrepeat) {
                     MoveRight(turnAroundTime)
                 }
 
-                if (A_Index = 5 or A_Index = 10) {
-                    MoveUp(20)
-                    MoveRight(20)
-
-                }
-
                 if (ShouldStopFetching()) {
                     stopFetching := True
                     Break
                 }
             }
 
-            MoveUp(2500)
-            MoveRight(2500)
+            TwoKeyPress("w", "d", 3000)
 
             if (stopFetching) {
                 Break
