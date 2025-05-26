@@ -7,7 +7,7 @@
 MoveToPepperField() {
     if (MoveFromHiveToCannon()) {
         JumpToRedCannon()
-        MoveRight(4000)
+        MoveRight(3000)
 
         KeyDown("d")
         Jump()
@@ -15,24 +15,31 @@ MoveToPepperField() {
         KeyUp("d")
 
         KeyDown("w")
-        Loop, 10 {
-            Sleep, 700
-            Jump()
-        }
+        Sleep, 1000
+        Jump()
+        Sleep, 2500
+        Jump()
+        Sleep, 3000
+        Jump()
+        Sleep, 2000
         KeyUp("w")
-
-        MoveUp(2000)
-        MoveRight(2000)
-        KeyDown("d")
         Sleep, 200
+
+        KeyDown("w")
+        KeyDown("d")
+        Jump()
+        Sleep, 3000
+        KeyUp("w")
+        Sleep, 300
         Jump()
         Sleep, 2000
         Jump()
+        Sleep, 1500
         KeyUp("d")
 
         RotateRight()
-        MoveUp(5000)
-        MoveRight(5000)
+        MoveUp(1000)
+        TwoKeyPress("w", "d", 3000)
 
         return True
     }
