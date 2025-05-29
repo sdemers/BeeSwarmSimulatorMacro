@@ -67,6 +67,34 @@ ToHiveFromPineTree() {
     return True
 }
 
+ExecutePineTree() {
+    Debug("Moving to pine tree")
+    if (MoveToPineTree()) {
+        Debug("Walk pine tree pattern")
+        ZoomOut()
+        ResetSprinklers()
+        RotateCamera(-1)
+        WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1000, 0)
+        RotateCamera(1)
+        Debug("Moving to hive")
+        if (ToHiveFromPineTree()) {
+            Debug("Convert honey")
+            ConvertHoney()
+            if (ShouldGoToWealthClock()) {
+                ExecuteWealthClockScript()
+                Respawn()
+            }
+        } else {
+            Debug("Respawning")
+            Respawn()
+        }
+    }
+    else {
+        Debug("Respawning")
+        Respawn()
+    }
+}
+
 ExecutePineTreeScript() {
     if (ShouldGoToWealthClock()) {
         ExecuteWealthClockScript()
@@ -74,31 +102,7 @@ ExecutePineTreeScript() {
     Respawn()
 
     loop {
-        Debug("Moving to pine tree")
-        if (MoveToPineTree()) {
-            Debug("Walk pine tree pattern")
-            ZoomOut()
-            ResetSprinklers()
-            RotateCamera(-1)
-            WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1000, 0)
-            RotateCamera(1)
-            Debug("Moving to hive")
-            if (ToHiveFromPineTree()) {
-                Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
-            } else {
-                Debug("Respawning")
-                Respawn()
-            }
-        }
-        else {
-            Debug("Respawning")
-            Respawn()
-        }
+        ExecutePineTree()
     }
 }
 

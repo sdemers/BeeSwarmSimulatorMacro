@@ -2,12 +2,12 @@
 #Persistent
 
 #Include, common.ahk
+#Include, pine tree.ahk
 
 MoveToMountainTop() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
         Sleep 3000
-        PlaceSprinkler(g_sprinklers)
     }
 
     return True
@@ -16,19 +16,29 @@ MoveToMountainTop() {
 WalkMountainTopPattern(g_patternRepeat) {
     RotateCamera(4)
 
+    ResetSprinklers()
+
+    PlaceSprinkler(g_sprinklers)
+    MoveUp(600)
+    PlaceSprinkler(g_sprinklers)
+    MoveRight(600)
+    PlaceSprinkler(g_sprinklers)
+    MoveDown(600)
+    PlaceSprinkler(g_sprinklers)
+
     MoveUp(4000)
     MoveRight(2000)
 
-    length := 600
-    turn := 50
+    length := 400
+    turn := 60
     stop := false
 
     Loop, %g_patternRepeat% {
 
         MoveDown(700)
-        MoveLeft(400)
+        MoveLeft(300)
 
-        Loop, 8 {
+        Loop, 6 {
             Loop, 3 {
                 StartFetching()
                 MoveDown(length)
@@ -45,7 +55,7 @@ WalkMountainTopPattern(g_patternRepeat) {
                 MoveRight(turn)
             }
 
-            if (ShouldStopFetching()) {
+            if (ShouldStopFetching() or A_Min < 15 or A_Min = 59) {
                 stop := True
                 break
             }
@@ -55,7 +65,8 @@ WalkMountainTopPattern(g_patternRepeat) {
         MoveUp(300)
         TwoKeyPress("w", "d", 1000)
         MoveUp(1000)
-        MoveRight(1000)
+        MoveRight(500)
+        MoveUp(500)
 
         if (stop) {
             break
@@ -68,28 +79,51 @@ ToHiveFromMountainTop() {
 
     StopFetching()
 
-    MoveRight(1000)
-    MoveUp(2000)
-    RotateCamera(4)
-    Jump()
     MoveUp(1000)
+    MoveLeft(5000)
+    KeyDown("w")
+    Jump()
+    Sleep, 1000
+    KeyUp("w")
+    MoveLeft(4000)
+    MoveDown(200)
+    MoveRight(10000)
+    RotateCamera(4)
+    MoveUp(8000)
 
-    Loop, 3 {
-        MoveByChute()
+    JumpFromPolarBearToHive()
+
+    if (MoveToHiveSlot(g_hivePosition) = False) {
+        Debug("Hive not found...")
+        return False
     }
 
-    SendSpace()
-    Sleep, 200
-    SendSpace()
+    return True
+}
 
-    Sleep, 2000
-    TwoKeyPress("w", "d", 10000)
-
-    MoveDown(1000)
-    TwoKeyPress("w", "d", 2000)
-
-    MoveDown(450)
-    return MoveToHiveLeft()
+ExecuteMountainTop() {
+    Debug("Moving to mountain top")
+    if (MoveToMountainTop()) {
+        Debug("Walk mountain top pattern")
+        ResetSprinklers()
+        WalkMountainTopPattern(g_patternRepeat)
+        Debug("Moving to hive")
+        if (ToHiveFromMountainTop()) {
+            Debug("Convert honey")
+            ConvertHoney()
+            if (ShouldGoToWealthClock()) {
+                ExecuteWealthClockScript()
+                Respawn()
+            }
+        } else {
+            Debug("Respawning")
+            Respawn()
+        }
+    }
+    else {
+        Debug("Respawning")
+        Respawn()
+    }
 }
 
 ExecuteMountainTopScript() {
@@ -100,31 +134,11 @@ ExecuteMountainTopScript() {
     Respawn()
 
     loop {
-        Debug("Moving to mountain top")
-        if (MoveToMountainTop()) {
-            Debug("Walk mountain top pattern")
-            ResetSprinklers()
-            WalkMountainTopPattern(g_patternRepeat)
-            Debug("Moving to hive")
-            if (ToHiveFromMountainTop()) {
-                Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
-            } else {
-                Debug("Respawning")
-                Respawn()
-            }
+        if (A_Min > 15) {
+            ExecuteMountainTop()
         }
-        else {
-            Debug("Respawning")
-            Respawn()
+        Else {
+            ExecutePineTree()
         }
     }
 }
-
-; WinActivate Roblox
-; Sleep 200
-; ToHiveFromMountainTop()

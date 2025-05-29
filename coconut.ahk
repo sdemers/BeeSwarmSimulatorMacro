@@ -20,7 +20,7 @@ MoveToCoconut() {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
 
-        MoveUp(300)
+        MoveUp(500)
         DeployChute()
         MoveUp(300)
         Sleep, 4000
@@ -37,24 +37,23 @@ MoveToCoconut() {
 ToHiveFromCoconut() {
     StopFetching()
 
-    MoveUp(3000)
-    MoveRight(3000)
+    TwoKeyPress("w", "d", 3000)
     MoveDown(5000)
-    MoveLeft(8000)
-    MoveUp(500)
-    MoveDown(500)
-    MoveByChute()
-    MoveByChute()
-    Sleep, 100
-    ReleaseChute()
-    MoveUp(20000)
-    MoveDown(400)
+    KeyDown("s")
+    Jump()
+    Sleep, 5000
+    KeyUp("s")
+    RotateLeft()
+    MoveRight(5000)
+    MoveUp(10000)
+    MoveDown(8000)
 
-    if (MoveToHiveLeft() = False) {
+    if (MoveToHiveUp() = False) {
         Debug("Hive not found...")
         return False
     }
 
+    RotateRight()
     return True
 }
 
@@ -71,9 +70,7 @@ ExecuteCoconutScript() {
             Debug("Walk coconut pattern")
             ZoomOut()
             ResetSprinklers()
-            RotateCamera(-1)
             WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1000, 0)
-            RotateCamera(1)
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")

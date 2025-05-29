@@ -323,7 +323,15 @@ ValidateMakeHoney() {
 }
 
 ValidateStart() {
-    return CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404) || CompareColorAt(1915, 2080, 0x9A4E3B)
+    if (CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404) || CompareColorAt(1915, 2080, 0x9A4E3B)) {
+        return True
+    }
+
+    if (CompareColorAt(1915, 2080, 0x353436)) {
+        MoveUp(3000)
+        MoveDown(500)
+        return True
+    }
 }
 
 FireCannon() {
@@ -360,7 +368,7 @@ MoveToHiveUp() {
 
     step := 0
     while (step < 500) {
-        MoveUp(50)
+        MoveUp(100)
         If (ValidateMakeHoney()) {
             return True
         }
@@ -389,12 +397,12 @@ MoveToHiveRight() {
 
 MoveFromHiveToCannon() {
     ZoomIn(6)
-    MoveUp(2900)
+    MoveUp(600)
     good := false
     Loop, 50 {
         MoveRight(1000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A) or CompareColorAt(1950, 55, 0x7E706D)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
+        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A) or CompareColorAt(1950, 55, 0x7E706D) or CompareColorAt(1950, 55, 0x4E9193)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
             ZoomOut(5)
             good := True
             Break

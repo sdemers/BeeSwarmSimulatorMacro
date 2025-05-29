@@ -32,20 +32,20 @@ runSunflower := False
 ;runBamboo := True
 ;runBlueFlower := True
 ;runCactus := True
-;runClover := Truew
-;runCoconut := True
+;runClover := True
+runCoconut := True
 ;runDandelion := True
 ;runHub := True
 ;runMountainTop := True
 ;runMushroom := True
-runPepper := True
+;runPepper := True
 ;runPineapple := True
 ;runPineTree := True
 ;runPumpkin := True
 ;runRose := True
 ;runSpider := True
 ;runStrawberry := True
-;runStump := Trueds
+;runStump := True
 ;runSunflower := True
 
 If (runSunflower) {
