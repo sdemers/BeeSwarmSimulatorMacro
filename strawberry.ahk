@@ -22,31 +22,6 @@ MoveToStrawberry() {
     return True
 }
 
-ToHiveFromStrawberry() {
-    global g_hivePosition
-
-    StopFetching()
-
-    ; Move next to the spider field
-    MoveUp(5000)
-    MoveRight(5000)
-
-    ; Move towards the hives, turn left then move to the hives
-    ; Give time for the haste to expire
-    MoveDown(5000)
-    RotateCamera(4)
-    MoveUp(15000)
-    MoveLeft(700)
-    MoveUp(6000)
-
-    if (MoveToHiveSlot(g_hivePosition) = False) {
-        Debug("Hive not found...")
-        return False
-    }
-
-    return True
-}
-
 ExecuteStrawberryScript() {
     if (ShouldGoToWealthClock()) {
         ExecuteWealthClockScript()

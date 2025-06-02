@@ -47,9 +47,6 @@ ReadUseWealthClock() {
 
 ReadWealthClock() {
     IniRead, Value, config.ini, Config, LastWealthClock
-    if (Value > 735430000) {
-        Value := 0
-    }
     lastWeathClock := Value
     Debug("Last Wealth Clock: " . lastWeathClock)
 }

@@ -203,6 +203,7 @@ ConvertHoney() {
 
     initialCount := 0
     safeCount := 0
+    g_startTimestamp := A_TickCount / (1000 * 60)
     Loop {
         initialCount := initialCount + 1
         If (initialCount > 10) {
@@ -315,6 +316,21 @@ CompareColorAt(x, y, targetColor, tolerance := 20) {
     return distance <= tolerance
 }
 
+CompareColor(sourceColor, targetColor, tolerance := 20) {
+    tr := format("{:d}","0x" . substr(targetColor, 3, 2))
+    tg := format("{:d}","0x" . substr(targetColor, 5, 2))
+    tb := format("{:d}","0x" . substr(targetColor, 7, 2))
+
+    ;split pixel into rgb
+    pr := format("{:d}","0x" . substr(sourceColor, 3, 2))
+    pg := format("{:d}","0x" . substr(sourceColor, 5, 2))
+    pb := format("{:d}","0x" . substr(sourceColor, 7, 2))
+
+    ;check distance
+    distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+    return distance <= tolerance
+}
+
 ValidateMakeHoney() {
     if (CompareColorAt(2170, 240, 0xf9fff7)) {
         return CompareColorAt(2197, 185, 0xf9fff7)
@@ -323,13 +339,10 @@ ValidateMakeHoney() {
 }
 
 ValidateStart() {
-    if (CompareColorAt(1915, 2080, 0xffffff) || CompareColorAt(1915, 2080, 0xb1b1b1) || CompareColorAt(1915, 2080, 0xFF805D) || CompareColorAt(1915, 2080, 0x6F6F6F) || CompareColorAt(1915, 2080, 0x830404) || CompareColorAt(1915, 2080, 0x9A4E3B)) {
-        return True
-    }
+    PixelGetColor, color, 1915, 2080
+    Debug("Pixel at " . x . "," . y . " is " . color, 4)
 
-    if (CompareColorAt(1915, 2080, 0x353436)) {
-        MoveUp(3000)
-        MoveDown(500)
+    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B)) {
         return True
     }
 }
@@ -399,13 +412,17 @@ MoveFromHiveToCannon() {
     ZoomIn(6)
     MoveUp(600)
     good := false
-    Loop, 50 {
-        MoveRight(1000)
+    Loop, 10 {
+        MoveRight(2000)
 
-        if ((CompareColorAt(1950, 55, 0x949184) or CompareColorAt(1950, 55, 0x848279) or CompareColorAt(1950, 55, 0x1F8BA8) or CompareColorAt(1950, 55, 0x16157B) or CompareColorAt(1950, 55, 0x053F1A) or CompareColorAt(1950, 55, 0x7E706D) or CompareColorAt(1950, 55, 0x4E9193)) and (CompareColorAt(3020, 115, 0xa08a76) or CompareColorAt(3020, 115, 0x927C6B))) {
-            ZoomOut(5)
-            good := True
-            Break
+        PixelGetColor, color, 1950, 55
+        if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049)) {
+            PixelGetColor, color, 3020, 115
+            if (CompareColor(color,0xa08a76) or CompareColor(color,0x927C6B) or CompareColor(color,0xEDEAEB)) {
+                ZoomOut(5)
+                good := True
+                Break
+            }
         }
     }
 
@@ -415,21 +432,33 @@ MoveFromHiveToCannon() {
 ShouldStopFetching() {
     if GoToHiveRequested {
         GoToHiveRequested := False
+        Debug("GoToHiveRequested")
+        g_startTimestamp := A_TickCount / (1000 * 60)
         return True
     }
 
     if (ShouldGoToWealthClock()) {
+        Debug("ShouldGoToWealthClock")
+        g_startTimestamp := A_TickCount / (1000 * 60)
         return True
     }
 
     minutes := A_TickCount / (1000 * 60)
     ;Debug("minutes: " . minutes . ", startTimestamp: " . g_startTimestamp . ", maxTimeMin: " . g_maxTimeMin, 6)
     if (minutes - g_startTimestamp >= g_maxTimeMin) {
+        Debug("minutes - g_startTimestamp >= g_maxTimeMin " . (minutes - g_startTimestamp) . " >= " . g_maxTimeMin)
+        g_startTimestamp := A_TickCount / (1000 * 60)
         return True
     }
 
     ; Check if container is full
-    return CompareColorAt(2408, 100, 0x1700F7)
+    if (CompareColorAt(2408, 100, 0x1700F7)) {
+        Debug("Container full")
+        g_startTimestamp := A_TickCount / (1000 * 60)
+        return True
+    }
+
+    return False
 }
 
 IsConvertingHoney() {
@@ -615,11 +644,21 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 MoveLateral(turnAroundTime, !left)
             }
 
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
+            }
+
             Loop, 2 {
                 MoveUp(patternMoveTime)
                 MoveLateral(turnAroundTime * 0.5, left)
                 MoveDown(patternMoveTime)
                 MoveLateral(turnAroundTime, left)
+            }
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
             }
 
             if (placeSplinkers) {
@@ -637,6 +676,11 @@ WalkSpiderPattern(nbLoops, subrepeat, left := True, move := 60, placeSplinkers :
                 }
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.75)
+            }
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
             }
 
             MoveUp(patternMoveTime * 2)
@@ -832,8 +876,6 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
     turnAroundTime := move * g_patternLength / 8
     stopFetching := False
 
-    ;Debug("Before move " . initialMoveDown . " " . initialMoveLeft)
-
     MoveDown(100)
     MoveLeft(100)
     MoveDown(initialMoveDown)
@@ -867,6 +909,11 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
                 MoveRight(turnAroundTime)
             }
 
+            If (ShouldStopFetching()) {
+                stopFetching := True
+                break
+            }
+
             MoveUp(patternMoveTime * 1.5)
             MoveDown(moveDown)
 
@@ -895,6 +942,11 @@ WalkRosePattern(nbLoops, subrepeat, initialMoveDown := 1000, initialMoveLeft := 
             }
 
             MoveRight(500)
+
+            If (ShouldStopFetching()) {
+                stopFetching := True
+                break
+            }
         }
 
         If (stopFetching || A_Index = nbLoops) {
@@ -1153,4 +1205,36 @@ WalkCactusPattern(nbLoops, subrepeat) {
             break
         }
     }
+}
+
+ToHiveFromStrawberry() {
+    global g_hivePosition
+
+    StopFetching()
+
+    ; Move next to the spider field
+    MoveUp(5000)
+    MoveRight(5000)
+
+    ; Move towards the hives, turn left then move to the hives
+    ; Give time for the haste to expire
+    MoveDown(5000)
+    RotateCamera(4)
+    MoveUp(15000)
+    MoveDown(500)
+    KeyDown("w")
+    Sleep, 300
+    Jump()
+    Sleep, 10000
+    KeyUp("w")
+    MoveDown(200)
+    MoveRight(3000)
+    MoveUp(500)
+
+    if (MoveToHiveSlot(g_hivePosition, 1) = False) {
+        Debug("Hive not found...")
+        return False
+    }
+
+    return True
 }

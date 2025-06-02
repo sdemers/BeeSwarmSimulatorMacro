@@ -31,11 +31,11 @@ ToHiveFromPumpkin() {
     MoveUp(3000)
     MoveRight(7000)
     MoveDown(500)
-    MoveRight(500)
+    MoveRight(400)
     MoveUp(1000)
     RotateRight()
 
-    MoveUp(15000)
+    MoveUp(18000)
     MoveLeft(500)
 
     StopFetching()

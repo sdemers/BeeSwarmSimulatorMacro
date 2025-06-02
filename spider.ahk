@@ -27,23 +27,15 @@ ToHiveFromSpider() {
     global g_hivePosition
 
     StopFetching()
+    MoveUp(3000)
+    MoveLeft(3000)
 
-    ; Move next to the straberry field
-    MoveUp(5000)
-    MoveLeft(5000)
+    KeyDown("a")
+    Jump()
+    Sleep, 3000
+    KeyUp("a")
 
-    ; Move towards the hives, turn left then move to the hives
-    RotateCamera(4)
-    MoveUp(6000)
-    MoveRight(500)
-    MoveUp(10000)
-
-    if (MoveToHiveSlot(g_hivePosition) = False) {
-        Debug("Hive not found...")
-        return False
-    }
-
-    return True
+    return ToHiveFromStrawberry()
 }
 
 ExecuteSpiderScript() {

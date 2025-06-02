@@ -1,8 +1,8 @@
 #Requires AutoHotkey v1.1.33+
 #Persistent
 
-global g_hivePosition := 1
-global g_maxTimeMin := 30
+global g_hivePosition := 5
+global g_maxTimeMin := 28
 global g_speed := 34.5
 global g_sprinklers := 1
 global g_sprinklerPlacementDelay := 0
