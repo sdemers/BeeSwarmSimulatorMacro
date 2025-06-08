@@ -24,6 +24,40 @@ StopScript() {
     ExitApp
 }
 
+HyperSleep(ms)
+{
+    SetBatchLines, -1
+
+    DllCall("QueryPerformanceFrequency", "Int64*", freq)
+    DllCall("QueryPerformanceCounter", "Int64*", CounterBefore)
+
+    ;Debug("freq: " . freq . ", Counter: " . CounterBefore)
+
+    DllCall("QueryPerformanceCounter", "Int64*", CounterAfter)
+
+    While (((CounterAfter - CounterBefore) / freq * 1000) < ms) {
+        ;Debug("CounterAfter - CounterBefore: " . (CounterAfter - CounterBefore) / freq * 1000)
+        DllCall("QueryPerformanceCounter", "Int64*", CounterAfter)
+    }
+
+    ;return ((CounterAfter - CounterBefore) / freq * 1000)
+
+    ;Sleep, %ms%
+    ; static freq := (DllCall("QueryPerformanceFrequency", "Int64*", &f := 0), f)
+    ; DllCall("QueryPerformanceCounter", "Int64*", &begin := 0)
+    ; current := 0, finish := begin + ms * freq / 1000
+    ; while (current < finish)
+    ; {
+    ;     if ((finish - current) > 30000)
+    ;     {
+    ;         DllCall("Winmm.dll\timeBeginPeriod", "UInt", 1)
+    ;         DllCall("Sleep", "UInt", 1)
+    ;         DllCall("Winmm.dll\timeEndPeriod", "UInt", 1)
+    ;     }
+    ;     DllCall("QueryPerformanceCounter", "Int64*", &current)
+    ; }
+}
+
 PauseResume() {
     g_pause := !g_pause
 }
@@ -62,7 +96,7 @@ KeyPress(key, duration := 0)
 {
     CheckPause()
     Send, {%key% down}
-    Sleep, (duration * g_movespeedFactor)
+    HyperSleep(duration * g_movespeedFactor)
     Send, {%key% up}
 }
 
@@ -71,7 +105,7 @@ TwoKeyPress(key1, key2, duration := 0)
     CheckPause()
     Send, {%key1% down}
     Send, {%key2% down}
-    Sleep, (duration * g_movespeedFactor)
+    HyperSleep(duration * g_movespeedFactor)
     Send, {%key1% up}
     Send, {%key2% up}
 }
@@ -168,19 +202,19 @@ RotateLeft() {
 
 Jump(time := 25) {
     Send {Space down}
-    Sleep %time%
+    HyperSleep(%time%)
     Send {Space up}
 }
 
 JumpToRedCannon() {
     DeployChute()
-    Sleep, 300
+    HyperSleep(350)
     ReleaseChute()
-    Sleep, 300
+    HyperSleep(400)
     DeployChute()
-    Sleep, 300
+    HyperSleep(350)
     ReleaseChute()
-    Sleep, 500
+    HyperSleep(500)
 }
 
 StartFetching() {
@@ -193,9 +227,9 @@ StopFetching() {
 
 MoveByChute() {
     SendSpace()
-    Sleep, 200
+    HyperSleep(200)
     SendSpace()
-    Sleep, 1200
+    HyperSleep(1200)
 }
 
 ConvertHoney() {
@@ -279,7 +313,7 @@ MoveToHiveSlotFrom1(slot) {
 MoveToHiveSlot(slot, fromSlot := 3) {
     ; We should be facing the wall at slot #fromSlot
 
-    MoveDown(500)
+    MoveDown(400)
 
     if (slot <= fromSlot) {
         return MoveToHiveRight()
@@ -1017,14 +1051,13 @@ WalkCloverPattern(nbLoops, subrepeat) {
     }
 }
 
-WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
+WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200, move := 70, left := True) {
 
-    move := 70
     patternMoveTime := move * g_patternWidth
     stopFetching := False
 
     MoveDown(15 * move)
-    MoveLeft(10 * move)
+    MoveLateral(10 * move, left)
 
     loop, %nbLoops% {
         if (A_Index = 1) {
@@ -1034,41 +1067,57 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200)
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
+            ZoomOut()
             StartFetching()
 
             Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
             turnAroundTime := move * g_patternLength / 4
 
-            MoveLeft(initialMoveLeft)
+            MoveLateral(initialMoveLeft, left)
 
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
+                MoveLateral(turnAroundTime * 0.5, left)
                 PlaceSprinkler(g_sprinklers)
                 MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.75)
+                MoveLateral(turnAroundTime * 0.75, left)
+            }
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
             }
 
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
+                MoveLateral(turnAroundTime * 0.5, left = false)
                 MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime * 0.75)
+                MoveLateral(turnAroundTime * 0.75, left = false)
+            }
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
             }
 
             MoveUp(patternMoveTime * 1.25)
 
             MoveDown(200)
             Loop, %nbzigzag% {
-                MoveLeft(patternMoveTime)
+                MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.5)
-                MoveRight(patternMoveTime)
+                MoveLateral(patternMoveTime, left = False)
                 MoveDown(turnAroundTime * 0.75)
             }
 
-            MoveLeft(patternMoveTime)
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                Break
+            }
+
+            MoveLateral(patternMoveTime, left)
             MoveUp(patternMoveTime * 1.5)
-            MoveRight(patternMoveTime * 1.5)
+            MoveLateral(patternMoveTime * 1.5, left = False)
             MoveDown(patternMoveTime)
 
             if (ShouldStopFetching()) {

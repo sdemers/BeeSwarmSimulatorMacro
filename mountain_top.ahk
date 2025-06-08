@@ -81,19 +81,23 @@ ToHiveFromMountainTop() {
 
     MoveUp(1000)
     MoveLeft(5000)
-    KeyDown("w")
-    Jump()
-    Sleep, 1000
-    KeyUp("w")
-    MoveLeft(4000)
-    MoveDown(200)
-    MoveRight(10000)
+    MoveDown(8000)
     RotateCamera(4)
-    MoveUp(8000)
 
-    JumpFromPolarBearToHive()
+    Jump()
+    HyperSleep(400)
+    Jump()
+    HyperSleep(1000)
+    Jump()
+    HyperSleep(400)
+    Jump()
+    MoveUp(6500)
+    ReleaseChute()
 
-    if (MoveToHiveSlot(g_hivePosition) = False) {
+    MoveUp(3000)
+    MoveRight(1000)
+
+    if (MoveToHiveRight() = False) {
         Debug("Hive not found...")
         return False
     }

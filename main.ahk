@@ -7,7 +7,6 @@
 WinActivate Roblox
 Sleep 200
 
-; missing mountain top return to hive
 ; missing dandelion return to hive
 
 runBamboo := False
@@ -33,7 +32,7 @@ runSunflower := False
 ;runBlueFlower := True
 ;runCactus := True
 ;runClover := True
-runCoconut := True
+;runCoconut := True
 ;runDandelion := True
 ;runHub := True
 ;runMountainTop := True
@@ -46,7 +45,7 @@ runCoconut := True
 ;runSpider := True
 ;runStrawberry := True
 ;runStump := True
-;runSunflower := True
+runSunflower := True
 
 If (runSunflower) {
     #Include, sunflower.ahk

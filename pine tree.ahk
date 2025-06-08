@@ -74,7 +74,6 @@ ExecutePineTree() {
         ZoomOut()
         ResetSprinklers()
         RotateCamera(-1)
-        g_patternWidth := 8
         WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1500, 0)
         RotateCamera(1)
         Debug("Moving to hive")

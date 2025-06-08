@@ -18,8 +18,9 @@ MoveToCactus(g_hivePosition) {
         SendSpace()
         Sleep 1000
 
+        MoveUp(5000)
         MoveRight(3000)
-        MoveDown(6000)
+        MoveDown(7000)
         RotateRight()
 
         ZoomOut(5)

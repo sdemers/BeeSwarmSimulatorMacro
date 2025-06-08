@@ -16,8 +16,18 @@ MoveToBamboo() {
         Sleep 500
         RotateCamera(4)
 
+        ZoomOut()
+        StartFetching()
+
         MoveUp(3000)
-        MoveRight(3000)
+        MoveLeft(3000)
+
+        ; Give time for the bees to arrive and not being killed by the bugs
+        loop, 2 {
+            MoveDown(2000)
+            MoveUp(2000)
+        }
+
         return True
     }
 
@@ -29,10 +39,9 @@ ToHiveFromBamboo() {
 
     ; Move to the wall on the right side
     MoveUp(3000)
-    MoveRight(5000)
+    MoveLeft(5000)
 
     ; Move next to spider
-    MoveLeft(7000)
     MoveDown(600)
     MoveLeft(10000)
 
@@ -66,9 +75,10 @@ ExecuteBambooScript() {
             Debug("Walk bamboo pattern")
             ZoomOut()
             ResetSprinklers()
-            RotateCamera(-1)
-            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False)
-            RotateCamera(1)
+            ;RotateCamera(-1)
+            WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 2, 200, 50, False)
+            ;WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False)
+            ;RotateCamera(1)
             Debug("Moving to hive")
             if (ToHiveFromBamboo()) {
                 Debug("Convert honey")
