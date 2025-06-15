@@ -23,7 +23,7 @@ MoveToPineTree() {
         JumpToCannonAndFire()
 
         Sleep 320
-        MoveRight(200)
+        MoveRight(180)
         Sleep 250
         DeployChute()
         Sleep 4700
@@ -74,6 +74,7 @@ ExecutePineTree() {
         ZoomOut()
         ResetSprinklers()
         RotateCamera(-1)
+        ;WalkPineTreePattern(g_patternRepeat, g_subpatternRepeat)
         WalkRosePattern(g_patternRepeat, g_subpatternRepeat, 1500, 0)
         RotateCamera(1)
         Debug("Moving to hive")

@@ -56,7 +56,7 @@ ExecuteSunflowerScript() {
         if (MoveToSunflower(g_hivePosition)) {
             Debug("Walk Sunflower pattern")
             ResetSprinklers()
-            WalkSunflowerPattern(g_patternRepeat, g_subpatternRepeat)
+            WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 200, 60, False)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
                 Debug("Convert honey")

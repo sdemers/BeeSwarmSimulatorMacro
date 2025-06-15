@@ -5,19 +5,8 @@
 
 MoveToDandelion() {
     if (MoveFromHiveToCannon()) {
-        JumpToCannonAndFire()
-
-        Sleep 500
-        DeployChute()
-        MoveUp(2500)
-        ReleaseChute()
-        Sleep, 2000
-
-        RotateLeft()
-
-        MoveRight(1500)
-        MoveUp(1500)
-
+        RotateCamera(4)
+        TwoKeyPress("w", "d", 6000)
         return True
     }
 
@@ -30,9 +19,9 @@ WalkDandelionPattern(patternRepeat, subrepeat) {
     lateral := 60
     stopFetching := False
 
-    PlaceSprinkler(g_sprinklers)
+    ZoomOut()
     MoveRight(1000)
-    MoveUp(4000)
+    PlaceSprinkler(g_sprinklers)
 
     Loop, %patternRepeat% {
         MoveRight(1000)

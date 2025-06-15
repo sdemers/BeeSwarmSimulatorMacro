@@ -567,83 +567,64 @@ WalkZigZagCrossUpperRight(nbLoops, subrepeat, move := 100) {
     }
 }
 
-WalkPineTreePattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200) {
+WalkPineTreePattern(nbLoops, subrepeat) {
+    StartFetching()
 
-    move := 85
+    move := 100
     patternMoveTime := move * g_patternWidth
     stopFetching := False
 
-    MoveDown(15 * move)
-    MoveLeft(10 * move)
-
     loop, %nbLoops% {
-        if (A_Index = 1) {
+        MoveDown(1500)
+
+        If (A_Index = 1) {
             PlaceSprinkler(g_sprinklers)
         }
 
         Debug("Pattern #" . A_Index . "/" . nbLoops)
         loop, %subrepeat% {
 
-            StartFetching()
-
-            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-            turnAroundTime := move * g_patternLength / 4
-
-            MoveLeft(initialMoveLeft)
-
-            Loop, %nbzigzag% {
-                MoveUp(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.5)
-                PlaceSprinkler(g_sprinklers)
-                MoveDown(patternMoveTime)
-                MoveLeft(turnAroundTime * 0.75)
+            if (stopFetching) {
+                break
             }
 
-            Loop, %nbzigzag% {
-                MoveUp(patternMoveTime)
-                MoveRight(turnAroundTime * 0.5)
-                MoveDown(patternMoveTime)
-                MoveRight(turnAroundTime * 0.75)
+            loop, 10 {
+                StartFetching()
+                loop, 2 {
+                    Random, turnAroundTime, 50, 150
+
+                    MoveUp(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                    MoveDown(patternMoveTime)
+                    MoveLeft(turnAroundTime)
+                }
+
+                If (ShouldStopFetching()) {
+                    stopFetching := True
+                    break
+                }
+
+                loop, 2 {
+                    Random, turnAroundTime, 50, 150
+
+                    MoveUp(patternMoveTime)
+                    MoveRight(turnAroundTime)
+                    MoveDown(patternMoveTime)
+                    PlaceSprinkler(g_sprinklers)
+                    MoveRight(turnAroundTime)
+                }
+
+                If (ShouldStopFetching()) {
+                    stopFetching := True
+                    break
+                }
             }
 
-            MoveUp(patternMoveTime)
-            MoveDown(200)
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
-
-            Loop, %nbzigzag% {
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.75)
-            }
-
-            MoveLeft(patternMoveTime / 3)
             MoveUp(patternMoveTime * 1.5)
-            MoveDown(200)
-
-            Loop, %nbzigzag% {
-                MoveRight(patternMoveTime)
-                MoveDown(turnAroundTime * 0.5)
-                MoveLeft(patternMoveTime)
-                MoveDown(turnAroundTime * 0.75)
-            }
-
-            MoveRight(patternMoveTime + (initialMoveLeft - 200))
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
         }
 
-        if (stopFetching || A_Index = nbLoops) {
-            Debug("", 2)
-            Debug("", 3)
-            Break
+        If (stopFetching || A_Index = nbLoops) {
+            break
         }
     }
 }
@@ -1101,8 +1082,8 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
             }
 
             MoveUp(patternMoveTime * 1.25)
-
             MoveDown(200)
+
             Loop, %nbzigzag% {
                 MoveLateral(patternMoveTime, left)
                 MoveDown(turnAroundTime * 0.5)
@@ -1117,7 +1098,13 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
 
             MoveLateral(patternMoveTime, left)
             MoveUp(patternMoveTime * 1.5)
-            MoveLateral(patternMoveTime * 1.5, left = False)
+            MoveLateral(patternMoveTime * 2.25, left = False)
+            If (left) {
+                TwoKeyPress("a", "s", 200)
+            } Else {
+                TwoKeyPress("s", "d", 200)
+            }
+
             MoveDown(patternMoveTime)
 
             if (ShouldStopFetching()) {

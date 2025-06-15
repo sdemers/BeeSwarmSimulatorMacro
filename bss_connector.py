@@ -4,10 +4,10 @@ import win32gui
 import time
 import cv2
 import numpy as np
+import config
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
-webhook_url = 'https://discord.com/api/webhooks/1378860365961756766/hmJ77NkKBhHPqghftZ3Q6bhmaIs2uPGEKvLiicWd1jQh_8gAaSrLv8zRUIf24rxr4Yfs'
-webhook = DiscordWebhook(url=webhook_url)
+webhook = DiscordWebhook(url=config.webhook_url)
 
 g_message_id = 0
 
