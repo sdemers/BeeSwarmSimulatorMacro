@@ -11,35 +11,38 @@ MoveToPepperField() {
 
         KeyDown("d")
         Jump()
-        Sleep, 2000
+        HyperSleep(2000)
         KeyUp("d")
 
         KeyDown("w")
-        Sleep, 1000
+        HyperSleep(1000)
         Jump()
-        Sleep, 2500
+        HyperSleep(2500)
         Jump()
-        Sleep, 3000
+        HyperSleep(2000)
         Jump()
-        Sleep, 2000
+        HyperSleep(3000)
+        Jump()
+        HyperSleep(1000)
         KeyUp("w")
-        Sleep, 200
+        HyperSleep(200)
 
         KeyDown("w")
         KeyDown("d")
+        HyperSleep(1000)
         Jump()
-        Sleep, 3000
+        HyperSleep(2000)
         KeyUp("w")
-        Sleep, 300
+        HyperSleep(300)
         Jump()
-        Sleep, 2000
+        HyperSleep(2000)
         Jump()
-        Sleep, 1500
+        HyperSleep(1500)
         KeyUp("d")
 
         RotateRight()
         MoveUp(1000)
-        TwoKeyPress("w", "d", 3000)
+        TwoKeyPress("w", "d", 10000)
 
         return True
     }

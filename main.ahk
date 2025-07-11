@@ -28,7 +28,7 @@ runStrawberry := False
 runStump := False
 runSunflower := False
 
-runBamboo := True
+;runBamboo := True
 ;runBlueFlower := True
 ;runCactus := True
 ;runClover := True
@@ -39,7 +39,7 @@ runBamboo := True
 ;runMushroom := True
 ;runPepper := True
 ;runPineapple := True
-;runPineTree := True
+runPineTree := True
 ;runPumpkin := True
 ;runRose := True
 ;runSpider := True

@@ -201,9 +201,10 @@ RotateLeft() {
 }
 
 Jump(time := 25) {
-    Send {Space down}
-    HyperSleep(%time%)
-    Send {Space up}
+    SendSpace(time)
+    ; Send {Space down}
+    ; HyperSleep(%time%)
+    ; Send {Space up}
 }
 
 JumpToRedCannon() {
@@ -374,9 +375,9 @@ ValidateMakeHoney() {
 
 ValidateStart() {
     PixelGetColor, color, 1915, 2080
-    Debug("Pixel at " . x . "," . y . " is " . color, 4)
+    Debug("Pixel at 1915, 2080 is " . color, 4)
 
-    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B)) {
+    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE)) {
         return True
     }
 }
@@ -471,7 +472,7 @@ ShouldStopFetching() {
         return True
     }
 
-    if (ShouldGoToWealthClock()) {
+    if (g_wealthClockGatternInterrupt && ShouldGoToWealthClock()) {
         Debug("ShouldGoToWealthClock")
         g_startTimestamp := A_TickCount / (1000 * 60)
         return True
@@ -1228,9 +1229,14 @@ WalkCactusPattern(nbLoops, subrepeat) {
                 break
             }
 
-            MoveLeft(40)
+            MoveLeft(100)
             MoveUp(1500)
-            MoveRight(50)
+            MoveRight(150)
+
+            if (ShouldStopFetching()) {
+                stopFetching := True
+                break
+            }
 
             if (stopFetching || A_Index = subrepeat) {
                 break

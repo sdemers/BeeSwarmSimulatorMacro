@@ -41,19 +41,22 @@ ToHiveFromBamboo() {
     MoveUp(3000)
     MoveLeft(5000)
 
-    ; Move next to spider
-    MoveDown(600)
-    MoveLeft(10000)
+    MoveDown(4000)
 
     RotateCamera(4)
-    MoveDown(1000)
+    MoveRight(12000)
+    MoveUp(2000)
 
-    ; Move to hive
-    MoveUp(6000)
-    MoveRight(600)
-    MoveUp(12000)
+    DeployChute()
+    HyperSleep(350)
+    ReleaseChute()
 
-    if (MoveToHiveSlot(g_hivePosition) = False) {
+    MoveUp(15000)
+    MoveLeft(1000)
+    MoveUp(1500)
+    MoveRight(1000)
+
+    if (MoveToHiveSlot(g_hivePosition, 1) = False) {
         Debug("Hive not found...")
         return False
     }
