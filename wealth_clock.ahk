@@ -7,7 +7,6 @@
 global lastWeathClock := 0
 ReadWealthClock()
 
-global useWealthClock := 1
 ReadUseWealthClock()
 
 ShouldGoToWealthClock() {
@@ -17,7 +16,7 @@ ShouldGoToWealthClock() {
 
     if (nextIn < 0 or nextIn > 3700) {
         ReadUseWealthClock()
-        return useWealthClock
+        return g_useWealthClock
     }
 
     return False

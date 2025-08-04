@@ -377,7 +377,7 @@ ValidateStart() {
     PixelGetColor, color, 1915, 2080
     Debug("Pixel at 1915, 2080 is " . color, 4)
 
-    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE)) {
+    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE) || CompareColor(color, 0xB7B8B8)) {
         return True
     }
 }
@@ -451,8 +451,10 @@ MoveFromHiveToCannon() {
         MoveRight(2000)
 
         PixelGetColor, color, 1950, 55
-        if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049)) {
+        Debug("Pixel at " . 1950 . "," . 55 . " is " . color, 4)
+        if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049) or CompareColor(color, 0x11114C) 0r CompareColor(color, 0x494160)) {
             PixelGetColor, color, 3020, 115
+            Debug("Pixel at " . 3020 . "," . 115 . " is " . color, 4)
             if (CompareColor(color,0xa08a76) or CompareColor(color,0x927C6B) or CompareColor(color,0xEDEAEB)) {
                 ZoomOut(5)
                 good := True
@@ -472,7 +474,7 @@ ShouldStopFetching() {
         return True
     }
 
-    if (g_wealthClockGatternInterrupt && ShouldGoToWealthClock()) {
+    if (g_wealthClockGatterInterrupt && ShouldGoToWealthClock()) {
         Debug("ShouldGoToWealthClock")
         g_startTimestamp := A_TickCount / (1000 * 60)
         return True
@@ -1033,6 +1035,70 @@ WalkCloverPattern(nbLoops, subrepeat) {
     }
 }
 
+WalkPineSwirl(move := 70, left := True) {
+    right := left = False
+
+    MoveDown(1000)
+    MoveLateral(700, right)
+
+    PlaceSprinkler(g_sprinklers)
+
+    stopFetching := False
+    nbSwirls := 15
+
+    Loop {
+        ZoomOut()
+
+        loop, %nbSwirls% {
+            StartFetching()
+            MoveLateral(move, left)
+            if (right) {
+                TwoKeyPress("d", "w", move)
+            } else {
+                TwoKeyPress("a", "w", move)
+            }
+
+            MoveUp(move + 50)
+            if (right) {
+                TwoKeyPress("a", "w", move)
+            } else {
+                TwoKeyPress("d", "w", move)
+            }
+
+            MoveLateral(move + 30, right)
+            if (right) {
+                TwoKeyPress("a", "s", move)
+            } else {
+                TwoKeyPress("d", "s", move)
+            }
+
+            MoveDown(move + 40)
+            if (right) {
+                TwoKeyPress("d", "s", move)
+            } else {
+                TwoKeyPress("a", "s", move)
+            }
+
+            Debug("Loop #" . A_Index . "/" . nbSwirls, 2)
+
+            if (ShouldStopFetching()) {
+                Debug("Stop fetching requested", 3)
+                stopFetching := True
+                Break
+            }
+        }
+
+        if (stopFetching) {
+            Debug("", 2)
+            Debug("", 3)
+            Break
+        }
+
+        MoveUp(move)
+        MoveLateral(nbSwirls * 50 , left)
+    }
+}
+
 WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200, move := 70, left := True) {
 
     patternMoveTime := move * g_patternWidth
@@ -1065,11 +1131,6 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
                 MoveLateral(turnAroundTime * 0.75, left)
             }
 
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
-
             Loop, %nbzigzag% {
                 MoveUp(patternMoveTime)
                 MoveLateral(turnAroundTime * 0.5, left = false)
@@ -1082,7 +1143,7 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
                 Break
             }
 
-            MoveUp(patternMoveTime * 1.25)
+            MoveUp(patternMoveTime * 1.1)
             MoveDown(200)
 
             Loop, %nbzigzag% {
@@ -1098,7 +1159,7 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
             }
 
             MoveLateral(patternMoveTime, left)
-            MoveUp(patternMoveTime * 1.5)
+            MoveUp(patternMoveTime * 1.25)
             MoveLateral(patternMoveTime * 2.25, left = False)
             If (left) {
                 TwoKeyPress("a", "s", 200)
@@ -1107,11 +1168,6 @@ WalkBlueFlowerPattern(nbLoops, subrepeat, nbzigzag := 2, initialMoveLeft := 200,
             }
 
             MoveDown(patternMoveTime)
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
         }
 
         if (stopFetching || A_Index = nbLoops) {
@@ -1130,7 +1186,7 @@ MoveLateral(time, left := True) {
     }
 }
 
-WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
+WalkElolPattern1(nbLoops, subrepeat, left := True, move := 180) {
 
     stopFetching := False
 
@@ -1187,6 +1243,53 @@ WalkElolPattern(nbLoops, subrepeat, left := True, move := 180) {
             Debug("", 2)
             Debug("", 3)
             Break
+        }
+    }
+}
+
+WalkElolPattern() {
+
+    StartFetching()
+
+    TwoKeyPress("a", "s", 1500)
+    PlaceSprinkler(g_sprinklers)
+
+    move := 1000
+
+    stopFetching := False
+
+    Loop {
+        driftBack := Mod(A_Index, 10) == 0
+
+        MoveLeft(20)
+
+        Loop, 2 {
+            MoveUp(move * 0.72)
+            MoveLeft(move * 0.1)
+            MoveDown(move * 0.72)
+            MoveLeft(move * 0.1)
+        }
+
+        MoveRight(20)
+
+        if (ShouldStopFetching()) {
+            stopFetching := True
+            break
+        }
+
+        Loop, 2 {
+            if (driftBack) {
+                MoveUp(move * 0.74)
+            } else {
+                MoveUp(move * 0.72)
+            }
+            MoveRight(move * 0.1)
+            MoveDown(move * 0.72)
+            if (driftBack) {
+                MoveRight(move * 0.12)
+            } else {
+                MoveRight(move * 0.1)
+            }
         }
     }
 }
@@ -1254,24 +1357,21 @@ ToHiveFromStrawberry() {
 
     StopFetching()
 
-    ; Move next to the spider field
-    MoveUp(5000)
-    MoveRight(5000)
+    ; Move to upper left of field
+    TwoKeyPress("w", "a", 5000)
 
     ; Move towards the hives, turn left then move to the hives
     ; Give time for the haste to expire
     MoveDown(5000)
     RotateCamera(4)
-    MoveUp(15000)
-    MoveDown(500)
     KeyDown("w")
-    Sleep, 300
+    HyperSleep(2000)
     Jump()
-    Sleep, 10000
+    HyperSleep(12000)
     KeyUp("w")
-    MoveDown(200)
-    MoveRight(3000)
-    MoveUp(500)
+    TwoKeyPress("a", "s", 5000)
+    MoveUp(5000)
+    MoveRight(2000)
 
     if (MoveToHiveSlot(g_hivePosition, 1) = False) {
         Debug("Hive not found...")

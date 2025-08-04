@@ -9,6 +9,8 @@ Sleep 200
 
 ; missing dandelion return to hive
 
+g_hivePosition := 6
+
 runBamboo := False
 runBlueFlower := False
 runCactus := False

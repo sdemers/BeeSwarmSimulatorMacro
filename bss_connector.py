@@ -52,22 +52,26 @@ def post_image(image_filename, add_new_message=False):
 add_new_message = True
 last_update = datetime.datetime.now()
 while True:
-    hwnd = win32gui.FindWindow(None, 'Roblox')
-    foreground_window = win32gui.GetForegroundWindow()
-    if hwnd == foreground_window:
-        # Take a screenshot
-        honey = pyautogui.screenshot(region=(1405, 82, 481, 50))
-        pollen = pyautogui.screenshot(region=(1931, 82, 481, 50))
+    try:
+        hwnd = win32gui.FindWindow(None, 'Roblox')
+        foreground_window = win32gui.GetForegroundWindow()
+        if hwnd == foreground_window:
+            # Take a screenshot
+            honey = pyautogui.screenshot(region=(1405, 82, 481, 50))
+            pollen = pyautogui.screenshot(region=(1931, 82, 481, 50))
 
-        honey.save('honey.png')
-        pollen.save('pollen.png')
-        merged = copy_images('honey.png', 'pollen.png')
+            honey.save('honey.png')
+            pollen.save('pollen.png')
+            merged = copy_images('honey.png', 'pollen.png')
 
-        now = datetime.datetime.now()
-        if now.minute < last_update.minute:
-            add_new_message = True
-        post_image(merged, add_new_message)
-        last_update = now
-        add_new_message = False
+            now = datetime.datetime.now()
+            if now.minute < last_update.minute:
+                add_new_message = True
+            post_image(merged, add_new_message)
+            last_update = now
+            add_new_message = False
 
-    time.sleep(1)
+        time.sleep(1)
+    except Exception:
+        time.sleep(10)
+        webhook = DiscordWebhook(url=config.webhook_url)

@@ -16,18 +16,20 @@ ClickDll() {
 
 Click100() {
     Loop, 100 {
-        ClickDll()
+        if (!g_pause) {
+            ClickDll()
+        }
         HyperSleep(10)
     }
 }
 
+MouseMove, 1400, 1000, 0
 Loop {
-    ; MouseMove, 1400, 1000, 0
+    Click100()
+
+    ; MouseMove, 2600, 1340, 0
     ; Click100()
 
-    MouseMove, 2600, 1340, 0
-    Click100()
-
-    MouseMove, 2600, 560, 0
-    Click100()
+    ; MouseMove, 2600, 560, 0
+    ; Click100()
 }

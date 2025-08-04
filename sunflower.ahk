@@ -6,15 +6,12 @@
 
 MoveToSunflower(hive) {
     if (MoveFromHiveToCannon()) {
-        MoveDown(4000)
+        MoveDown(2000)
+        TwoKeyPress("s", "d", 4000)
 
-        RotateCamera(4)
-        MoveLeft(2000)
+        RotateCamera(-2)
         MoveUp(1000)
-
-        RotateLeft()
-        MoveUp(1000)
-        MoveLeft(1000)
+        MoveLeft(4000)
 
         return True
     }
@@ -56,7 +53,8 @@ ExecuteSunflowerScript() {
         if (MoveToSunflower(g_hivePosition)) {
             Debug("Walk Sunflower pattern")
             ResetSprinklers()
-            WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 200, 60, False)
+            MoveRight(600)
+            WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 500, 60, False)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
                 Debug("Convert honey")
