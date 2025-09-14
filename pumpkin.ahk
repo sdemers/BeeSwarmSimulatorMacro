@@ -20,7 +20,6 @@ MoveToPumpkin(g_hivePosition) {
 
         MoveUp(5000)
         MoveRight(5000)
-        RotateRight()
 
         ZoomOut(5)
         return True
@@ -60,7 +59,9 @@ ExecutePumpkinScript() {
             Debug("Walk Pumpkin pattern")
             ZoomOut(5)
             ResetSprinklers()
-            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
+            WalkElolTopRightPattern()
+            RotateRight()
+            ;WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromPumpkin()) {
                 Debug("Convert honey")

@@ -73,7 +73,7 @@ ExecutePineTree() {
         Debug("Walk pine tree pattern")
         ZoomOut()
         ResetSprinklers()
-        WalkElolPattern()
+        WalkElolTopRightPattern()
         ;WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 2, 200, 50)
         ;WalkPineSwirl(200, false)
         Debug("Moving to hive")

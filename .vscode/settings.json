@@ -1,3 +1,10 @@
 {
-    "codium.codeCompletion.enable": false
+    "codium.codeCompletion.enable": false,
+    "AHK++.v2.file": {
+        "compileBaseFile": "",
+        "helpPath": "C:/Program Files/AutoHotkey/v2/AutoHotkey.chm",
+        "interpreterPath": "C:\\Program Files\\AutoHotkey\\v2\\AutoHotkey64.exe",
+        "maxScanDepth": 2,
+        "templateSnippetName": "AhkTemplateV2"
+    }
 }

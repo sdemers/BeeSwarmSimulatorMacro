@@ -72,6 +72,7 @@ while True:
             add_new_message = False
 
         time.sleep(1)
-    except Exception:
+    except Exception as e:
+        print("Error:", e)
         time.sleep(10)
         webhook = DiscordWebhook(url=config.webhook_url)

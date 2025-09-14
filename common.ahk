@@ -5,14 +5,16 @@
 global GoToHiveRequested := False
 global g_pause := False
 global g_startTimestamp := 0
+global g_plantPlanters := True
 
 CoordMode, Pixel, Screen
 
-ToolTip F2 to stop    F3 go to hive    F5 to pause/resume, 3200, 400, 1
+ToolTip F2 to stop  // F3 to hive // F5 pause/resume // F6 fetch, 3200, 400, 1
 
 Hotkey, F2, StopScript
 Hotkey, F3, SetGoToHive
 Hotkey, F5, PauseResume
+Hotkey, F6, StartFetching
 
 SetGoToHive()
 {
@@ -94,6 +96,7 @@ KeyUp(key)
 
 KeyPress(key, duration := 0)
 {
+    ; Debug("Key press " . key)
     CheckPause()
     Send, {%key% down}
     HyperSleep(duration * g_movespeedFactor)
@@ -219,7 +222,7 @@ JumpToRedCannon() {
 }
 
 StartFetching() {
-    Click, 600, 400, Down
+    Click, 1919, 1065, Down
 }
 
 StopFetching() {
@@ -273,6 +276,11 @@ Reset() {
     Sleep 300
     Send {Enter}
     Sleep 7000
+
+    Send {Esc}
+    Sleep 300
+    Send {Esc}
+    Sleep 500
 }
 
 Respawn() {
@@ -316,7 +324,11 @@ MoveToHiveSlot(slot, fromSlot := 3) {
 
     MoveDown(400)
 
-    if (slot <= fromSlot) {
+    if (slot == 1 && fromSlot == 1) {
+        MoveRight(1000)
+        return MoveToHiveLeft()
+    }
+    else if (slot <= fromSlot) {
         return MoveToHiveRight()
     }
     else {
@@ -376,6 +388,11 @@ ValidateMakeHoney() {
 ValidateStart() {
     PixelGetColor, color, 1915, 2080
     Debug("Pixel at 1915, 2080 is " . color, 4)
+
+    if (CompareColor(color, 0x4C3F31)) {
+        MoveUp(2000)
+        return True
+    }
 
     if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE) || CompareColor(color, 0xB7B8B8)) {
         return True
@@ -452,7 +469,7 @@ MoveFromHiveToCannon() {
 
         PixelGetColor, color, 1950, 55
         Debug("Pixel at " . 1950 . "," . 55 . " is " . color, 4)
-        if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049) or CompareColor(color, 0x11114C) 0r CompareColor(color, 0x494160)) {
+        if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049) or CompareColor(color, 0x11114C) or CompareColor(color, 0x494160) or CompareColor(color, 0x747335)) {
             PixelGetColor, color, 3020, 115
             Debug("Pixel at " . 3020 . "," . 115 . " is " . color, 4)
             if (CompareColor(color,0xa08a76) or CompareColor(color,0x927C6B) or CompareColor(color,0xEDEAEB)) {
@@ -1186,68 +1203,7 @@ MoveLateral(time, left := True) {
     }
 }
 
-WalkElolPattern1(nbLoops, subrepeat, left := True, move := 180) {
-
-    stopFetching := False
-
-    loop, %nbLoops% {
-        if (A_Index = 1) {
-            PlaceSprinkler(g_sprinklers)
-        }
-
-        Debug("Pattern #" . A_Index . "/" . nbLoops)
-
-        loop, %subrepeat% {
-
-            StartFetching()
-
-            Debug("Sub-Pattern #" . A_Index . "/" . subrepeat, 3)
-
-            Loop, 3 {
-                MoveLateral(move * 0.75, left)
-                if (A_Index = 2) {
-                    PlaceSprinkler(g_sprinklers)
-                }
-                MoveDown(move * 2.5)
-                MoveLateral(move * 1.25, left)
-                MoveUp(move * 2.5)
-            }
-
-            MoveLateral(move * 6, !left)
-            MoveLateral(100 ,left)
-
-            Loop, 2 {
-                MoveDown(move * 2.5)
-                MoveLateral(move * 0.75, left)
-                if (A_Index = 1) {
-                    PlaceSprinkler(g_sprinklers)
-                }
-                MoveUp(move * 2.5)
-                MoveLateral(move * 1.25, left)
-            }
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
-
-            MoveDown(move * 2.5)
-            PlaceSprinkler(g_sprinklers)
-            MoveLateral(move * 6, !left)
-            MoveLateral(100, left)
-            MoveUp(move * 3)
-            MoveDown(100)
-        }
-
-        if (stopFetching || A_Index = nbLoops) {
-            Debug("", 2)
-            Debug("", 3)
-            Break
-        }
-    }
-}
-
-WalkElolPattern() {
+WalkElolTopRightPattern() {
 
     StartFetching()
 
@@ -1259,18 +1215,17 @@ WalkElolPattern() {
     stopFetching := False
 
     Loop {
-        driftBack := Mod(A_Index, 10) == 0
+        driftBack := Mod(A_Index, 5) == 0
+        reposition := Mod(A_Index, 15) == 0
 
-        MoveLeft(20)
+        StartFetching()
 
         Loop, 2 {
-            MoveUp(move * 0.72)
-            MoveLeft(move * 0.1)
-            MoveDown(move * 0.72)
-            MoveLeft(move * 0.1)
+            MoveLeft(move * 0.72)
+            MoveDown(move * 0.1)
+            MoveRight(move * 0.72)
+            MoveDown(move * 0.1)
         }
-
-        MoveRight(20)
 
         if (ShouldStopFetching()) {
             stopFetching := True
@@ -1278,18 +1233,70 @@ WalkElolPattern() {
         }
 
         Loop, 2 {
+            MoveLeft(move * 0.72)
+            MoveUp(move * 0.1)
             if (driftBack) {
-                MoveUp(move * 0.74)
+                MoveRight(move * 0.8)
             } else {
-                MoveUp(move * 0.72)
+                MoveRight(move * 0.72)
             }
-            MoveRight(move * 0.1)
-            MoveDown(move * 0.72)
+            MoveUp(move * 0.1)
+        }
+
+        if (reposition) {
+            MoveRight(1000)
+            MoveUp(1000)
+            TwoKeyPress("a", "s", 700)
+            MoveRight(300)
+        }
+    }
+}
+
+WalkElolTopLeftPattern() {
+
+    StartFetching()
+
+    TwoKeyPress("s", "d", 1500)
+    PlaceSprinkler(g_sprinklers)
+
+    move := 1000
+
+    stopFetching := False
+
+    Loop {
+        driftBack := Mod(A_Index, 5) == 0
+        reposition := Mod(A_Index, 15) == 0
+
+        StartFetching()
+
+        Loop, 2 {
+            MoveRight(move * 0.72)
+            MoveDown(move * 0.1)
+            MoveLeft(move * 0.72)
+            MoveDown(move * 0.1)
+        }
+
+        if (ShouldStopFetching()) {
+            stopFetching := True
+            break
+        }
+
+        Loop, 2 {
+            MoveRight(move * 0.72)
+            MoveUp(move * 0.1)
             if (driftBack) {
-                MoveRight(move * 0.12)
+                MoveLeft(move * 0.8)
             } else {
-                MoveRight(move * 0.1)
+                MoveLeft(move * 0.72)
             }
+            MoveUp(move * 0.1)
+        }
+
+        if (reposition) {
+            MoveLeft(1000)
+            MoveUp(1000)
+            TwoKeyPress("s", "d", 700)
+            MoveLeft(300)
         }
     }
 }
@@ -1379,4 +1386,71 @@ ToHiveFromStrawberry() {
     }
 
     return True
+}
+
+MoveToSpider() {
+    if (MoveFromHiveToCannon()) {
+        JumpToCannonAndFire()
+        Sleep, 800
+        DeployChute()
+        MoveDown(1100)
+        SendSpace()
+        Sleep, 2000
+        RotateCamera(4)
+
+        MoveUp(2000)
+        MoveLeft(3000)
+        return True
+
+    }
+
+    return False
+}
+
+MoveToPineTreePlanter(plant := True) {
+    Respawn()
+    MoveToPineTree()
+    TwoKeyPress("w", "a", 100)
+    if (plant) {
+        KeyPress("5", 100)
+        Sleep, 600
+    } else {
+        KeyPress("e", 100)
+        Click, 1750, 1150
+        Sleep, 600
+    }
+}
+
+MoveToSpiderPlanter(plant := True) {
+    Respawn()
+    MoveToSpider()
+    TwoKeyPress("s", "d", 100)
+    if (plant) {
+        KeyPress("6", 100)
+        Sleep, 600
+    } else {
+        KeyPress("e", 100)
+        Click, 1750, 1150
+        Sleep, 600
+    }
+}
+
+MoveToSunflowerPlanter(plant := True) {
+    Respawn()
+    MoveToSunflower(g_hivePosition)
+    TwoKeyPress("s", "d", 100)
+    if (plant) {
+        KeyPress("7", 100)
+        Sleep, 600
+    } else {
+        KeyPress("e", 100)
+        Click, 1750, 1150
+        Sleep, 600
+    }
+}
+
+ExecutePlanters() {
+    MoveToPineTreePlanter(g_plantPlanters)
+    MoveToSpiderPlanter(g_plantPlanters)
+    MoveToSunflowerPlanter(g_plantPlanters)
 }

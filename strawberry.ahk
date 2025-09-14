@@ -35,7 +35,8 @@ ExecuteStrawberryScript() {
             ResetSprinklers()
             MoveLeft(3000)
             MoveUp(3000)
-            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
+            WalkElolTopLeftPattern()
+            ;WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat)
             Debug("Moving to hive")
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")

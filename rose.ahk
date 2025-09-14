@@ -52,6 +52,7 @@ ToHiveFromRoseField() {
     StopFetching()
 
     TwoKeyPress("w", "d", 3000)
+    TwoKeyPress("w", "a", 2000)
 
     MoveUp(12000)
     MoveRight(13000)
@@ -79,7 +80,8 @@ ExecuteRoseScript() {
         If (MoveToRoseField()) {
             Debug("Walk rose pattern")
             ResetSprinklers()
-            WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False, move:= 70)
+            WalkElolTopRightPattern()
+            ;WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False, move:= 70)
             Debug("Moving to hive")
             If (ToHiveFromRoseField()) {
                 Debug("Convert honey")

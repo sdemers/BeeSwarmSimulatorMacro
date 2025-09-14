@@ -52,9 +52,11 @@ ExecuteSunflowerScript() {
         Debug("Moving to Sunflower")
         if (MoveToSunflower(g_hivePosition)) {
             Debug("Walk Sunflower pattern")
+            RotateCamera(2)
             ResetSprinklers()
-            MoveRight(600)
-            WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 500, 60, False)
+            WalkElolTopRightPattern()
+            RotateCamera(-2)
+            ;WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 500, 60, False)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
                 Debug("Convert honey")

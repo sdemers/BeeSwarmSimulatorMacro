@@ -9,8 +9,6 @@ Sleep 200
 
 ; missing dandelion return to hive
 
-g_hivePosition := 6
-
 runBamboo := False
 runBlueFlower := False
 runCactus := False
@@ -30,6 +28,8 @@ runStrawberry := False
 runStump := False
 runSunflower := False
 
+g_hivePosition := 3
+
 ;runBamboo := True
 ;runBlueFlower := True
 ;runCactus := True
@@ -48,6 +48,8 @@ runPineTree := True
 ;runStrawberry := True
 ;runStump := True
 ;runSunflower := True
+
+ExecutePlanters()
 
 If (runSunflower) {
     #Include, sunflower.ahk
