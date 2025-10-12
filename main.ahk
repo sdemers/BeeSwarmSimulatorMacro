@@ -28,7 +28,7 @@ runStrawberry := False
 runStump := False
 runSunflower := False
 
-g_hivePosition := 3
+g_hivePosition := 5
 
 ;runBamboo := True
 ;runBlueFlower := True
@@ -48,8 +48,6 @@ runPineTree := True
 ;runStrawberry := True
 ;runStump := True
 ;runSunflower := True
-
-ExecutePlanters()
 
 If (runSunflower) {
     #Include, sunflower.ahk

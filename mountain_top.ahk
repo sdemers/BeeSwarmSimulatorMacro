@@ -114,11 +114,7 @@ ExecuteMountainTop() {
         Debug("Moving to hive")
         if (ToHiveFromMountainTop()) {
             Debug("Convert honey")
-            ConvertHoney()
-            if (ShouldGoToWealthClock()) {
-                ExecuteWealthClockScript()
-                Respawn()
-            }
+            ConvertHoneyThenPlantersAndClock()
         } else {
             Debug("Respawning")
             Respawn()
@@ -131,10 +127,6 @@ ExecuteMountainTop() {
 }
 
 ExecuteMountainTopScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
-
     Respawn()
 
     loop {

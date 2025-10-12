@@ -52,9 +52,6 @@ ToHiveFromCactus() {
 }
 
 ExecuteCactusScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
     Respawn()
 
     loop {
@@ -67,11 +64,7 @@ ExecuteCactusScript() {
             Debug("Moving to hive")
             if (ToHiveFromCactus()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

@@ -1,11 +1,11 @@
 #Requires AutoHotkey v1.1.33+
 
 #Include, wealth_clock.ahk
+#Include, planters.ahk
 
 global GoToHiveRequested := False
 global g_pause := False
 global g_startTimestamp := 0
-global g_plantPlanters := True
 
 CoordMode, Pixel, Screen
 
@@ -236,7 +236,7 @@ MoveByChute() {
     HyperSleep(1200)
 }
 
-ConvertHoney() {
+ConvertHoneyThenPlantersAndClock() {
     KeyPress("e", 50)
 
     initialCount := 0
@@ -257,6 +257,13 @@ ConvertHoney() {
             Break
         }
         Sleep, 1000
+    }
+
+    ExecutePlanters()
+
+    if (ShouldGoToWealthClock()) {
+        ExecuteWealthClockScript()
+        Respawn()
     }
 }
 
@@ -389,12 +396,13 @@ ValidateStart() {
     PixelGetColor, color, 1915, 2080
     Debug("Pixel at 1915, 2080 is " . color, 4)
 
-    if (CompareColor(color, 0x4C3F31)) {
-        MoveUp(2000)
+    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE) || CompareColor(color, 0xB7B8B8)) {
         return True
     }
 
-    if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE) || CompareColor(color, 0xB7B8B8)) {
+    if (CompareColor(color, 0x4C3F31)) {
+        MoveUp(2000)
+        MoveDown(200)
         return True
     }
 }
@@ -1203,14 +1211,12 @@ MoveLateral(time, left := True) {
     }
 }
 
-WalkElolTopRightPattern() {
+WalkElolTopRightPattern(move := 1000) {
 
     StartFetching()
 
     TwoKeyPress("a", "s", 1500)
     PlaceSprinkler(g_sprinklers)
-
-    move := 1000
 
     stopFetching := False
 
@@ -1219,6 +1225,9 @@ WalkElolTopRightPattern() {
         reposition := Mod(A_Index, 15) == 0
 
         StartFetching()
+
+        ShouldGoToWealthClock()
+        ShouldGoToPlanters()
 
         Loop, 2 {
             MoveLeft(move * 0.72)
@@ -1405,52 +1414,4 @@ MoveToSpider() {
     }
 
     return False
-}
-
-MoveToPineTreePlanter(plant := True) {
-    Respawn()
-    MoveToPineTree()
-    TwoKeyPress("w", "a", 100)
-    if (plant) {
-        KeyPress("5", 100)
-        Sleep, 600
-    } else {
-        KeyPress("e", 100)
-        Click, 1750, 1150
-        Sleep, 600
-    }
-}
-
-MoveToSpiderPlanter(plant := True) {
-    Respawn()
-    MoveToSpider()
-    TwoKeyPress("s", "d", 100)
-    if (plant) {
-        KeyPress("6", 100)
-        Sleep, 600
-    } else {
-        KeyPress("e", 100)
-        Click, 1750, 1150
-        Sleep, 600
-    }
-}
-
-MoveToSunflowerPlanter(plant := True) {
-    Respawn()
-    MoveToSunflower(g_hivePosition)
-    TwoKeyPress("s", "d", 100)
-    if (plant) {
-        KeyPress("7", 100)
-        Sleep, 600
-    } else {
-        KeyPress("e", 100)
-        Click, 1750, 1150
-        Sleep, 600
-    }
-}
-
-ExecutePlanters() {
-    MoveToPineTreePlanter(g_plantPlanters)
-    MoveToSpiderPlanter(g_plantPlanters)
-    MoveToSunflowerPlanter(g_plantPlanters)
 }

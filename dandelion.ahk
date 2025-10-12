@@ -85,10 +85,6 @@ ToHiveFromDandelion() {
 }
 
 ExecuteDandelionScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
-
     Respawn()
 
     loop {
@@ -100,11 +96,7 @@ ExecuteDandelionScript() {
             Debug("Moving to hive")
             if (ToHiveFromDandelion()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

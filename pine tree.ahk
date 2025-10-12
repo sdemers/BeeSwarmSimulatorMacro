@@ -73,17 +73,13 @@ ExecutePineTree() {
         Debug("Walk pine tree pattern")
         ZoomOut()
         ResetSprinklers()
-        WalkElolTopRightPattern()
+        WalkElolTopRightPattern(750)
         ;WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 2, 200, 50)
         ;WalkPineSwirl(200, false)
         Debug("Moving to hive")
         if (ToHiveFromPineTree()) {
             Debug("Convert honey")
-            ConvertHoney()
-            if (ShouldGoToWealthClock()) {
-                ExecuteWealthClockScript()
-                Respawn()
-            }
+            ConvertHoneyThenPlantersAndClock()
         } else {
             Debug("Respawning")
             Respawn()
@@ -96,9 +92,6 @@ ExecutePineTree() {
 }
 
 ExecutePineTreeScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
     Respawn()
 
     loop {

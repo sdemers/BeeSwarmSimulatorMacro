@@ -78,9 +78,7 @@ ToHiveFromPepperField() {
 }
 
 ExecutePepperScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
+
     Respawn()
 
     Loop {
@@ -92,11 +90,7 @@ ExecutePepperScript() {
             Debug("Moving to hive")
             If (ToHiveFromPepperField()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

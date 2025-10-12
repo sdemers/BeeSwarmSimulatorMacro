@@ -71,10 +71,6 @@ ToHiveFromStump() {
 }
 
 ExecuteStumpScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
-
     Respawn()
 
     loop {
@@ -86,11 +82,7 @@ ExecuteStumpScript() {
             Debug("Moving to hive")
             if (ToHiveFromStump()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

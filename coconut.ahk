@@ -54,10 +54,6 @@ ToHiveFromCoconut() {
 }
 
 ExecuteCoconutScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
-
     Respawn()
 
     loop {
@@ -72,11 +68,7 @@ ExecuteCoconutScript() {
             Debug("Moving to hive")
             if (ToHiveFromCoconut()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

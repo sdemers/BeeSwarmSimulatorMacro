@@ -73,9 +73,7 @@ PlacePineappleSprinklers() {
 }
 
 ExecutePineappleScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
+
     Respawn()
 
     Loop {
@@ -89,11 +87,7 @@ ExecutePineappleScript() {
             Debug("Moving to hive")
             If (ToHiveFromPineapple()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

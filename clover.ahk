@@ -58,9 +58,6 @@ ToHiveFromClover() {
 }
 
 ExecuteCloverScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
 
     Respawn()
 
@@ -73,11 +70,7 @@ ExecuteCloverScript() {
             Debug("Moving to hive")
             if (ToHiveFromClover()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

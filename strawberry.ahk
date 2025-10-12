@@ -23,9 +23,6 @@ MoveToStrawberry() {
 }
 
 ExecuteStrawberryScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
     Respawn()
 
     loop {
@@ -40,11 +37,7 @@ ExecuteStrawberryScript() {
             Debug("Moving to hive")
             if (ToHiveFromStrawberry()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()

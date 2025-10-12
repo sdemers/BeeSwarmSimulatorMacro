@@ -15,5 +15,5 @@ global g_subpatternRepeat := 100
 global g_patternLength := 10
 global g_patternWidth := 10
 
-global g_movespeedFactor := 28 / g_speed
+global g_movespeedFactor := 30 / g_speed
 

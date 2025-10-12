@@ -70,9 +70,6 @@ ToHiveFromRoseField() {
 }
 
 ExecuteRoseScript() {
-    if (ShouldGoToWealthClock()) {
-        ExecuteWealthClockScript()
-    }
     Respawn()
 
     Loop {
@@ -85,11 +82,7 @@ ExecuteRoseScript() {
             Debug("Moving to hive")
             If (ToHiveFromRoseField()) {
                 Debug("Convert honey")
-                ConvertHoney()
-                if (ShouldGoToWealthClock()) {
-                    ExecuteWealthClockScript()
-                    Respawn()
-                }
+                ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
                 Respawn()
