@@ -16,13 +16,9 @@ MoveToPineapple() {
         RotateCamera(4)
 
         TwoKeyPress("w", "a", 5000)
-
-        If (ValidatePineappleField()) {
-            Return True
-        }
     }
 
-    Return False
+    Return True
 }
 
 ToHiveFromPineapple() {

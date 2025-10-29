@@ -42,7 +42,7 @@ WriteLastPlanters(Value) {
 
 FetchPlanter() {
     KeyPress("e", 100)
-    Sleep, 500
+    Sleep, 700
     Click, 1750, 1150, Down
     Sleep, 300
     Click, 1750, 1150, Up
