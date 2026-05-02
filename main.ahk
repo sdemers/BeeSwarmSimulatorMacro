@@ -3,9 +3,9 @@
 
 #Include, config.ahk
 #Include, common.ahk
+#Include, booster.ahk
 
-WinActivate Roblox
-Sleep 200
+Sleep, 5
 
 ; missing dandelion return to hive
 
@@ -28,17 +28,17 @@ runStrawberry := False
 runStump := False
 runSunflower := False
 
-g_hivePosition := 5
+g_hivePosition := 2
 
 ;runBamboo := True
 ;runBlueFlower := True
 ;runCactus := True
 ;runClover := True
 ;runCoconut := True
-;runDandelion := True
+runDandelion := True
 ;runHub := True
 ;runMountainTop := True
-runMushroom := True
+;runMushroom := True
 ;runPepper := True
 ;runPineapple := True
 ;runPineTree := True
@@ -48,6 +48,15 @@ runMushroom := True
 ;runStrawberry := True
 ;runStump := True
 ;runSunflower := True
+
+WinActivate Roblox
+Sleep 200
+
+;CheckForFieldBooster()
+
+;Respawn(True)
+;TestCannon()
+;Sleep, 10000
 
 If (runSunflower) {
     #Include, sunflower.ahk
@@ -59,7 +68,7 @@ If (runCactus) {
     ExecuteCactusScript()
 }
 
-If (runStrawberry) {
+if (runStrawberry) {
     #Include, strawberry.ahk
     ExecuteStrawberryScript()
 }

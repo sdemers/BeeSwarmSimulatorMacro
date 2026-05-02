@@ -13,58 +13,81 @@ MoveToDandelion() {
     return False
 }
 
-WalkDandelionPattern(patternRepeat, subrepeat) {
+WalkElolTopLeftDandPattern() {
 
-    move := 500
-    lateral := 60
+    StartFetching()
+
+    move := 1000
+
     stopFetching := False
 
-    ZoomOut()
-    MoveRight(1000)
-    PlaceSprinkler(g_sprinklers)
+    Send, Shift
 
-    Loop, %patternRepeat% {
-        MoveRight(1000)
-        MoveLeft(300)
-        MoveDown(800)
+    TwoKeyPress("w", "d", 1500)
 
-        if (A_Index > 1) {
-            PlaceSprinkler(g_sprinklers)
+    Loop {
+        driftBack := Mod(A_Index, 5) == 0
+        reposition := Mod(A_Index, 15) == 0
+
+        Send, Shift
+        StartFetching()
+        Send, Shift
+
+        Loop, 2 {
+            MoveRight(move * 0.72)
+            MoveUp(move * 0.1)
+            MoveLeft(move * 0.72)
+            MoveUp(move * 0.1)
         }
 
-        Loop, 10 {
-            StartFetching()
-            Loop, 2 {
-                MoveDown(move)
-                MoveLeft(lateral)
-                MoveUp(move)
-                MoveLeft(lateral)
-            }
-
-            Loop, 2 {
-                MoveDown(move)
-                MoveRight(lateral)
-                MoveUp(move)
-                MoveRight(lateral)
-            }
-
-            if (ShouldStopFetching()) {
-                stopFetching := True
-                Break
-            }
+        if (ShouldStopFetching()) {
+            stopFetching := True
+            break
         }
 
-        if (stopFetching || A_Index = patternRepeat) {
-            Debug("", 2)
-            Debug("", 3)
-            Break
+        Loop, 2 {
+            MoveRight(move * 0.72)
+            MoveDown(move * 0.1)
+            if (driftBack) {
+                MoveLeft(move * 0.8)
+            } else {
+                MoveLeft(move * 0.72)
+            }
+            MoveDown(move * 0.1)
         }
 
-        MoveLeft(200)
-        TwoKeyPress("w", "d", 500)
-        MoveUp(2000)
-        MoveRight(500)
+        if (ShouldStopFetching()) {
+            stopFetching := True
+            break
+        }
+
+        if (reposition) {
+            TwoKeyPress("a", "s", 2000)
+            TwoKeyPress("w", "d", 700)
+        }
     }
+
+    Send, Shift
+}
+
+WalkDandelionPattern(patternRepeat, subrepeat) {
+
+    RotateCamera(4)
+    ; TwoKeyPress("w", "a", 1000)
+    MoveLeft(2700)
+    MoveDown(400)
+
+    PlaceSprinkler(g_sprinklers)
+    ;MoveLeft(500)
+    ;PlaceSprinkler(g_sprinklers)
+
+    RotateCamera(-2)
+    Send, Shift
+    MoveDown(4000)
+    MoveLeft(2000)
+    Send, Shift
+
+    WalkElolTopLeftDandPattern()
 }
 
 ToHiveFromDandelion() {
@@ -72,20 +95,25 @@ ToHiveFromDandelion() {
 
     StopFetching()
 
-    MoveLeft(1000)
-    MoveUp(5000)
-    MoveRight(5000)
+    TwoKeyPress("w", "a", 2000)
+    MoveLeft(2000)
+    MoveUp(2000)
 
-    RotateCamera(4)
-    MoveUp(12000)
-    MoveRight(300)
-    MoveDown(200)
+    MoveDown(400)
+    KeyDown("w")
+    HyperSleep(200)
+    Jump()
 
-    return MoveToHiveSlot(g_hivePosition, 5)
+    HyperSleep(3000)
+    KeyUp("w")
+    MoveRight(1200)
+    MoveUp(1500)
+
+    return MoveToHiveRight()
 }
 
 ExecuteDandelionScript() {
-    Respawn()
+    Respawn(True)
 
     loop {
         Debug("Moving to dandelion")
@@ -99,12 +127,12 @@ ExecuteDandelionScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
 }

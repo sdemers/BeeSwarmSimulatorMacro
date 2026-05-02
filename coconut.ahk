@@ -54,7 +54,7 @@ ToHiveFromCoconut() {
 }
 
 ExecuteCoconutScript() {
-    Respawn()
+    Respawn(True)
 
     loop {
         Debug("Moving to coconut")
@@ -71,12 +71,12 @@ ExecuteCoconutScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
 }

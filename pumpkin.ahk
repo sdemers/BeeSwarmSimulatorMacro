@@ -48,7 +48,8 @@ ToHiveFromPumpkin() {
 }
 
 ExecutePumpkinScript() {
-    Respawn()
+    ActivateFieldBooster()
+    Respawn(True)
 
     loop {
         Debug("Moving to Pumpkin")
@@ -65,12 +66,12 @@ ExecutePumpkinScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
 }

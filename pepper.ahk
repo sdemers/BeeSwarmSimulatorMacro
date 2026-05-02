@@ -7,6 +7,7 @@
 MoveToPepperField() {
     if (MoveFromHiveToCannon()) {
         JumpToRedCannon()
+        RotateCamera(4)
         MoveRight(3000)
 
         KeyDown("d")
@@ -79,7 +80,7 @@ ToHiveFromPepperField() {
 
 ExecutePepperScript() {
 
-    Respawn()
+    Respawn(True)
 
     Loop {
         Debug("Moving to pepper field")
@@ -93,12 +94,12 @@ ExecutePepperScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
 }

@@ -17,7 +17,6 @@ MoveToSunflower(hive) {
     }
 
     return False
-
 }
 
 ToHiveFromSunflower() {
@@ -25,14 +24,29 @@ ToHiveFromSunflower() {
 
     StopFetching()
 
+    MoveRight(2000)
+    TwoKeyPress("w", "d", 2500)
+    MoveUp(2000)
+    MoveLeft(500)
+    TwoKeyPress("w", "d", 1000)
+    KeyDown("w")
+    HyperSleep(1000)
+    Jump()
+    HyperSleep(2000)
+    KeyUp("w")
+
+    KeyDown("a")
+    KeyDown("s")
+    Jump(300)
+    DeployChute()
+    HyperSleep(400)
+    ReleaseChute()
+    HyperSleep(1000)
+    KeyUp("a")
+    KeyUp("s")
+
     MoveUp(5000)
-    MoveLeft(15000)
-    MoveDown(1000)
-    MoveLeft(3000)
-    MoveDown(1300)
-    RotateLeft()
-    MoveUp(1000)
-    MoveRight(1000)
+    MoveRight(5000)
 
     if (MoveToHiveSlotFrom1(g_hivePosition) = False) {
         Debug("Hive not found...")
@@ -43,7 +57,7 @@ ToHiveFromSunflower() {
 }
 
 ExecuteSunflowerScript() {
-    Respawn()
+    ActivateFieldBooster()
 
     loop {
         Debug("Moving to Sunflower")
@@ -51,8 +65,7 @@ ExecuteSunflowerScript() {
             Debug("Walk Sunflower pattern")
             RotateCamera(2)
             ResetSprinklers()
-            WalkElolTopRightPattern()
-            RotateCamera(-2)
+            WalkElolTopRightPatternSunflower(550)
             ;WalkBlueFlowerPattern(g_patternRepeat, g_subpatternRepeat, 3, 500, 60, False)
             Debug("Moving to hive")
             if (ToHiveFromSunflower()) {
@@ -60,13 +73,14 @@ ExecuteSunflowerScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
+        ActivateFieldBooster()
     }
 }
 

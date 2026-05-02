@@ -44,24 +44,29 @@ ToHiveFromRoseField() {
     global g_hivePosition
 
     TwoKeyPress("w", "d", 5000)
-    Loop, 6 {
-        MoveLeft(500)
-        MoveUp(500)
-    }
 
     StopFetching()
 
-    TwoKeyPress("w", "d", 3000)
-    TwoKeyPress("w", "a", 2000)
-
-    MoveUp(12000)
-    MoveRight(13000)
     RotateCamera(4)
+
     MoveUp(10000)
 
-    JumpFromPolarBearToHive()
+    Loop, 10 {
+        MoveLeft(200)
+        MoveRight(100)
+    }
 
-    if (MoveToHiveSlot(g_hivePosition) = False) {
+    MoveRight(1000)
+    MoveLeft(500)
+
+    TwoKeyPress("w", "d", 1000)
+    MoveUp(1000)
+    MoveLeft(4000)
+
+    MoveUp(5000)
+    MoveRight(2000)
+
+    if (MoveToHiveSlotFrom1(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -77,7 +82,7 @@ ExecuteRoseScript() {
         If (MoveToRoseField()) {
             Debug("Walk rose pattern")
             ResetSprinklers()
-            WalkElolTopRightPattern()
+            WalkElolTopRightPattern(700, 600)
             ;WalkSpiderPattern(g_patternRepeat, g_subpatternRepeat, left := False, move:= 70)
             Debug("Moving to hive")
             If (ToHiveFromRoseField()) {

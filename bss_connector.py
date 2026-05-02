@@ -71,7 +71,7 @@ while True:
             last_update = now
             add_new_message = False
 
-        time.sleep(1)
+        time.sleep(10)
     except Exception as e:
         print("Error:", e)
         time.sleep(10)

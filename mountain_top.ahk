@@ -5,6 +5,7 @@
 #Include, pine tree.ahk
 
 MoveToMountainTop() {
+
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
         Sleep 3000
@@ -83,21 +84,25 @@ ToHiveFromMountainTop() {
     MoveLeft(5000)
     MoveDown(8000)
     RotateCamera(4)
-
-    Jump()
-    HyperSleep(400)
-    Jump()
-    HyperSleep(1000)
-    Jump()
-    HyperSleep(400)
-    Jump()
-    MoveUp(6500)
-    ReleaseChute()
-
-    MoveUp(3000)
     MoveRight(1000)
+    MoveLeft(100)
+    MoveDown(300)
+    MoveUp(400)
 
-    if (MoveToHiveRight() = False) {
+    Jump()
+    HyperSleep(600)
+    Jump()
+    KeyDown("w")
+    HyperSleep(1000)
+    KeyDown("d")
+    HyperSleep(1000)
+    KeyUp("d")
+    HyperSleep(1000)
+    KeyUp("w")
+    HyperSleep(5000)
+    MoveDown(200)
+    MoveRight(600)
+    if (MoveToHiveSlot(g_hivePosition, 5) = False) {
         Debug("Hive not found...")
         return False
     }
@@ -117,17 +122,17 @@ ExecuteMountainTop() {
             ConvertHoneyThenPlantersAndClock()
         } else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
     else {
         Debug("Respawning")
-        Respawn()
+        Respawn(True)
     }
 }
 
 ExecuteMountainTopScript() {
-    Respawn()
+    Respawn(True)
 
     loop {
         if (A_Min > 15) {

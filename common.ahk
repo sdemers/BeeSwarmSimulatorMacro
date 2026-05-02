@@ -7,9 +7,24 @@ global GoToHiveRequested := False
 global g_pause := False
 global g_startTimestamp := 0
 
+; Width for resolution scaling (3840x2160, 1920x1080, etc)
+; All coordinates in this file are based on 3840 width
+global g_screenWidth := 3840
+global g_screenHeight := 2160
+;global g_screenWidth := 1920
+;global g_screenHeight := 1080
+
 CoordMode, Pixel, Screen
 
-ToolTip F2 to stop  // F3 to hive // F5 pause/resume // F6 fetch, 3200, 400, 1
+ScreenX(x) {
+    return Round(x * g_screenWidth / 3840)
+}
+
+ScreenY(y) {
+    return Round(y * g_screenHeight / 2160)
+}
+
+ToolTip F2 to stop  // F3 to hive // F5 pause/resume // F6 fetch, ScreenX(3200), ScreenY(200), 1
 
 Hotkey, F2, StopScript
 Hotkey, F3, SetGoToHive
@@ -81,7 +96,7 @@ Debug(text, index := 2) {
     FormatTime, currentTime, A_Now, yyyy-MM-dd HH:mm:ss
 
     FileAppend, [%currentTime%] %text% `n, log.txt
-    ToolTip %text%, 3200, 400 + (index * 50), index
+    ToolTip %text%, ScreenX(3200), ScreenY(400 + (index * 50)), index
 }
 
 KeyDown(key)
@@ -94,21 +109,31 @@ KeyUp(key)
     Send, {%key% up}
 }
 
-KeyPress(key, duration := 0)
+KeyPress(key, duration := 0, speedAgnostic := False)
 {
     ; Debug("Key press " . key)
     CheckPause()
     Send, {%key% down}
-    HyperSleep(duration * g_movespeedFactor)
+    if speedAgnostic {
+        HyperSleep(duration)
+    }
+    else {
+        HyperSleep(duration * g_movespeedFactor)
+    }
     Send, {%key% up}
 }
 
-TwoKeyPress(key1, key2, duration := 0)
+TwoKeyPress(key1, key2, duration := 0, speedAgnostic := False)
 {
     CheckPause()
     Send, {%key1% down}
     Send, {%key2% down}
-    HyperSleep(duration * g_movespeedFactor)
+    if speedAgnostic {
+        HyperSleep(duration)
+    }
+    else {
+        HyperSleep(duration * g_movespeedFactor)
+    }
     Send, {%key1% up}
     Send, {%key2% up}
 }
@@ -143,27 +168,27 @@ PlaceSprinkler(totalSprinklers := 4) {
     return False
 }
 
-MoveUp(time) {
-    KeyPress("w", time)
+MoveUp(time, speedAgnostic := False) {
+    KeyPress("w", time, speedAgnostic)
 }
 
-MoveDown(time) {
-    KeyPress("s", time)
+MoveDown(time, speedAgnostic := False) {
+    KeyPress("s", time, speedAgnostic)
 }
 
-MoveLeft(time) {
-    KeyPress("a", time)
+MoveLeft(time, speedAgnostic := False) {
+    KeyPress("a", time, speedAgnostic)
 }
 
-MoveRight(time) {
-    KeyPress("d", time)
+MoveRight(time, speedAgnostic := False) {
+    KeyPress("d", time, speedAgnostic)
 }
 
 TopView() {
     ZoomOut(5)
-    MouseMove, 1000, 100
+    MouseMove, ScreenX(1000), ScreenY(100)
     Send, {RButton down}
-    MouseMove, 0, 1000, 0.2, R
+    MouseMove, 0, ScreenY(1000), 0.2, R
     Send, {RButton up}
 }
 
@@ -210,19 +235,36 @@ Jump(time := 25) {
     ; Send {Space up}
 }
 
+VerifyCannon() {
+    IsDay = CompareColorAt(2277, 205, 0x3644f3, 50) && CompareColorAt(770, 500, 0x6f3613, 50) && CompareColorAt(1900, 1650, 0xe6e6e6, 50)
+    IsNight = CompareColorAt(2277, 205, 0x111B6F, 50) && CompareColorAt(770, 500, 0x6f3613, 50)
+
+    if (IsDay) {
+        Debug("Cannon is ready")
+        RotateCamera(-4)
+        ZoomOut(6)
+        return True
+    }
+
+    Sleep, 10000
+    return False
+}
+
 JumpToRedCannon() {
-    DeployChute()
-    HyperSleep(350)
-    ReleaseChute()
-    HyperSleep(400)
-    DeployChute()
-    HyperSleep(350)
-    ReleaseChute()
-    HyperSleep(500)
+    KeyDown("d")
+    HyperSleep(100)
+    Jump()
+    HyperSleep(100)
+    MoveUp(300)
+    HyperSleep(900)
+    KeyUp("d")
+
+    RotateCamera(4)
+    ZoomIn()
 }
 
 StartFetching() {
-    Click, 1919, 1065, Down
+    Click, 400, 100, Down
 }
 
 StopFetching() {
@@ -245,7 +287,7 @@ ConvertHoneyThenPlantersAndClock() {
     Loop {
         initialCount := initialCount + 1
         If (initialCount > 10) {
-            If (CompareColorAt(1851, 112, 0x646d70)) {
+            If (CompareColorAt(ScreenX(1851), ScreenY(112), 0x646d70, 30)) {
                 safeCount := safeCount + 1
             }
             Else {
@@ -275,7 +317,7 @@ ResetKeys() {
     Click up
 }
 
-Reset() {
+Reset(Fast := False) {
     ResetKeys()
     Send {Esc}
     Sleep 300
@@ -284,19 +326,22 @@ Reset() {
     Send {Enter}
     Sleep 7000
 
-    Send {Esc}
-    Sleep 300
-    Send {Esc}
-    Sleep 500
+    Send {F9}
+    HyperSleep(100)
+    Send {F9}
+    HyperSleep(200)
+
+    Debug("Waiting for bees to come back...")
+    HyperSleep(Fast ? 100 : 15000)
 }
 
-Respawn() {
+Respawn(Fast := False) {
     WinActivate Roblox
     Sleep 200
 
     done := False
     while (!done) {
-        Reset()
+        Reset(Fast)
         done := ValidateStart()
     }
 
@@ -339,6 +384,7 @@ MoveToHiveSlot(slot, fromSlot := 3) {
         return MoveToHiveRight()
     }
     else {
+        MoveLeft(400)
         return MoveToHiveLeft()
     }
 }
@@ -354,7 +400,6 @@ CheckPixel(x, y, color, xytolerance := 5) {
 
 CompareColorAt(x, y, targetColor, tolerance := 20) {
     PixelGetColor, color, x, y
-    Debug("Pixel at " . x . "," . y . " is " . color, 4)
 
     tr := format("{:d}","0x" . substr(targetColor, 3, 2))
     tg := format("{:d}","0x" . substr(targetColor, 5, 2))
@@ -367,6 +412,7 @@ CompareColorAt(x, y, targetColor, tolerance := 20) {
 
     ;check distance
     distance := sqrt((tr-pr)**2+(tg-pg)**2+(pb-tb)**2)
+    Debug("Pixel at " . x . "," . y . " is " . color . ", dist: " . distance . ", tol: " . tolerance, 4)
     return distance <= tolerance
 }
 
@@ -386,35 +432,46 @@ CompareColor(sourceColor, targetColor, tolerance := 20) {
 }
 
 ValidateMakeHoney() {
-    if (CompareColorAt(2170, 240, 0xf9fff7)) {
-        return CompareColorAt(2197, 185, 0xf9fff7)
+    if (CompareColorAt(ScreenX(2170), ScreenY(240), 0xf9fff7)) {
+        return CompareColorAt(ScreenX(2197), ScreenY(185), 0xf9fff7)
     }
     return False
 }
 
 ValidateStart() {
-    PixelGetColor, color, 1915, 2080
-    Debug("Pixel at 1915, 2080 is " . color, 4)
+    x := ScreenX(1915)
+    y := ScreenY(2080)
+    PixelGetColor, color, x, y
+    Debug("Pixel at " . x . ", " . y . " is " . color, 4)
 
     if (CompareColor(color, 0xffffff) || CompareColor(color, 0xb1b1b1) || CompareColor(color, 0xFF805D) || CompareColor(color, 0x6F6F6F) || CompareColor(color, 0x830404) || CompareColor(color, 0x9A4E3B) || CompareColor(color, 0xEDEEEE) || CompareColor(color, 0xB7B8B8)) {
         return True
     }
 
     if (CompareColor(color, 0x4C3F31)) {
-        MoveUp(2000)
-        MoveDown(200)
+        MoveUp(3500)
+        MoveDown(600)
         return True
     }
 }
 
 FireCannon() {
-    Sleep 200
+    HyperSleep(1000)
     KeyPress("e", 15)
 }
 
 JumpToCannonAndFire() {
+    Debug("Jump to cannon")
     JumpToRedCannon()
-    FireCannon()
+    Debug("Verify cannon")
+    if (VerifyCannon()) {
+        Debug("FireCannon()")
+        MoveDown(300)
+        FireCannon()
+        return True
+    }
+    Debug("Verify cannon failed")
+    return False
 }
 
 MoveToHiveLeft() {
@@ -457,7 +514,7 @@ MoveToHiveRight() {
     }
 
     step := 0
-    while (step < 500) {
+    while (step < 700) {
         MoveRight(50)
         If (ValidateMakeHoney()) {
             return True
@@ -475,13 +532,15 @@ MoveFromHiveToCannon() {
     Loop, 10 {
         MoveRight(2000)
 
-        PixelGetColor, color, 1950, 55
-        Debug("Pixel at " . 1950 . "," . 55 . " is " . color, 4)
+        PixelGetColor, color, ScreenX(1950), ScreenY(55)
+        Debug("Pixel at " . ScreenX(1950) . "," . ScreenY(55) . " is " . color, 4)
         if (CompareColor(color, 0x949184) or CompareColor(color, 0x848279) or CompareColor(color, 0x1F8BA8) or CompareColor(color, 0x16157B) or CompareColor(color, 0x053F1A) or CompareColor(color, 0x7E706D) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x4E9193) or CompareColor(color, 0x645049) or CompareColor(color, 0x11114C) or CompareColor(color, 0x494160) or CompareColor(color, 0x747335)) {
-            PixelGetColor, color, 3020, 115
+            PixelGetColor, color, ScreenX(3020), ScreenY(115)
             Debug("Pixel at " . 3020 . "," . 115 . " is " . color, 4)
-            if (CompareColor(color,0xa08a76) or CompareColor(color,0x927C6B) or CompareColor(color,0xEDEAEB)) {
-                ZoomOut(5)
+            if (CompareColor(color, 0xa08a76) or CompareColor(color, 0x927C6B) or CompareColor(color, 0xEDEAEB) or CompareColor(color, 0xAF9580)) {
+                ;ZoomOut(5)
+                MoveUp(300)
+                MoveRight(200)
                 good := True
                 Break
             }
@@ -514,7 +573,7 @@ ShouldStopFetching() {
     }
 
     ; Check if container is full
-    if (CompareColorAt(2408, 100, 0x1700F7)) {
+    if (CompareColorAt(ScreenX(2408), ScreenY(100), 0x1700F7)) {
         Debug("Container full")
         g_startTimestamp := A_TickCount / (1000 * 60)
         return True
@@ -526,7 +585,7 @@ ShouldStopFetching() {
 IsConvertingHoney() {
     ;PixelSearch, FoundX, FoundY, 2028, 90, 2030, 92, 0x646E71, 5, True
     ;return ErrorLevel = 0
-    return CompareColorAt(1858, 110, 0x75cde7)
+    return CompareColorAt(ScreenX(1858), ScreenY(110), 0x75cde7)
 }
 
 JumpFromPolarBearToHive() {
@@ -1042,14 +1101,16 @@ WalkCloverPattern(nbLoops, subrepeat) {
                 }
             }
 
+            MoveUp(1000)
             TwoKeyPress("w", "a", 3000)
 
             if (stopFetching) {
                 Break
             }
 
-            MoveRight(1500)
-            MoveDown(600)
+            ;MoveRight(1500)
+            MoveRight(700)
+            MoveDown(300)
         }
 
         if (stopFetching || A_Index = nbLoops) {
@@ -1211,11 +1272,11 @@ MoveLateral(time, left := True) {
     }
 }
 
-WalkElolTopRightPattern(move := 1000) {
+WalkElolTopRightPattern(move := 1000, diagonal := 700) {
 
     StartFetching()
 
-    TwoKeyPress("a", "s", 1500)
+    TwoKeyPress("a", "s", diagonal * 1.5)
     PlaceSprinkler(g_sprinklers)
 
     stopFetching := False
@@ -1236,6 +1297,8 @@ WalkElolTopRightPattern(move := 1000) {
             MoveDown(move * 0.1)
         }
 
+        PlaceSprinkler(g_sprinklers)
+
         if (ShouldStopFetching()) {
             stopFetching := True
             break
@@ -1252,11 +1315,77 @@ WalkElolTopRightPattern(move := 1000) {
             MoveUp(move * 0.1)
         }
 
+        PlaceSprinkler(g_sprinklers)
+
         if (reposition) {
-            MoveRight(1000)
+            TwoKeyPress("w", "d", 1000)
+            MoveUp(500)
+            MoveRight(500)
             MoveUp(1000)
-            TwoKeyPress("a", "s", 700)
+            MoveRight(1000)
+            TwoKeyPress("a", "s", diagonal)
             MoveRight(300)
+        }
+    }
+}
+
+WalkElolTopRightPatternSunflower(move := 1000, diagonal := 700) {
+
+    StartFetching()
+
+    TwoKeyPress("a", "s", diagonal * 1.5)
+    ZoomOut()
+    PlaceSprinkler(g_sprinklers)
+
+    stopFetching := False
+
+    Loop {
+        driftBack := Mod(A_Index, 5) == 0
+        reposition := Mod(A_Index, 15) == 0
+
+        StartFetching()
+
+        ShouldGoToWealthClock()
+        ShouldGoToPlanters()
+
+        Loop, 2 {
+            MoveLeft(move * 0.7)
+            MoveDown(move * 0.1)
+            MoveRight(move * 0.72)
+            MoveDown(move * 0.1)
+        }
+
+        MoveDown(30)
+
+        PlaceSprinkler(g_sprinklers)
+
+        if (ShouldStopFetching()) {
+            stopFetching := True
+            break
+        }
+
+        Loop, 2 {
+            MoveLeft(move * 0.70)
+            MoveUp(move * 0.1)
+            if (driftBack) {
+                MoveRight(move * 0.8)
+            } else {
+                MoveRight(move * 0.72)
+            }
+            MoveUp(move * 0.1)
+        }
+
+        MoveDown(30)
+
+        PlaceSprinkler(g_sprinklers)
+
+        if (reposition) {
+            MoveDown(500)
+            MoveRight(1000)
+            TwoKeyPress("w", "d", 2500)
+            MoveUp(1000)
+            TwoKeyPress("a", "s", diagonal)
+            ZoomOut()
         }
     }
 }
@@ -1272,6 +1401,8 @@ WalkElolTopLeftPattern() {
 
     stopFetching := False
 
+    ZoomOut()
+
     Loop {
         driftBack := Mod(A_Index, 5) == 0
         reposition := Mod(A_Index, 15) == 0
@@ -1284,6 +1415,8 @@ WalkElolTopLeftPattern() {
             MoveLeft(move * 0.72)
             MoveDown(move * 0.1)
         }
+
+        PlaceSprinkler(g_sprinklers)
 
         if (ShouldStopFetching()) {
             stopFetching := True
@@ -1300,6 +1433,8 @@ WalkElolTopLeftPattern() {
             }
             MoveUp(move * 0.1)
         }
+
+        PlaceSprinkler(g_sprinklers)
 
         if (reposition) {
             MoveLeft(1000)
@@ -1399,10 +1534,13 @@ ToHiveFromStrawberry() {
 
 MoveToSpider() {
     if (MoveFromHiveToCannon()) {
-        JumpToCannonAndFire()
+        if (JumpToCannonAndFire() = False) {
+            Debug("Failed to jump to cannon and fire")
+            return False
+        }
         Sleep, 800
         DeployChute()
-        MoveDown(1100)
+        MoveDown(1100, True)
         SendSpace()
         Sleep, 2000
         RotateCamera(4)
@@ -1414,4 +1552,11 @@ MoveToSpider() {
     }
 
     return False
+}
+
+TestCannon() {
+    if (MoveFromHiveToCannon()) {
+        JumpToRedCannon()
+
+    }
 }

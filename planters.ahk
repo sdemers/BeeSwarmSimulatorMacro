@@ -3,9 +3,12 @@
 
 #Include, config.ahk
 #Include, common.ahk
+#include, pine tree.ahk
+#Include, spider.ahk
+#include, sunflower.ahk
 
 global g_lastPlanters := 0
-global g_usePlanters := 0
+global g_usePlanters := 1
 global g_plantersTimeHours := 3
 
 ReadLastPlanters()
@@ -117,6 +120,7 @@ MoveToSunflowerPlanter() {
 
 ExecutePlanters() {
     if (ShouldGoToPlanters() = False) {
+        Debug("Not time for planters yet")
         return
     }
 

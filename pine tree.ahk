@@ -20,23 +20,23 @@ ValidatePineTreeField() {
 
 MoveToPineTree() {
     if (MoveFromHiveToCannon()) {
-        JumpToCannonAndFire()
+        if (JumpToCannonAndFire()) {
 
-        Sleep 320
-        MoveRight(180)
-        Sleep 250
-        DeployChute()
-        Sleep 4700
-        SendSpace()
-        Sleep 500
-        RotateRight()
+            Sleep 320
+            MoveRight(150, True)
+            Sleep 250
+            DeployChute()
+            Sleep 4700
+            SendSpace()
+            Sleep 500
+            RotateRight()
 
-        ZoomOut(5)
+            ZoomOut(5)
 
-        MoveRight(5000)
-        MoveUp(5000)
-
-        return True
+            MoveRight(5000)
+            MoveUp(5000)
+            return True
+        }
     }
 
     ; if (ValidateField()) {
@@ -53,17 +53,21 @@ ToHiveFromPineTree() {
     StopFetching()
 
     ; Move next to polar bear
+    Debug("Moving next to polar bear")
     MoveDown(11000)
     RotateLeft()
     MoveUp(9000)
 
+    Debug("Jumping from polar bear to hive")
     JumpFromPolarBearToHive()
 
+    Debug("Moving to hive slot")
     if (MoveToHiveSlot(g_hivePosition) = False) {
         Debug("Hive not found...")
         return False
     }
 
+    Debug("Detected hive slot")
     return True
 }
 
@@ -92,10 +96,13 @@ ExecutePineTree() {
 }
 
 ExecutePineTreeScript() {
+
+    ;ActivateBlueBooster()
     Respawn()
 
     loop {
         ExecutePineTree()
+        ;ActivateBlueBooster()
     }
 }
 

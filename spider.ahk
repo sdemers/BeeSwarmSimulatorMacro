@@ -20,7 +20,7 @@ ToHiveFromSpider() {
 }
 
 ExecuteSpiderScript() {
-    Respawn()
+    Respawn(True)
 
     loop {
         Debug("Moving to spider")
@@ -35,12 +35,12 @@ ExecuteSpiderScript() {
                 ConvertHoneyThenPlantersAndClock()
             } else {
                 Debug("Respawning")
-                Respawn()
+                Respawn(True)
             }
         }
         else {
             Debug("Respawning")
-            Respawn()
+            Respawn(True)
         }
     }
 }

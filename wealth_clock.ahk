@@ -25,12 +25,12 @@ ShouldGoToWealthClock() {
 MoveToClock(hive) {
     if (MoveFromHiveToCannon()) {
         JumpToCannonAndFire()
-        MoveLeft(1500)
+        MoveLeft(1300, True)
         DeployChute()
-        TwoKeyPress("w", "a", 9000)
+        TwoKeyPress("w", "a", 9000, True)
         MoveLeft(1500)
         MoveDown(3000)
-        MoveRight(750)
+        MoveRight(700)
         MoveDown(400)
         return True
     }
@@ -41,7 +41,7 @@ MoveToClock(hive) {
 
 ReadUseWealthClock() {
     IniRead, Name, config.ini, Config, UseWealthClock
-    useWealthClock := Name
+    g_useWealthClock := Name
 }
 
 ReadWealthClock() {

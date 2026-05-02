@@ -3,7 +3,9 @@
 
 global g_hivePosition := 2
 global g_maxTimeMin := 14
-global g_speed := 34.5
+;global g_speed := 32.2
+;global g_speed := 33.35
+global g_speed := 36.5
 global g_useWealthClock := 1
 
 global g_sprinklers := 1
